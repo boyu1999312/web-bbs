@@ -1,0 +1,16 @@
+server:
+  port: 9400
+spring:
+  thymeleaf:
+    cache: false
+    encoding: UTF-8
+    mode: HTML
+  profiles:
+    active: dev
+
+mybatis-plus:
+  type-aliases-package: com.xiaozhuzhijia.webbs.common.entity
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true
+
