@@ -20,7 +20,7 @@ public class AuthDto {
     /** 用户名或邮箱 */
     private String accEmail;
     /** 密码 */
-    private String lpwd;
+    private String lPwd;
 
     //登录
     /** 用户名 */

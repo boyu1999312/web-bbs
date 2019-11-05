@@ -10,4 +10,12 @@ public interface UserService {
 
     Result getCode(AuthDto authDto);
 
+    Result checkUserName(String userName);
+
+    Result checkCode(AuthDto authDto);
+
+    Result checkEmail(String email);
+
+    Result login(AuthDto authDto);
+
 }

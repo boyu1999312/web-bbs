@@ -28,8 +28,8 @@ public class Result implements Serializable {
         return new Result(404, null, null);
     }
 
-    public static Result ok(String msg, Object data) {
-        return new Result(200, msg, data);
+    public static Result ok(Object data) {
+        return new Result(200, "ok", data);
     }
 
     public static Result ok(String msg) {

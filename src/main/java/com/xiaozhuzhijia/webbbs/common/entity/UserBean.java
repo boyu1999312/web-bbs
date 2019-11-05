@@ -37,6 +37,8 @@ public class UserBean {
     private Integer version;
     /** 头像 */
     private String portrait;
+    /** 盐值 */
+    private String salt;
 
 
 
