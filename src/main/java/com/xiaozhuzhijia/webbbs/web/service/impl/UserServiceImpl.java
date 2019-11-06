@@ -1,6 +1,7 @@
 package com.xiaozhuzhijia.webbbs.web.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.xiaozhuzhijia.webbbs.common.constant.LoginFinal;
 import com.xiaozhuzhijia.webbbs.common.dto.AuthDto;
 import com.xiaozhuzhijia.webbbs.common.entity.UserBean;
 import com.xiaozhuzhijia.webbbs.common.util.MailUtil;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
+import org.springframework.util.StringUtils;
 
 import javax.servlet.http.Cookie;
 import java.util.Objects;
@@ -53,18 +55,34 @@ public class UserServiceImpl implements UserService {
         String loginToken = DigestUtils.md5DigestAsHex((authDto.getAccEmail() + "XZZJ_LOGIN"
                 + System.currentTimeMillis()).getBytes());
         int time = 3600 * 24 * 30 * 6;
-        Cookie cookie = new Cookie("xzzj_loto_kginen", loginToken);
+        Cookie cookie = new Cookie(LoginFinal.COOKIE_LOGIN_TOKEN, loginToken);
         cookie.setMaxAge(time);//设置半年
         cookie.setPath("/");
 
         try {
-            redis.opsForValue().set(authDto.getAccEmail(), loginToken, time, TimeUnit.SECONDS);
+            redis.opsForValue().set(LoginFinal.COOKIE_LOGIN_TOKEN, loginToken, time, TimeUnit.SECONDS);
         }catch (Exception e){
             e.printStackTrace();
             return Result.error("登录系统失效，请联系网站管理员");
         }
 
         return Result.ok(cookie);
+    }
+
+    /**
+     * 检查邮箱是否为本站已注册邮箱
+     * @param email
+     * @return
+     */
+    @Override
+    public Result emailExists(String email) {
+
+        UserBean userBean = userMapper.selectOne(new QueryWrapper<UserBean>()
+                .eq("email", email));
+        if(Objects.isNull(userBean)){
+            return Result.error("该邮箱未注册");
+        }
+        return Result.ok("邮箱正确");
     }
 
 
@@ -84,6 +102,22 @@ public class UserServiceImpl implements UserService {
                 .setUpdatedTime(authDto.getCreatedTime())
                 .setSalt(System.currentTimeMillis() + "");
 
+        try {
+            //从redis中获取注册信息
+            //进行信息比对，如果不匹配，提示注册信息有误
+            String auth = redis.opsForValue().get("auth," + authDto.getCodeCache());
+            if(StringUtils.isEmpty(auth)){
+                return Result.error("注册超时，请重新注册");
+            }
+            String[] auths = auth.split(",");
+            if(!auths[0].equals(authDto.getEmail())){
+                return Result.error("注册信息不匹配");
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+            return Result.error("注册系统错误，请联系网站管理员");
+        }
+
         //将密码加密成MD5值
         String pwdMd5 = DigestUtils.md5DigestAsHex(
                 (authDto.getPwd() + userBean.getSalt()).getBytes());
@@ -97,7 +131,7 @@ public class UserServiceImpl implements UserService {
             }
         }catch (Exception e){
             e.printStackTrace();
-            return Result.error("注册|数据库写入错误：" + e);
+            return Result.error("数据库写入错误");
         }
         return Result.ok("注册成功");
     }
@@ -144,14 +178,15 @@ public class UserServiceImpl implements UserService {
         //检验验证码
         try {
             //获取redis中的验证信息
-            String[] emailCode = redis.opsForValue().get(authDto.getCodeCache()).split(",");
+            String emailCode = redis.opsForValue().get(authDto.getCodeCache());
             if(Objects.isNull(emailCode)){
                 return Result.error("邮箱验证码未发送");
             }
-            if(!authDto.getEmail().equals(emailCode[0])){
+            String[] emailCodes = emailCode.split(",");
+            if(!authDto.getEmail().equals(emailCodes[0])){
                 return Result.error("请确认邮箱是否正确");
             }
-            if(!emailCode[1].equals(authDto.getCode().toUpperCase())){
+            if(!emailCodes[1].equals(authDto.getCode().toUpperCase())){
                 return Result.error("邮箱验证码错误");
             }
         }catch (Exception e){
@@ -185,7 +220,14 @@ public class UserServiceImpl implements UserService {
 
         try {
             //将验证码存入redis，120s
-            redis.opsForValue().set(authDto.getCodeCache(), emailCode, 120, TimeUnit.SECONDS);
+            redis.opsForValue().set(authDto.getCodeCache(), emailCode,
+                    120, TimeUnit.SECONDS);
+
+            //将注册信息存入redis,30m
+            redis.opsForValue().set(
+                    "auth," + authDto.getCodeCache(),
+                    emailCode, 30, TimeUnit.MINUTES);
+
         }catch (Exception e){
             e.printStackTrace();
             return Result.error("注册系统错误，请联系网站管理员");

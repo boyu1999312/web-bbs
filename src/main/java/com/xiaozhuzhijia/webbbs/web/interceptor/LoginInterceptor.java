@@ -6,8 +6,6 @@ import com.xiaozhuzhijia.webbbs.common.util.CookieUtil;
 import org.apache.juli.logging.Log;
 import org.apache.juli.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -17,9 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Component
 public class LoginInterceptor implements HandlerInterceptor {
@@ -29,12 +25,23 @@ public class LoginInterceptor implements HandlerInterceptor {
 
     private Log log = LogFactory.getLog(LoginInterceptor.class);
 
-    private Set<String> currentUrl = new HashSet<>();
+    private Map<String, String> currentUrl = new HashMap<>();
 
+    /**
+     * 将url过滤
+     * @param url
+     * @return
+     */
     private boolean checkCurrentUrl(String url){
-        currentUrl.add("/xzzj/login");
-        currentUrl.add("/xzzj/bbs/account");
-        return true;
+        currentUrl.put("/xzzj/login", "anon");
+        currentUrl.put("/xzzj/bbs/account/", "anon");
+        for (String key : currentUrl.keySet()) {
+            if(url.contains(key)){
+                String value = currentUrl.get(key);
+                return value.equals("anon");
+            }
+        }
+        return false;
     }
 
     @Override
@@ -68,7 +75,6 @@ public class LoginInterceptor implements HandlerInterceptor {
             return false;
         }
     }
-
 
 
     @Override

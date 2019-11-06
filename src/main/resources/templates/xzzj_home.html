@@ -724,28 +724,28 @@
     $(function () {
         /** 轮播图 */
         function lunbo() {
-            var $subscript = $(".subscript span")
-            var $left = $(".container-left")
-            var $photo = $(".photo")
-            var index = 0
-            var flag = false
+            var $subscript = $(".subscript span");
+            var $left = $(".container-left");
+            var $photo = $(".photo");
+            var index = 0;
+            var flag = false;
             setInterval(function () {
-                if(flag) return
-                if(index == 5) index = 0
-                $photo.animate({marginLeft:-(index * 450)})
-                $subscript.css("background","hsla(0,0%,13%,.2)")
-                $(".subscript span:eq("+index+")").css("background","red")
+                if(flag) return;
+                if(index === 5) index = 0;
+                $photo.animate({marginLeft:-(index * 450)});
+                $subscript.css("background","hsla(0,0%,13%,.2)");
+                $(".subscript span:eq("+index+")").css("background","red");
                 index++
-            },3000)
+            },3000);
             $left.hover(function () {
                 flag = true
             },function () {
                 flag = false
-            })
+            });
             $subscript.hover(function () {
-                index = $(this).text() - 1
-                $photo.animate({marginLeft:-(index * 450)},0)
-                $subscript.css("background","hsla(0,0%,13%,.2)")
+                index = $(this).text() - 1;
+                $photo.animate({marginLeft:-(index * 450)},0);
+                $subscript.css("background","hsla(0,0%,13%,.2)");
                 $(".subscript span:eq("+index+")").css("background","red")
             })
         }
@@ -756,8 +756,8 @@
             });
         }
         /** 执行函数 */
-        lunbo()
-        daojishi()
+        lunbo();
+        daojishi();
     })
 
 </script>

@@ -68,4 +68,10 @@ public class AccountController {
 
         return userService.checkEmail(email);
     }
+    @PostMapping("/emailExists")
+    public Result emailExists(String email){
+
+        return userService.emailExists(email);
+    }
+
 }

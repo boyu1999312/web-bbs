@@ -55,6 +55,7 @@
             height: 70px;
             border-bottom: #ebebeb solid 1px;
         }
+
         .once {
             width: 332px;
             position: absolute;
@@ -62,6 +63,7 @@
 
             transition: all 0.3s ease;
         }
+
         .tp-tl {
             color: #4c4c4c;
             font-weight: 600;
@@ -86,7 +88,7 @@
         .bot-div {
             position: absolute;
             top: 55px;
-            left: 34px;
+            left: 0;
             width: 38px;
             height: 4px;
             background: #0084ff;
@@ -95,6 +97,9 @@
         }
 
         .tip-gr:last-child {
+            border: 0;
+        }
+        .d-forget .tip-gr:nth-child(5){
             border: 0;
         }
 
@@ -251,6 +256,11 @@
             margin: 0 5px 0 3px;
         }
         .per {
+            position: relative;
+            border: 0;
+        }
+        .forget-per {
+            position: relative;
             border: 0;
         }
         .reg-acc {
@@ -266,7 +276,7 @@
             left: 90px;
         }
 
-        .d-pwd .re-acc {
+        .re-acc {
             position: absolute;
             display: inline-block;
             top: 17px;
@@ -300,6 +310,51 @@
             border-radius: 0 0 100% 0;
         }
 
+        /** 忘记密码 */
+        .d-forget {
+            position: absolute;
+            top: 0;
+            z-index: -1;
+            opacity: 0;
+
+            transition: all 0.3s ease;
+        }
+        .d-forget .tp-tl {
+            width: auto;
+        }
+
+        .d-forget .tp-tl span {
+            transition: all 0.3s ease;
+            color: #4c4c4c;
+        }
+        .d-forget .tp-tl + div {
+            opacity: 0;
+        }
+        .d-forget .tp-tl:hover span {
+            color: #000;
+        }
+        .d-forget .tp-tl:hover + div {
+            opacity: 1;
+        }
+        .d-forget-box {
+            width: 332px;
+            margin: 0;
+            padding: 0 34px 98px;
+            height: 291px;
+        }
+
+        .d-forget .sl {
+            left: 60px;
+        }
+        .d-forget .ac-in {
+            left: 90px;
+        }
+        .d-forget .in {
+            left: 97px;
+        }
+        .forget-tip {
+            top: 23px;
+        }
 
         @keyframes shake {
             10% {transform: translate3d(0,+5px,0)}
@@ -387,20 +442,57 @@
             <input type="hidden" name="createdTime"/>
             <input type="hidden" name="updatedTime"/>
             <div class="tip-gr">
-                <input type="submit" value="登录" class="btn-login"/>
+                <input type="submit" value="登录" class="btn-login lbtn"/>
             </div>
         </form>
         <iframe id="id_iframe" name="nm_iframe" style="display:none;"></iframe>
+
+        <!--忘记密码-->
+        <div class="d-forget">
+            <div class="d-forget-box">
+                <div class="tip-gr forget-per">
+                    <div class="tp-tl"><span>返回</span></div>
+                    <div class="bot-div"></div>
+                </div>
+                <div class="tip-gr">
+                    <div class="ac-gr">电子邮箱<span class="sl"></span>
+                        <div class="re-acc checkForgetCode"></div>
+                        <div name="in" class="error-tip in">请输入您账号绑定的邮箱</div>
+                        <input class="ac-in" name="forgetEmail" placeholder="电子邮箱" onkeyup="value=value.replace(/[\u4e00-\u9fa5]/ig,'')"/>
+                    </div>
+                </div>
+                <div class="tip-gr ">
+                    <div class="ac-gr">
+                        <div name="pwd" class="error-tip forget-tip">请输入邮箱验证码</div>
+                        <input class="ac-pwd" name="forgetCode" placeholder="验证码" maxlength="5"/>
+                        <button type="button" class="ac-code-btn get-forget-code">获取验证码</button>
+                    </div>
+                </div>
+                <div class="tip-gr ">
+                    <div class="ac-gr">
+                        <div name="pwd" class="error-tip forget-tip">请输入密码</div>
+                        <input class="ac-pwd" name="pwd" placeholder="至少 10 位英文数字混合密码" onkeyup="value=value.replace(/[\u4e00-\u9fa5]/ig,'')"/>
+                    </div>
+                </div>
+                <div class="tip-gr ">
+                    <div class="ac-gr">
+                        <div name="repwd" class="error-tip forget-tip">请输入重复密码</div>
+                        <input class="ac-pwd" name="rePwd" placeholder="重复密码" onkeyup="value=value.replace(/[\u4e00-\u9fa5]/ig,'')"/>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 <script src="http://119.3.170.239/js/jquery-3.4.1.min.js"></script>
 <!--<script src="http://119.3.170.239/js/login.js"></script>-->
 <script>
     var codeCache = "XZZJ_CODECACHE_" + randomCoding();
-    var register = false;
-    var reUserName = false; //false表用户名重复
-    var reCode = false;     //false表验证码不正确
-    var reEmail = false;    //false表邮箱重复
+    var forget = false;     //false非忘记密码页
+    var register = false;   //false为登录页，true为注册页
+    var reUserName = false; //false为用户名重复
+    var reCode = false;     //false为验证码不正确
+    var reEmail = false;    //false为邮箱重复
 
     /** 生成认证码 */
     function randomCoding(){
@@ -433,22 +525,29 @@
 
     function success_show(text){
         var $t_box = $("<div class='t-box'>"+text+"</div>");
-        $t_box.css("background","#07a707")
+        $t_box.css("background","#07a707");
         $("body").append($t_box);
         $t_box.animate({"z-index":99},3000,function () {$t_box.remove()});
         $t_box.click(function () {$t_box.remove()})
     }
     /** 侧边提示框 */
-    function right_tip($el, text){
-        $el.text(text)
-        $el.css({"z-index":1,"opacity":1})
+    function right_tip($el, text, err){
+        backgroundColor = err ? "#07a707" : "red";
+        $el.text(text);
+        $el.css({"z-index":1,"opacity":1,"background":backgroundColor});
+
     }
 
     /** 校验电子邮箱 */
-    function email_check(){
-        var email = $("input[name='email']").val();
+    function email_check($el){
+        var email = $el.val();
+        if(email === "" || email == null) {
+            right_tip($(".checkEmail"), "邮箱不可用", false);
+            return true;
+        }
         var reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
         if(!reg.test(email)){
+            right_tip($(".checkEmail"), "邮箱不可用", false);
             errtip_show("电子邮箱格式不正确");
             return true
         }
@@ -471,46 +570,63 @@
     $("input").focus(function () {
         $(this).prev().css("z-index", -1);
         $(this).prev().css("opacity", 0);
-    })
+    });
 
     /** 切换登录注册页 */
 
     $(".tp-register").click(function () {
-
-        $("form").attr("action", "http://localhost:9400/xzzj/bbs/account/register");
         register = true;
         $(this).css("color", "#1a1a1a");
         $(".tp-login").css("color", "#4C4C4C");
-        $(".bot-div").css("left", "98px");
+        $(".bot-div").css("left", "63px");
 
 
-        $(".btn-login").css("top","525px").val("注册");
-        $(".box").css("height","610px");
+        $(".lbtn").css("top","525px").val("注册");
+        $(".box").css("height","613px");
         $(".once").css({"z-index":-1,"opacity":0});
         $(".d-pwd").css({"z-index":1,"opacity":1});
-
+        $("title").text("小猪之家|注册");
     });
     $(".tp-login").click(function () {
 
-        $("form").attr("action", "http://localhost:9400/xzzj/bbs/account/login");
         register = false;
-        $(".btn-login").css("top","262px").val("登录");
+        $(".lbtn").css("top","262px").val("登录");
         $(".box").css("height","350px");
 
 
         $(this).css("color", "#1a1a1a");
         $(".tp-register").css("color", "#4C4C4C");
-        $(".bot-div").css("left", "34px");
+        $(".bot-div").css("left", "0");
         $(".once").css({"z-index":1,"opacity":1});
         $(".d-pwd").css({"z-index":-1,"opacity":0});
+        $("title").text("小猪之家|登录");
+    });
+    $(".forget-btn").click(function () {
+        forget = true;
+        $(".once").css({"z-index":-1,"opacity":0});
+        $(".d-forget").css({"z-index":1,"opacity":1});
+        $(".lbtn").css("top","392px").val("修改密码");
+        $(".per").css({"z-index":-1,"opacity":0});
+        $(".box").css("height","490px");
+        $("title").text("小猪之家|忘记密码");
+
+    });
+    $(".d-forget .tp-tl").click(function () {
+        forget = false;
+        $(".once").css({"z-index":1,"opacity":1});
+        $(".d-forget").css({"z-index":-1,"opacity":0});
+        $(".lbtn").css("top","262px").val("登录");
+        $(".per").css({"z-index":1,"opacity":1});
+        $(".box").css("height","350px");
+        $("title").text("小猪之家|登录");
     });
 
     /** 检查用户名、邮箱和验证码 */
 
-    function checkUserName(){
+    function checkUserName($el){
         var reg = /[\u4e00-\u9fa5]+/;
-        if(reg.test($("input[name='acc']").val()) |
-            $("input[name='acc']").val().length < 5){
+        if(reg.test($el.val()) |
+            $el.val().length < 5){
             errtip_show("请输入至少 5 位，非中文的用户名");
             return false
         }
@@ -536,38 +652,44 @@
         });
     }
     $("input[name='acc']").blur(function () {
-        if(checkUserName()){
+        if(checkUserName($("input[name='acc']"))){
             checkReUserName(true)
         }
     });
-    function checkReEmail(flag){
+    function checkReEmail(flag, url, $email, $tip){
         $.ajax({
-            url: "http://localhost:9400/xzzj/bbs/account/checkEmail",
+            url: url,
             type: "POST",
-            data: {"email": $("input[name='email']").val()},
+            data: {"email": $email.val()},
             datatype: "json",
             async: flag,
             success: function (result) {
-                $(".checkEmail").text(result.msg);
+                $tip.text(result.msg);
                 if(result.code === 200){
                     reEmail = true;
-                    $(".checkEmail").css({"z-index":1,"opacity":1, "background": "#07a707"})
+                    $tip.css({"z-index":1,"opacity":1, "background": "#07a707"})
                 }else {
                     reEmail = false;
-                    $(".checkEmail").css({"z-index":1,"opacity":1, "background": "red"})
+                    $tip.css({"z-index":1,"opacity":1, "background": "red"})
                 }
             }
         });
     }
     $("input[name='email']").blur(function () {
-        if(!email_check()){
-            checkReEmail(true)
+        if(!email_check($("input[name='email']"))){
+            var url = "http://localhost:9400/xzzj/bbs/account/checkEmail";
+            checkReEmail(true, url, $(this), $(".checkEmail"));
+        }
+    });
+    $("input[name='forgetEmail']").blur(function () {
+        if(!email_check($("input[name='forgetEmail']"))){
+            var url = "http://localhost:9400/xzzj/bbs/account/emailExists";
+            checkReEmail(true, url, $(this), $(".checkForgetCode"));
         }
     });
     $("input[name='code']").blur(function () {
         checkCode(true)
     });
-
     function checkCode(flag){
         $.ajax({
             url: "http://localhost:9400/xzzj/bbs/account/checkCode",
@@ -594,8 +716,10 @@
 
     /** 获取验证码按钮被按下 */
     $(".get-code").click(function () {
-        if(tip_show($("input[name='email']"), $(".reg-email")) || email_check()){return}
-        checkReEmail(false);
+        if(tip_show($("input[name='email']"), $(".reg-email")) ||
+            email_check($("input[name='email']"))){return}
+        var url = "http://localhost:9400/xzzj/bbs/account/checkEmail";
+        checkReEmail(true, url, $("input[name='email']"), $(".checkEmail"));
         if(!reEmail){return}
 
         $.ajax({
@@ -638,16 +762,16 @@
             type: "POST",
             data:
                 {
-                    "accEmail": $("input[name='accEmail']").val(),
-                    "lPwd": $("input[name='lPwd']").val(),
-                    "acc": $("input[name='acc']").val(),
-                    "email": $("input[name='email']").val(),
-                    "code": $("input[name='code']").val(),
-                    "pwd": $("input[name='pwd']").val(),
-                    "gender": $("input[name='gender']:checked").val(),
-                    "createdTime": $("input[name='createdTime']").val(),
-                    "codeCache": codeCache
-                },
+                "accEmail": $("input[name='accEmail']").val(),
+                "lPwd": $("input[name='lPwd']").val(),
+                "acc": $("input[name='acc']").val(),
+                "email": $("input[name='email']").val(),
+                "code": $("input[name='code']").val(),
+                "pwd": $("input[name='pwd']").val(),
+                "gender": $("input[name='gender']:checked").val(),
+                "createdTime": $("input[name='createdTime']").val(),
+                "codeCache": codeCache
+            },
             datatype: "json",
             async: false,
             success: function (result) {
@@ -670,6 +794,8 @@
         var reg = /[\u4e00-\u9fa5]+/;
         var pwdReg = /^(?=.*[a-zA-Z]+)(?=.*[0-9]+)[a-zA-Z0-9]+$/;
         $("input[name='createdTime']").val(new Date());
+
+
         if(register){
             /** 注册流程 */
             /** 检查输入是否合法 */
@@ -677,7 +803,7 @@
                 tip_show($("input[name='email']"), $(".reg-email")) |
                 tip_show($("input[name='pwd']"), $(".pwd")) |
                 tip_show($("input[name='rePwd']"), $(".repwd")) |
-                email_check()){
+                email_check($("input[name='email']"))){
                 return
             }else {
 
@@ -685,7 +811,7 @@
                     errtip_show("请选择性别");
                     return
                 }
-                if(!checkUserName()){
+                if(!checkUserName($("input[name='acc']"))){
                     return
                 }
                 if(!pwdReg.test($("input[name='pwd']").val()) |
@@ -702,7 +828,8 @@
             $("input[name='codeCache']").val(codeCache);
 
             //重新验证是否填写正确
-            checkReEmail(false);
+            var url = "http://localhost:9400/xzzj/bbs/account/checkEmail";
+            checkReEmail(true, url, $("input[name='email']"), $(".checkEmail"));
             checkReUserName(false);
             checkCode(false);
 

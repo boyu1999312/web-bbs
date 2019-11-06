@@ -16,4 +16,13 @@ class WebBbsApplicationTests {
         System.out.println(hex + "\r\n" + hex2);
     }
 
+    @Test
+    void test01(){
+        if("/xzzj/bbs/account/login".contains("/xzzj/bbs/account")) {
+            System.out.println("存在");
+        }else {
+            System.out.println("不存在");
+        }
+    }
+
 }

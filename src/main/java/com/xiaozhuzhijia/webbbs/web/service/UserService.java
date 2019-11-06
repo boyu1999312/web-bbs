@@ -18,4 +18,6 @@ public interface UserService {
 
     Result login(AuthDto authDto);
 
+    Result emailExists(String email);
+
 }
