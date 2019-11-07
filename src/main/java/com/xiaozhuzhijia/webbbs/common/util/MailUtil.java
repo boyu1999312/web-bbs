@@ -1,5 +1,7 @@
 package com.xiaozhuzhijia.webbbs.common.util;
 
+import org.springframework.util.StringUtils;
+
 import javax.mail.*;
 import javax.mail.Message.RecipientType;
 import javax.mail.internet.InternetAddress;
@@ -17,12 +19,31 @@ public class MailUtil {
         this.toEmail = toEmail;
         this.code = code;
     }
-
-    public static boolean send(String toEmail, String code){
-        return new MailUtil(toEmail,code).send();
+    public MailUtil(String toEmail){
+        this.toEmail = toEmail;
     }
 
-    private boolean send() {
+    /**
+     * 发送验证码
+     * @param toEmail
+     * @param code
+     * @return
+     */
+    public static boolean send(String toEmail, String code){
+        return new MailUtil(toEmail,code).send(null);
+    }
+
+    /**
+     * 发送自定义内容
+     * @param toEmail
+     * @param text
+     * @return
+     */
+    public static boolean sendForgetPassword(String toEmail, String text){
+        return new MailUtil(toEmail).send(text);
+    }
+
+    private boolean send(String str) {
         //0.1 确定连接位置
         Properties props = new Properties();
         //获取163邮箱smtp服务器的地址，
@@ -74,12 +95,14 @@ public class MailUtil {
             // 2.3 主题（标题）
             message.setSubject("小猪之家的登门信息");
             // 2.4 正文
-            String str = "可爱的用户： <br/>" +
-                    "您好，欢迎您在小猪之家注册！<br/>" +
-                    "这是新鲜出炉的激活码：<b>" + code.split(",")[1] + "<b/><br/>" +
-                    "如果两分钟内没有使用，会失效的哦！<br/>" +
-                    "如果没有找到的话！请在垃圾邮件中找找看！麻烦了内！！<br/>"+
-                    "如果不是本人，请删除邮件哦！";
+            if(StringUtils.isEmpty(str)) {
+                str = "可爱的用户： <br/>" +
+                        "您好，欢迎您在小猪之家注册！<br/>" +
+                        "这是新鲜出炉的激活码：<b>" + code.split(",")[1] + "</b><br/>" +
+                        "如果两分钟内没有使用，会失效的哦！<br/>" +
+                        "如果没有找到的话！请在垃圾邮件中找找看！麻烦了内！！<br/>" +
+                        "如果不是本人，请删除邮件哦！";
+            }
             //设置编码，防止发送的内容中文乱码。
             message.setContent(str, "text/html;charset=UTF-8");
 

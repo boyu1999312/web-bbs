@@ -11,6 +11,7 @@ import com.xiaozhuzhijia.webbbs.web.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
 
@@ -78,13 +79,12 @@ public class UserServiceImpl implements UserService {
     public Result emailExists(String email) {
 
         UserBean userBean = userMapper.selectOne(new QueryWrapper<UserBean>()
-                .eq("email", email));
+                .select("email").eq("email", email));
         if(Objects.isNull(userBean)){
             return Result.error("该邮箱未注册");
         }
         return Result.ok("邮箱正确");
     }
-
 
     /**
      * 注册
@@ -133,7 +133,7 @@ public class UserServiceImpl implements UserService {
             e.printStackTrace();
             return Result.error("数据库写入错误");
         }
-        return Result.ok("注册成功");
+        return Result.ok("注册成功, 3 秒后自动跳转");
     }
 
     /**
@@ -166,21 +166,16 @@ public class UserServiceImpl implements UserService {
                 : Result.error("邮箱已注册");
     }
 
-
-    /**
-     * 检验验证码
-     * @param authDto
-     * @return
-     */
-    @Override
-    public Result checkCode(AuthDto authDto) {
-
+    private Result defaultCheckCode(AuthDto authDto){
+        if(Objects.isNull(authDto)){
+            return Result.error("信息有误，请刷新重试");
+        }
         //检验验证码
         try {
             //获取redis中的验证信息
             String emailCode = redis.opsForValue().get(authDto.getCodeCache());
             if(Objects.isNull(emailCode)){
-                return Result.error("邮箱验证码未发送");
+                return Result.error("邮箱验证码无效");
             }
             String[] emailCodes = emailCode.split(",");
             if(!authDto.getEmail().equals(emailCodes[0])){
@@ -193,7 +188,19 @@ public class UserServiceImpl implements UserService {
             e.printStackTrace();
             return Result.error("注册系统错误，请联系网站管理员");
         }
+
         return Result.ok("验证码正确");
+    }
+
+    /**
+     * 检验验证码
+     * @param authDto
+     * @return
+     */
+    @Override
+    public Result checkCode(AuthDto authDto) {
+
+        return defaultCheckCode(authDto);
     }
 
 
@@ -213,7 +220,7 @@ public class UserServiceImpl implements UserService {
         try {
             //发送邮箱认证邮件
             MailUtil.send(authDto.getEmail(), emailCode);
-        }catch (Exception e){
+        }catch (RuntimeException e){
             e.printStackTrace();
             return Result.error("网络原因，请等待10分钟后重试");
         }
@@ -228,11 +235,127 @@ public class UserServiceImpl implements UserService {
                     "auth," + authDto.getCodeCache(),
                     emailCode, 30, TimeUnit.MINUTES);
 
-        }catch (Exception e){
+        } catch (RuntimeException e){
             e.printStackTrace();
             return Result.error("注册系统错误，请联系网站管理员");
         }
         return Result.ok();
+    }
+
+
+    /**
+     * 返回修改密码页面
+     * 有效时间3小时
+     * @param authDto
+     * @return
+     */
+    @Override
+    public Result forgetPassword(AuthDto authDto) {
+
+        Result result = defaultCheckCode(authDto);
+        if(result.getCode() == 200){
+
+            result.setMsg("已发送修改密码链接到您的邮箱，请注意查收");
+
+            String emailMD5 = DigestUtils.md5DigestAsHex((authDto
+                    .getEmail() + System.currentTimeMillis()).getBytes());
+            String codeMD5 = DigestUtils.md5DigestAsHex((authDto
+                    .getCode() + System.currentTimeMillis()).getBytes());
+            String temp = emailMD5 + LoginFinal.FORGET_PASSWORD_TOKEN + codeMD5;
+
+            String text =   "小猪之家的忘记密码邮件：<br/>" +
+                            "哦！糟糕！忘记密码了吗！呆胶布！点击下面这个链接就可以重新设置您的密码了呢！<br/>" +
+                            "<a href='http://localhost:9400/xzzj/bbs/account/changePassword?head=" +
+                            emailMD5 + "&left=" + codeMD5 + "' >点此重置密码</a>  <br/>" +
+                            "时间只有 3 个小时，要及时哦~！<br/>" +
+                            "如果不是本人，请忽略此邮件！";
+
+            try {
+                //将key 为 邮箱+固定token 的信息存入redis 3 小时
+                redis.opsForValue().set(temp, authDto.getEmail(),
+                        60 * 3, TimeUnit.MINUTES);
+
+                MailUtil.sendForgetPassword(authDto.getEmail(), text);
+            }catch (RuntimeException e){
+                e.printStackTrace();
+                return Result.error("网站系统出现错误，请刷新后重试");
+            }
+
+
+        }
+        return result;
+    }
+
+    /**
+     * 根据 head 和 left
+     * 检查这个用户是否正在修改密码
+     * @param head
+     * @param left
+     * @return
+     */
+    @Override
+    public String checkForgetPassword(String head, String left, Model model) {
+        try {
+            String email = redis.opsForValue().get(head +
+                    LoginFinal.FORGET_PASSWORD_TOKEN + left);
+            if(StringUtils.isEmpty(email)){
+                return "";
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            return "";
+        }
+
+        model.addAttribute("head", head);
+        model.addAttribute("left", left);
+
+        return "forget_password";
+    }
+
+    /**
+     * 根据redi中的邮箱修改密码
+     * @param authDto
+     * @return
+     */
+    @Override
+    public Result updPassword(AuthDto authDto) {
+        String key = authDto.getHead()
+                + LoginFinal.FORGET_PASSWORD_TOKEN
+                + authDto.getLeft();
+        String email = "";
+        try {
+            email = redis.opsForValue().get(key);
+        }catch (Exception e){
+            e.printStackTrace();
+            return Result.error("系统错误，请刷新重试");
+        }
+        if(StringUtils.isEmpty(email)){
+            return Result.error("超时，请重新修改密码");
+        }
+
+        UserBean userBean = userMapper.selectOne(
+                new QueryWrapper<UserBean>()
+                        .select("version")
+                        .eq("email", email));
+
+        String salt = System.currentTimeMillis() + "";
+
+        userBean.setSalt(salt)
+                .setUpdatedTime(authDto.getUpdatedTime())
+                .setVersion(userBean.getVersion() + 1);
+
+        String PwdMD5 = DigestUtils.md5DigestAsHex(
+                (authDto.getPwd() + salt).getBytes());
+        userBean.setPassWord(PwdMD5);
+
+        int index = userMapper.update(userBean,
+                new QueryWrapper<UserBean>()
+                .eq("email", email));
+        if(index == 0){
+            return Result.error("系统错误，请刷新重试");
+        }
+        redis.delete(key);
+        return Result.ok("修改密码成功，3 秒后自动跳转");
     }
 
 

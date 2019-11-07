@@ -1,7 +1,6 @@
 package com.xiaozhuzhijia.webbbs.web.config;
 
 import com.xiaozhuzhijia.webbbs.web.interceptor.LoginInterceptor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -26,6 +25,8 @@ public class InterceptorConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
 
         registry.addInterceptor(getLoginInterceptor())
+                //过滤所有
+                .addPathPatterns("/**")
                 //添加排除项
                 .excludePathPatterns("/favicon.ico");
     }

@@ -73,5 +73,15 @@ public class AccountController {
 
         return userService.emailExists(email);
     }
+    @PostMapping("/forgetPassword")
+    public Result forgetPassword(AuthDto authDto, HttpServletResponse resp){
 
+        return userService.forgetPassword(authDto);
+    }
+    @PostMapping("/updPassword")
+    public Result updPassword(AuthDto authDto){
+
+        log.info("修改密码的信息：" + authDto);
+        return userService.updPassword(authDto);
+    }
 }

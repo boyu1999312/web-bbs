@@ -284,12 +284,11 @@
             z-index: 0;
             opacity: 0;
             width: 200px;
-            height: 40px;
-            line-height: 40px;
-            padding: 0 5px;
+            line-height: normal;
+            padding: 10px 5px;
             background: red;
             color: whitesmoke;
-            font-size: 0.9em;
+            font-size: 14px;
             text-align: center;
             border-radius: 4px;
             cursor: default;
@@ -456,28 +455,17 @@
                 </div>
                 <div class="tip-gr">
                     <div class="ac-gr">电子邮箱<span class="sl"></span>
-                        <div class="re-acc checkForgetCode"></div>
+                        <div class="re-acc checkForgetEmail"></div>
                         <div name="in" class="error-tip in">请输入您账号绑定的邮箱</div>
                         <input class="ac-in" name="forgetEmail" placeholder="电子邮箱" onkeyup="value=value.replace(/[\u4e00-\u9fa5]/ig,'')"/>
                     </div>
                 </div>
                 <div class="tip-gr ">
                     <div class="ac-gr">
+                        <div class="re-acc checkForgetCode"></div>
                         <div name="pwd" class="error-tip forget-tip">请输入邮箱验证码</div>
                         <input class="ac-pwd" name="forgetCode" placeholder="验证码" maxlength="5"/>
                         <button type="button" class="ac-code-btn get-forget-code">获取验证码</button>
-                    </div>
-                </div>
-                <div class="tip-gr ">
-                    <div class="ac-gr">
-                        <div name="pwd" class="error-tip forget-tip">请输入密码</div>
-                        <input class="ac-pwd" name="pwd" placeholder="至少 10 位英文数字混合密码" onkeyup="value=value.replace(/[\u4e00-\u9fa5]/ig,'')"/>
-                    </div>
-                </div>
-                <div class="tip-gr ">
-                    <div class="ac-gr">
-                        <div name="repwd" class="error-tip forget-tip">请输入重复密码</div>
-                        <input class="ac-pwd" name="rePwd" placeholder="重复密码" onkeyup="value=value.replace(/[\u4e00-\u9fa5]/ig,'')"/>
                     </div>
                 </div>
             </div>
@@ -488,6 +476,7 @@
 <!--<script src="http://119.3.170.239/js/login.js"></script>-->
 <script>
     var codeCache = "XZZJ_CODECACHE_" + randomCoding();
+    var forgetCodeCache = "FORGET_CODECACHE_" + randomCoding();
     var forget = false;     //false非忘记密码页
     var register = false;   //false为登录页，true为注册页
     var reUserName = false; //false为用户名重复
@@ -539,15 +528,15 @@
     }
 
     /** 校验电子邮箱 */
-    function email_check($el){
+    function email_check($el, $tip){
         var email = $el.val();
         if(email === "" || email == null) {
-            right_tip($(".checkEmail"), "邮箱不可用", false);
+            right_tip($tip, "邮箱不可用", false);
             return true;
         }
         var reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
         if(!reg.test(email)){
-            right_tip($(".checkEmail"), "邮箱不可用", false);
+            right_tip($tip, "邮箱不可用", false);
             errtip_show("电子邮箱格式不正确");
             return true
         }
@@ -605,9 +594,8 @@
         forget = true;
         $(".once").css({"z-index":-1,"opacity":0});
         $(".d-forget").css({"z-index":1,"opacity":1});
-        $(".lbtn").css("top","392px").val("修改密码");
+        $(".lbtn").css("z-index","2").val("修改密码");
         $(".per").css({"z-index":-1,"opacity":0});
-        $(".box").css("height","490px");
         $("title").text("小猪之家|忘记密码");
 
     });
@@ -615,9 +603,8 @@
         forget = false;
         $(".once").css({"z-index":1,"opacity":1});
         $(".d-forget").css({"z-index":-1,"opacity":0});
-        $(".lbtn").css("top","262px").val("登录");
+        $(".lbtn").css("z-index","1").val("登录");
         $(".per").css({"z-index":1,"opacity":1});
-        $(".box").css("height","350px");
         $("title").text("小猪之家|登录");
     });
 
@@ -625,9 +612,14 @@
 
     function checkUserName($el){
         var reg = /[\u4e00-\u9fa5]+/;
+        if($el.val() === "" || $el.val() == null) {
+            right_tip($(".checkAcc"), "用户名不可用", false);
+            return false;
+        }
         if(reg.test($el.val()) |
             $el.val().length < 5){
             errtip_show("请输入至少 5 位，非中文的用户名");
+            right_tip($(".checkAcc"), "用户名不可用", false);
             return false
         }
         return true
@@ -676,50 +668,68 @@
         });
     }
     $("input[name='email']").blur(function () {
-        if(!email_check($("input[name='email']"))){
+        if(!email_check($("input[name='email']"),$(".checkEmail"))){
             var url = "http://localhost:9400/xzzj/bbs/account/checkEmail";
             checkReEmail(true, url, $(this), $(".checkEmail"));
         }
     });
     $("input[name='forgetEmail']").blur(function () {
-        if(!email_check($("input[name='forgetEmail']"))){
+        if(!email_check($("input[name='forgetEmail']"),$(".checkForgetEmail"))){
             var url = "http://localhost:9400/xzzj/bbs/account/emailExists";
-            checkReEmail(true, url, $(this), $(".checkForgetCode"));
+            checkReEmail(true, url, $(this), $(".checkForgetEmail"));
         }
     });
     $("input[name='code']").blur(function () {
-        checkCode(true)
+        checkCode(true, codeCache, $("input[name='code']"),
+            $("input[name='email']"), $(".checkCode"))
     });
-    function checkCode(flag){
+    function checkCode(flag, codeCache, $inputCode, $inputEmail, $checkTip){
         $.ajax({
             url: "http://localhost:9400/xzzj/bbs/account/checkCode",
             type: "POST",
             data: {"codeCache": codeCache,
-                "code": $("input[name='code']").val(),
-                "email": $("input[name='email']").val()},
+                "code": $inputCode.val(),
+                "email": $inputEmail.val()},
             datatype: "json",
             async: flag,
             success: function (result) {
-                $(".checkCode").text(result.msg);
+                $checkTip.text(result.msg);
                 if (result.code === 200) {
                     reCode = true;
-                    $(".checkCode").css({"z-index":1,"opacity":1, "background": "#07a707"})
-                    $("input[name='email']").attr("readonly", "readonly")
+                    $checkTip.css({"z-index":1,"opacity":1, "background": "#07a707"});
+                    $inputEmail.attr("readonly", "readonly")
                 } else {
                     reCode = false;
-                    $(".checkCode").css({"z-index":1,"opacity":1, "background": "red"})
+                    $checkTip.css({"z-index":1,"opacity":1, "background": "red"})
                 }
             }
         });
     }
 
-
+    /** 验证码按钮倒计时 */
+    function countDown($el){
+        var count = 60;
+        var timer = null;
+        $el.text(count+" s");
+        $el.attr("disabled",true);
+        $el.css("cursor","no-drop");
+        var timer = setInterval(function () {
+            if(--count > 0){
+                $el.text(+count+" s")
+            }else {
+                $el.text("重新获取验证码");
+                $el.attr("disabled",false);
+                $el.css("cursor","pointer");
+                clearInterval(timer)
+            }
+        },1000)
+    }
     /** 获取验证码按钮被按下 */
     $(".get-code").click(function () {
         if(tip_show($("input[name='email']"), $(".reg-email")) ||
-            email_check($("input[name='email']"))){return}
+            email_check($("input[name='email']"), $(".checkEmail"))){return}
         var url = "http://localhost:9400/xzzj/bbs/account/checkEmail";
-        checkReEmail(true, url, $("input[name='email']"), $(".checkEmail"));
+        checkReEmail(false, url, $("input[name='email']"), $(".checkEmail"));
         if(!reEmail){return}
 
         $.ajax({
@@ -731,28 +741,47 @@
                 if (result.code === 200) {
                     console.log(result.data)
                 } else {
-                    console.log(result.msg)
+                    $(".checkCode").text(result.msg);
                 }
             }
         });
         $(".checkCode").text("邮箱验证码已发送");
         $(".checkCode").css({"z-index":1,"opacity":1, "background": "#07a707"});
 
-        var count = 60;
-        var timer = null;
-        $(".get-code").text(count+" s");
-        $(".get-code").attr("disabled",true);
-        $(".get-code").css("cursor","no-drop");
-        var timer = setInterval(function () {
-            if(--count > 0){
-                $(".get-code").text(+count+" s")
-            }else {
-                $(".get-code").text("重新获取验证码");
-                $(".get-code").attr("disabled",false);
-                $(".get-code").css("cursor","pointer");
-                clearInterval(timer)
+        countDown($(".get-code"));
+
+    });
+
+    /** 忘记密码页 获取验证码被按下 */
+    $(".get-forget-code").click(function () {
+        if(tip_show($("input[name='forgetEmail']"), $(".d-forget .in")) ||
+            email_check($("input[name='forgetEmail']"), $(".checkForgetEmail"))){return}
+        var url = "http://localhost:9400/xzzj/bbs/account/emailExists";
+        checkReEmail(false, url, $("input[name='forgetEmail']"), $(".checkForgetEmail"));
+        if(!reEmail){return}
+
+        $.ajax({
+            url: "http://localhost:9400/xzzj/bbs/account/getCode",
+            type: "GET",
+            data: {"codeCache": forgetCodeCache,"email": $("input[name='forgetEmail']").val()},
+            datatype: "json",
+            success: function (result) {
+                if (result.code === 200) {
+                    console.log(result.data)
+                } else {
+                    $(".checkForgetCode").text(result.msg);
+                }
             }
-        },1000)
+        });
+        $(".checkForgetCode").text("邮箱验证码已发送");
+        $(".checkForgetCode").css({"z-index":1,"opacity":1, "background": "#07a707"});
+
+        countDown($(".get-forget-code"));
+    });
+    /** 忘记密码页 检查验证码 */
+    $("input[name='forgetCode']").blur(function () {
+        checkCode(true, forgetCodeCache, $("input[name='forgetCode']"),
+            $("input[name='forgetEmail']"), $(".checkForgetCode"))
     });
     /** 注册ajax */
     function submit(url){
@@ -795,6 +824,37 @@
         var pwdReg = /^(?=.*[a-zA-Z]+)(?=.*[0-9]+)[a-zA-Z0-9]+$/;
         $("input[name='createdTime']").val(new Date());
 
+        if(forget){
+            var flag = false;
+            $.ajax({
+                url: "http://localhost:9400/xzzj/bbs/account/forgetPassword",
+                type: "POST",
+                data:
+                    {
+                        "email": $("input[name='forgetEmail']").val(),
+                        "codeCache": forgetCodeCache,
+                        "code":$("input[name='forgetCode']").val()
+                    },
+                datatype: "json",
+                async: false,
+                success: function (result) {
+                    if(result.code === 200){
+                        flag = true;
+                        success_show(result.msg)
+                    } else{
+                        flag = false;
+                        errtip_show(result.msg)
+                    }
+                }
+
+            });
+            if(flag){
+                setTimeout(function () {
+                    window.location.replace("http://localhost:9400/xzzj/login");
+                }, 3000)
+            }
+            return
+        }
 
         if(register){
             /** 注册流程 */
@@ -803,7 +863,7 @@
                 tip_show($("input[name='email']"), $(".reg-email")) |
                 tip_show($("input[name='pwd']"), $(".pwd")) |
                 tip_show($("input[name='rePwd']"), $(".repwd")) |
-                email_check($("input[name='email']"))){
+                email_check($("input[name='email']"),$(".checkEmail"))){
                 return
             }else {
 
@@ -835,7 +895,9 @@
 
             if(reUserName && reCode && reEmail){
                 if(submit("http://localhost:9400/xzzj/bbs/account/register")){
-                    window.location.replace("http://localhost:9400/xzzj/login")
+                    setTimeout(function () {
+                        window.location.replace("http://localhost:9400/xzzj/login");
+                    }, 3000)
                 }
             }
 
@@ -850,7 +912,7 @@
                 return
             }
             if(submit("http://localhost:9400/xzzj/bbs/account/login")) {
-                window.location.replace("http://localhost:9400/xzzj/xzzj_home")
+                window.location.replace("http://localhost:9400/xzzj/xzzj_home");
             }
         }
     });

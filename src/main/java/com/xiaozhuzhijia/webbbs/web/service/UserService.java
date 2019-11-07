@@ -2,6 +2,7 @@ package com.xiaozhuzhijia.webbbs.web.service;
 
 import com.xiaozhuzhijia.webbbs.common.dto.AuthDto;
 import com.xiaozhuzhijia.webbbs.common.util.Result;
+import org.springframework.ui.Model;
 
 public interface UserService {
 
@@ -19,5 +20,11 @@ public interface UserService {
     Result login(AuthDto authDto);
 
     Result emailExists(String email);
+
+    Result forgetPassword(AuthDto authDto);
+
+    String checkForgetPassword(String head, String left, Model model);
+
+    Result updPassword(AuthDto authDto);
 
 }

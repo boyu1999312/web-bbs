@@ -38,7 +38,11 @@ public class AuthDto {
     /** 注册时间 */
     private Date createdTime;
     /** 修改时间 */
-    private Date upDatedTime;
+    private Date updatedTime;
     /** 验证码token */
     private String codeCache;
+    /** headKey 用于修改密码 */
+    private String head;
+    /** leftKey 用于修改密码 */
+    private String left;
 }
