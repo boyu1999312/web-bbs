@@ -1,0 +1,362 @@
+
+body{
+    margin: 0;
+    padding: 0;
+    background: url("http://119.3.170.239/images/xiu.jpg");
+    overflow-x: hidden;
+}
+.out {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    right: -17px;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+.box {
+    position: relative;
+    width: 400px;
+    height: 350px;
+    background: white;
+    margin: 0 auto;
+    margin-bottom: 200px;
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.67) 0 0 30px;
+
+    transition: all 0.3s ease;
+}
+.title {
+    position: relative;
+    color: white;
+    text-align: center;
+    margin-top: 90px;
+    font-size: 1.7em;
+
+    user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-select: none;
+}
+form {
+    display: block;
+    margin: 0;
+    padding: 0 34px 98px;
+    height: 291px;
+}
+.tip-gr {
+    width: 100%;
+    height: 70px;
+    border-bottom: #ebebeb solid 1px;
+}
+
+.once {
+    width: 332px;
+    position: absolute;
+    opacity: 1;
+
+    transition: all 0.3s ease;
+}
+
+.tp-tl {
+    color: #4c4c4c;
+    font-weight: 600;
+    font-size: 1.2em;
+    line-height: 70px;
+    width: 39px;
+    margin-right: 20px;
+    display: inline-block;
+
+    user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-select: none;
+}
+.tp-tl:nth-child(1){
+    color: #1a1a1a;
+}
+.tp-tl span {
+    cursor: pointer;
+}
+
+.bot-div {
+    position: absolute;
+    top: 55px;
+    left: 0;
+    width: 38px;
+    height: 4px;
+    background: #0084ff;
+
+    transition: all 0.2s ease;
+}
+
+.tip-gr:last-child {
+    border: 0;
+}
+.d-forget .tip-gr:nth-child(5){
+    border: 0;
+}
+
+.ac-gr {
+    position: relative;
+    color: #8590a6;
+    font-size: 1em;
+    line-height: 76px;
+}
+.sl {
+    position: absolute;
+    height: 16px;
+    width: 1px;
+    margin: 15px;
+    background: #b9b9b9;
+    top: 16px;
+    left: 85px;
+}
+.d-pwd .sl{
+    left: 60px;
+}
+.ac-in {
+    position: absolute;
+    margin: 7px;
+    top: 16px;
+    height: 30px;
+    line-height: 30px;
+    border: 0;
+    left: 110px;
+    font-size: 0.96em;
+    outline: none;
+}
+.ac-code {
+    position: absolute;
+    top: 23px;
+    height: 30px;
+    line-height: 30px;
+    border: 0;
+    font-size: 0.96em;
+    outline: none;
+}
+.ac-code-btn {
+    position: absolute;
+    right: 0;
+    top: 27px;
+    font-size: 0.95em;
+    background: none;
+    border: 0;
+    outline: none;
+    cursor: pointer;
+    padding: 0;
+    text-align: right;
+}
+.ac-code-btn:hover {
+    color: #76839b;
+}
+
+.btn-login {
+    position: absolute;
+    top: 262px;
+    height: 40px;
+    width: 332px;
+    border-radius: 10px;
+    background: rgba(0, 0, 255, 0.8);
+    text-align: center;
+    font-size: 0.8em;
+    color: white;
+    line-height: 40px;
+    border: 0;
+    outline: none;
+
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.btn-login:hover {
+    background: rgba(0, 0, 255, 0.89);
+}
+.error-tip {
+    position: absolute;
+    display: inline-block;
+    width: 194px;
+    height: 30px;
+    cursor: text;
+    line-height: 30px;
+    font-size: 0.9em;
+    color: red;
+    padding: 1px 0;
+
+    background: white;
+    z-index: -1;
+    opacity: 0;
+    transition: all 0.2s ease;
+}
+.in {
+    top: 23px;
+    left: 116px;
+}
+.code {
+    top: 23px;
+}
+/** 提示框 */
+.t-box {
+    position: absolute;
+    width: 200px;
+    text-align: center;
+    color: white;
+    font-size: 1em;
+    padding: 30px 15px;
+
+    top: 35%;
+    left: 50%;
+    background: rgba(254, 0, 0, 0.8);
+    border-radius: 10px;
+    margin-left: -100px;
+    z-index: 99;
+
+    user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-select: none;
+
+    word-wrap: break-word;
+    word-break: break-all;
+}
+.t-box-flash {
+    animation: shake 0.3s ease;
+}
+
+.d-pwd {
+    position: relative;
+    z-index: -1;
+    opacity: 0;
+
+    transition: all 0.3s ease;
+}
+.d-pwd .error-tip {
+    top: 23px;
+}
+.ac-pwd {
+    position: absolute;
+    top: 23px;
+    height: 30px;
+    line-height: 30px;
+    border: 0;
+    font-size: 0.9em;
+    outline: none;
+    width: 200px;
+}
+input[type='radio'] {
+    outline: none;
+    position: relative;
+    top: 2px;
+    margin: 0 5px 0 3px;
+}
+.per {
+    position: relative;
+    border: 0;
+}
+.forget-per {
+    position: relative;
+    border: 0;
+}
+.reg-acc {
+    left: 90px;
+}
+.reg-email {
+    left: 90px;
+}
+input[name='acc'] {
+    left: 90px;
+}
+input[name='email'] {
+    left: 90px;
+}
+
+.re-acc {
+    position: absolute;
+    display: inline-block;
+    top: 17px;
+    left: 374px;
+    z-index: 0;
+    opacity: 0;
+    width: 200px;
+    line-height: normal;
+    padding: 10px 5px;
+    background: red;
+    color: whitesmoke;
+    font-size: 14px;
+    text-align: center;
+    border-radius: 4px;
+    cursor: default;
+    transition: all 0.2s ease;
+
+    word-wrap: break-word;
+    word-break: break-all;
+}
+.re-acc:before {
+    content: "";
+    position: absolute;
+    top: 14px;
+    left: -5px;
+    width: 15px;
+    height: 15px;
+    background: inherit;
+    transform: rotate(-45deg);
+    border-radius: 0 0 100% 0;
+}
+
+/** 忘记密码 */
+.d-forget {
+    position: absolute;
+    top: 0;
+    z-index: -1;
+    opacity: 0;
+
+    transition: all 0.3s ease;
+}
+.d-forget .tp-tl {
+    width: auto;
+}
+
+.d-forget .tp-tl span {
+    transition: all 0.3s ease;
+    color: #4c4c4c;
+}
+.d-forget .tp-tl + div {
+    opacity: 0;
+}
+.d-forget .tp-tl:hover span {
+    color: #000;
+}
+.d-forget .tp-tl:hover + div {
+    opacity: 1;
+}
+.d-forget-box {
+    width: 332px;
+    margin: 0;
+    padding: 0 34px 98px;
+    height: 291px;
+}
+
+.d-forget .sl {
+    left: 60px;
+}
+.d-forget .ac-in {
+    left: 90px;
+}
+.d-forget .in {
+    left: 97px;
+}
+.forget-tip {
+    top: 23px;
+}
+
+@keyframes shake {
+    10% {transform: translate3d(0,+5px,0)}
+    20% {transform: translate3d(0,-5px,0)}
+    40% {transform: translate3d(0,+3px,0)}
+    50% {transform: translate3d(0,-3px,0)}
+    70% {transform: translate3d(0,+1px,0)}
+    80% {transform: translate3d(0,-1px,0)}
+}
+
+

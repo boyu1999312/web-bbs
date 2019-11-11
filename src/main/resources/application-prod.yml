@@ -1,9 +1,9 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql:///xzzj_bbs?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
+    url: jdbc:mysql://119.3.170.239:3306/xzzj_bbs?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
     username: root
-    password:
+    password: kuaile09-20
   main:
     allow-bean-definition-overriding: true
   redis:
@@ -11,5 +11,6 @@ spring:
     port: 6379
     database: 0
 
-img:
-  path: /usr/local/src/server/static/images/
+xzzj:
+  imgPath: /usr/local/src/server/static/images/
+  local: 119.3.170.239

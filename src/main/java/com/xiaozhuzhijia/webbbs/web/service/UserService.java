@@ -4,6 +4,9 @@ import com.xiaozhuzhijia.webbbs.common.dto.AuthDto;
 import com.xiaozhuzhijia.webbbs.common.util.Result;
 import org.springframework.ui.Model;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
+
 public interface UserService {
 
 
@@ -26,5 +29,10 @@ public interface UserService {
     String checkForgetPassword(String head, String left, Model model);
 
     Result updPassword(AuthDto authDto);
+
+    Result getUserInfo();
+
+    Result logout();
+
 
 }

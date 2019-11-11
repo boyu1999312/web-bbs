@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>小猪之家|登录</title>
+    <!--<link rel="stylesheet" type="text/css" href="http://localhost/css/login.css">-->
     <style>
+
         body{
             margin: 0;
             padding: 0;
@@ -365,13 +367,14 @@
         }
 
 
+
     </style>
 </head>
 <body>
     <div class="out"></div>
     <div class="title"><h1>小猪之家</h1></div>
     <div class="box">
-        <form id="login-form" method="post" target="nm_iframe" action="http://localhost:9400/xzzj/bbs/account/login">
+        <form id="login-form" method="post" target="nm_iframe">
             <div class="tip-gr per">
                 <div class="tp-tl tp-login"><span>登录</span></div>
                 <div class="tp-tl tp-register"><span>注册</span></div>
@@ -473,7 +476,6 @@
     </div>
 </body>
 <script src="http://119.3.170.239/js/jquery-3.4.1.min.js"></script>
-<!--<script src="http://119.3.170.239/js/login.js"></script>-->
 <script>
     var codeCache = "XZZJ_CODECACHE_" + randomCoding();
     var forgetCodeCache = "FORGET_CODECACHE_" + randomCoding();
@@ -791,16 +793,16 @@
             type: "POST",
             data:
                 {
-                "accEmail": $("input[name='accEmail']").val(),
-                "lPwd": $("input[name='lPwd']").val(),
-                "acc": $("input[name='acc']").val(),
-                "email": $("input[name='email']").val(),
-                "code": $("input[name='code']").val(),
-                "pwd": $("input[name='pwd']").val(),
-                "gender": $("input[name='gender']:checked").val(),
-                "createdTime": $("input[name='createdTime']").val(),
-                "codeCache": codeCache
-            },
+                    "accEmail": $("input[name='accEmail']").val(),
+                    "lPwd": $("input[name='lPwd']").val(),
+                    "acc": $("input[name='acc']").val(),
+                    "email": $("input[name='email']").val(),
+                    "code": $("input[name='code']").val(),
+                    "pwd": $("input[name='pwd']").val(),
+                    "gender": $("input[name='gender']:checked").val(),
+                    "createdTime": $("input[name='createdTime']").val(),
+                    "codeCache": codeCache
+                },
             datatype: "json",
             async: false,
             success: function (result) {
@@ -891,7 +893,8 @@
             var url = "http://localhost:9400/xzzj/bbs/account/checkEmail";
             checkReEmail(true, url, $("input[name='email']"), $(".checkEmail"));
             checkReUserName(false);
-            checkCode(false);
+            checkCode(true, codeCache, $("input[name='code']"),
+                $("input[name='email']"), $(".checkCode"));
 
             if(reUserName && reCode && reEmail){
                 if(submit("http://localhost:9400/xzzj/bbs/account/register")){
@@ -912,7 +915,7 @@
                 return
             }
             if(submit("http://localhost:9400/xzzj/bbs/account/login")) {
-                window.location.replace("http://localhost:9400/xzzj/xzzj_home");
+                window.location.replace("http://localhost:9400");
             }
         }
     });

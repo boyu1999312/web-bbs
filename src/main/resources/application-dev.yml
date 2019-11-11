@@ -10,5 +10,6 @@ spring:
     host: localhost
     port: 7069
     database: 1
-img:
-  path:
+xzzj:
+  imgPath:
+  local: localhost:9400

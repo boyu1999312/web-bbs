@@ -3,6 +3,7 @@ package com.xiaozhuzhijia.webbbs.web.config;
 import com.xiaozhuzhijia.webbbs.web.interceptor.LoginInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -28,6 +29,18 @@ public class InterceptorConfig implements WebMvcConfigurer {
                 //过滤所有
                 .addPathPatterns("/**")
                 //添加排除项
-                .excludePathPatterns("/favicon.ico");
+                .excludePathPatterns(
+                        "/favicon.ico",
+                        "/images/**",
+                        "/js/**",
+                        "/css/**");
+        ;
+    }
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**").allowedOrigins("*")
+                .allowedMethods("GET", "HEAD", "POST","PUT", "DELETE", "OPTIONS")
+                .allowCredentials(true).maxAge(3600);
     }
 }

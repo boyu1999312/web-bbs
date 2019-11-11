@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
     <title>小猪之家</title>
+    <!--<link rel="stylesheet" type="text/css" href="http://119.3.170.239/css/home.css">-->
     <style>
+
         body {
             margin: 0;
             background: #f5f5f5;
@@ -14,9 +16,9 @@
             display: grid;
             grid-template-rows: 170px auto 250px;
             grid-template-areas:
-                "h h h"
-                "l m r"
-                "f f f";
+                    "h h h"
+                    "l m r"
+                    "f f f";
 
             gap: 10px 15px;
         }
@@ -219,14 +221,14 @@
             height: 37px;
             border-radius: 50%;
             margin-top: 6px;
-            transform: rotate(-45deg);
+            /*transform: rotate(-45deg);*/
             cursor: pointer;
             /*box-shadow: hsla(0, 0%, 34%, 0.95) 0 0 2px;*/
             border: hsla(0,0%,100%,.4) solid 1px;
         }
         .user-group .user-des {
             position: absolute;
-            top: 65px;
+            top: 66px;
             left: -41px;
             width: 120px;
             border: 1px solid #ebebeb;
@@ -592,15 +594,15 @@
 
 
         /*@media screen and (max-width: 1319px){*/
-            /*.search-right {*/
-                /*margin-right: 21%;*/
-                /*margin-top: 75px;*/
-            /*}*/
+        /*.search-right {*/
+        /*margin-right: 21%;*/
+        /*margin-top: 75px;*/
+        /*}*/
         /*}*/
 
 
 
-        
+
     </style>
 </head>
 <body>
@@ -612,13 +614,14 @@
             <div class="space">
             <div class="icon" onclick="window.open('http://119.3.170.239','_self')"></div>
             <div class="user-group">
-                <img src="http://119.3.170.239/images/xiaozhu.jpg" onclick="javascript:location.href='http://119.3.170.239/login.html','_self'">
+                <img onclick="javascript:location.href='http://119.3.170.239/login.html','_self'">
                 <div class="user-des">
                     <div>
                         <a><span class="user-space"></span>个人中心</a>
                         <a><span class="user-exit"></span>退出</a>
                     </div>
                 </div>
+                <input type="hidden" name="userVo" th:value="${userVo}">
             </div>
 
             <ul class="nav-ul">
@@ -758,7 +761,38 @@
         /** 执行函数 */
         lunbo();
         daojishi();
-    })
+        getUserInfo();
+    });
 
+    $(".user-exit").parent("a").click(function () {
+        $.ajax({
+            url: "http://localhost:9400/xzzj/bbs/account/logout",
+            type: "POST",
+            datatype: "json",
+            success: function (result) {
+                if(result.code === 200){
+                    window.location.replace("http://localhost:9400");
+                }else {
+                    console.log(result.msg);
+                }
+            }
+        })
+    });
+    function getUserInfo() {
+        $.ajax({
+            url: "http://localhost:9400/xzzj/bbs/account/getUserInfo",
+            type: "POST",
+            datatype: "json",
+            success: function (result) {
+                if(result.code === 200){
+                    var userInfo = result.data;
+                    console.log(userInfo);
+                    $(".user-group").find("img").attr("src", userInfo.portrait);
+                }else {
+                    console.log(result.msg)
+                }
+            }
+        })
+    }
 </script>
 </html>

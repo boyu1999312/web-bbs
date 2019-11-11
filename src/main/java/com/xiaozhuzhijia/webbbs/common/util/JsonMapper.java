@@ -2,6 +2,8 @@ package com.xiaozhuzhijia.webbbs.common.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.xiaozhuzhijia.webbbs.common.entity.UserBean;
+import com.xiaozhuzhijia.webbbs.web.mapper.UserMapper;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;

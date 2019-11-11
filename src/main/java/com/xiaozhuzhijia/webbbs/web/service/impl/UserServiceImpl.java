@@ -4,11 +4,15 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.xiaozhuzhijia.webbbs.common.constant.LoginFinal;
 import com.xiaozhuzhijia.webbbs.common.dto.AuthDto;
 import com.xiaozhuzhijia.webbbs.common.entity.UserBean;
+import com.xiaozhuzhijia.webbbs.common.util.JsonMapper;
 import com.xiaozhuzhijia.webbbs.common.util.MailUtil;
 import com.xiaozhuzhijia.webbbs.common.util.Result;
+import com.xiaozhuzhijia.webbbs.common.vo.UserVo;
+import com.xiaozhuzhijia.webbbs.web.local.LocalUser;
 import com.xiaozhuzhijia.webbbs.web.mapper.UserMapper;
 import com.xiaozhuzhijia.webbbs.web.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -16,7 +20,8 @@ import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.Cookie;
-import java.util.Objects;
+import javax.servlet.http.HttpServletRequest;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -27,6 +32,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private StringRedisTemplate redis;
 
+    @Value("${xzzj.local}")
+    private String local;
+
     /**
      * 登录
      * @param authDto
@@ -34,14 +42,16 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public Result login(AuthDto authDto) {
-
         //查询用户名或邮箱
-        UserBean userBean = userMapper.selectOne(new QueryWrapper<UserBean>(
-                ).eq("user_name", authDto.getAccEmail())
-                .select("user_name", "email", "salt", "pass_word")
+        UserBean userBean = userMapper.selectOne(new QueryWrapper<UserBean>()
+                .eq("user_name", authDto.getAccEmail())
+                .select("user_name", "email", "salt",
+                        "pass_word", "nick_name", "portrait",
+                        "created_time")
                 .or().eq("email", authDto.getAccEmail()));
 
         if(Objects.isNull(userBean)){
+
             return Result.error("用户名或邮箱不存在");
         }
 
@@ -49,23 +59,36 @@ public class UserServiceImpl implements UserService {
         String pwdMd5 = DigestUtils.md5DigestAsHex(
                 (authDto.getLPwd() + userBean.getSalt()).getBytes());
         if(!pwdMd5.equals(userBean.getPassWord())){
+
             return Result.error("密码错误");
         }
 
         //用账户和毫秒值生成token
-        String loginToken = DigestUtils.md5DigestAsHex((authDto.getAccEmail() + "XZZJ_LOGIN"
-                + System.currentTimeMillis()).getBytes());
+        String loginToken = DigestUtils.md5DigestAsHex((authDto.getAccEmail()
+                + "XZZJ_LOGIN" + System.currentTimeMillis()).getBytes());
         int time = 3600 * 24 * 30 * 6;
         Cookie cookie = new Cookie(LoginFinal.COOKIE_LOGIN_TOKEN, loginToken);
         cookie.setMaxAge(time);//设置半年
         cookie.setPath("/");
-
+        //初始化UserInfo
+        UserVo userVo = new UserVo()
+                .setUserName(userBean.getUserName())
+                .setPortrait("http://119.3.170.239"+userBean.getPortrait())
+                .setToken(loginToken)
+                .setCreatedTime(userBean.getCreatedTime())
+                .setEmail(userBean.getEmail())
+                .setLoginTime(new Date());
+        String userInfo = JsonMapper.toJson(userVo);
         try {
-            redis.opsForValue().set(LoginFinal.COOKIE_LOGIN_TOKEN, loginToken, time, TimeUnit.SECONDS);
+
+            redis.opsForValue().set(loginToken,
+                    userInfo, time, TimeUnit.SECONDS);
         }catch (Exception e){
+
             e.printStackTrace();
             return Result.error("登录系统失效，请联系网站管理员");
         }
+
 
         return Result.ok(cookie);
     }
@@ -265,7 +288,7 @@ public class UserServiceImpl implements UserService {
 
             String text =   "小猪之家的忘记密码邮件：<br/>" +
                             "哦！糟糕！忘记密码了吗！呆胶布！点击下面这个链接就可以重新设置您的密码了呢！<br/>" +
-                            "<a href='http://localhost:9400/xzzj/bbs/account/changePassword?head=" +
+                            "<a href='http://" + local + "/xzzj/bbs/account/changePassword?head=" +
                             emailMD5 + "&left=" + codeMD5 + "' >点此重置密码</a>  <br/>" +
                             "时间只有 3 个小时，要及时哦~！<br/>" +
                             "如果不是本人，请忽略此邮件！";
@@ -299,11 +322,11 @@ public class UserServiceImpl implements UserService {
             String email = redis.opsForValue().get(head +
                     LoginFinal.FORGET_PASSWORD_TOKEN + left);
             if(StringUtils.isEmpty(email)){
-                return "";
+                return "error/404";
             }
         }catch (Exception e){
             e.printStackTrace();
-            return "";
+            return "error/404";
         }
 
         model.addAttribute("head", head);
@@ -358,5 +381,33 @@ public class UserServiceImpl implements UserService {
         return Result.ok("修改密码成功，3 秒后自动跳转");
     }
 
+    /**
+     * 获取用户信息
+     * @return
+     */
+    @Override
+    public Result getUserInfo() {
+
+        UserVo userVo = LocalUser.get();
+        if(Objects.isNull(userVo)){
+            return Result.error("无法找到用户");
+        }
+        return Result.ok(userVo);
+    }
+
+    /**
+     * 用户注销
+     * @return
+     */
+    @Override
+    public Result logout() {
+
+        UserVo userVo = LocalUser.get();
+        Boolean delete = redis.delete(userVo.getToken());
+        if(Objects.isNull(userVo) || !delete){
+            return Result.error("退出失败");
+        }
+        return Result.ok();
+    }
 
 }

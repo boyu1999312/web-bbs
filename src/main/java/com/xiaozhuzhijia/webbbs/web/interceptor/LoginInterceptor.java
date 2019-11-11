@@ -2,7 +2,11 @@ package com.xiaozhuzhijia.webbbs.web.interceptor;
 
 
 import com.xiaozhuzhijia.webbbs.common.constant.LoginFinal;
+import com.xiaozhuzhijia.webbbs.common.entity.UserBean;
 import com.xiaozhuzhijia.webbbs.common.util.CookieUtil;
+import com.xiaozhuzhijia.webbbs.common.util.JsonMapper;
+import com.xiaozhuzhijia.webbbs.common.vo.UserVo;
+import com.xiaozhuzhijia.webbbs.web.local.LocalUser;
 import org.apache.juli.logging.Log;
 import org.apache.juli.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,27 +52,26 @@ public class LoginInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String servletPath = request.getServletPath();
         log.info("当前访问网址：" + servletPath);
-        if(checkCurrentUrl(servletPath)){
-            return true;
-        }
+
         Cookie cookie = CookieUtil.getCookie(LoginFinal.COOKIE_LOGIN_TOKEN, request);
         if(Objects.isNull(cookie)){
+            if(checkCurrentUrl(servletPath)){
+                return true;
+            }
             response.sendRedirect("/xzzj/login");
             return false;
         }
         try {
-            String token = redis.opsForValue().get(LoginFinal.COOKIE_LOGIN_TOKEN);
-            if(StringUtils.isEmpty(token)){
+            String userInfo = redis.opsForValue().get(cookie.getValue());
+            if(StringUtils.isEmpty(userInfo)){
                 response.sendRedirect("/xzzj/login");
                 return false;
             }else{
-                if(cookie.getValue().equals(token)){
-                    return true;
-                }else {
-                    response.sendRedirect("/xzzj/login");
-                    return false;
-                }
+                UserVo userVo = JsonMapper.toObject(userInfo, UserVo.class);
+                LocalUser.put(userVo);
+                return true;
             }
+
         } catch (Exception e){
             e.printStackTrace();
             response.sendRedirect("/xzzj/login");
@@ -80,6 +83,7 @@ public class LoginInterceptor implements HandlerInterceptor {
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
 
+        LocalUser.remove();
     }
 
     @Override
