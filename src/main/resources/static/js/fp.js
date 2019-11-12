@@ -42,7 +42,13 @@ $("input").focus(function () {
     $(this).prev().css("opacity", 0);
 });
 
-
+/** 密码显示与隐藏 */
+$(".eyes").click(function () {
+    $(this).toggleClass("pwd-open");
+    var $prev = $(this).prev();
+    var type = $prev.attr("type") === "text" ? "password" : "text";
+    $prev.attr("type", type);
+});
 /** 注册ajax */
 function submit(url){
     $.ajax({
@@ -61,7 +67,7 @@ function submit(url){
             if (result.code === 200) {
                 success_show(result.msg);
                 setTimeout(function () {
-                    window.location.replace("http://119.3.170.239:9400/xzzj/login");
+                    window.location.replace("http://119.3.170.239/xzzj/login");
                 }, 3000)
             } else {
                 errtip_show(result.msg);
@@ -90,5 +96,5 @@ $('#login-form input[type="submit"]').click(function (e) {
         return
     }
 
-    submit("http://119.3.170.239:9400/xzzj/bbs/account/updPassword");
+    submit("http://119.3.170.239/xzzj/bbs/account/updPassword");
 });

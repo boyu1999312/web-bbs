@@ -30,7 +30,7 @@ public class AccountController {
     private Log log = LogFactory.getLog(AccountController.class);
 
     @PostMapping("/login")
-    public Result login(AuthDto authDto, HttpServletResponse resp, Model model) {
+    public Result login(AuthDto authDto, HttpServletResponse resp) {
 
         log.info("登录信息：" + authDto);
 

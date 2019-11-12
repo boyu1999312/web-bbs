@@ -31,18 +31,20 @@ public class LoginInterceptor implements HandlerInterceptor {
 
     private Map<String, String> currentUrl = new HashMap<>();
 
+    private final String ANON = "anon";
+
     /**
      * 将url过滤
      * @param url
      * @return
      */
     private boolean checkCurrentUrl(String url){
-        currentUrl.put("/xzzj/login", "anon");
-        currentUrl.put("/xzzj/bbs/account/", "anon");
+        currentUrl.put("/xzzj/login", ANON);
+        currentUrl.put("/xzzj/bbs/account/", ANON);
+        currentUrl.put("/static/", ANON);
         for (String key : currentUrl.keySet()) {
             if(url.contains(key)){
-                String value = currentUrl.get(key);
-                return value.equals("anon");
+                return ANON.equals(currentUrl.get(key));
             }
         }
         return false;
@@ -64,6 +66,9 @@ public class LoginInterceptor implements HandlerInterceptor {
         try {
             String userInfo = redis.opsForValue().get(cookie.getValue());
             if(StringUtils.isEmpty(userInfo)){
+                if(checkCurrentUrl(servletPath)){
+                    return true;
+                }
                 response.sendRedirect("/xzzj/login");
                 return false;
             }else{

@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>小猪之家|空间</title>
+    <style>
+        body {
+            margin: 0;
+            background: #f5f5f5;
+            scroll-behavior: smooth;
+        }
+
+        /** grid父级容器 */
+        .content {
+            display: grid;
+            grid-template-rows: 170px auto 250px;
+            grid-template-areas: "h h h" "l m r" "f f f";
+
+            gap: 10px 15px;
+        }
+
+        .content-box {
+            grid-template-columns: auto 1142px auto;
+        }
+
+        /** 导航栏开始 */
+        .nav {
+            position: relative;
+            background: url("http://119.3.170.239/images/top_a.png") repeat 0 -400px;
+            /*background-size: 1920px 1260px;*/
+
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+            width: 100%;
+            min-width: 1366px;
+            grid-area: h;
+        }
+
+        .nav-ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-ul li {
+            float: left;
+            display: inline-block;
+        }
+
+        /** Home导航栏下拉菜单开始 */
+        .sub-nav {
+            position: absolute;
+            top: 60px;
+            z-index: -1;
+            background: white;
+            opacity: 0;
+            box-shadow: 1px 1px 10px #353535;
+            transition: all 0.15s ease-out;
+            padding: 7px 0;
+            border-radius: 3px 3px 8px 8px;
+
+            user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .sub-nav a {
+            display: block;
+            text-align: center;
+            line-height: 30px;
+            font-size: 0.9em;
+            color: #4f5050;
+            text-decoration: none;
+            padding: 0 20px;
+            transition: all 0.3s ease;
+        }
+
+        .sub-nav-split {
+            margin: 5px 0 5px 0;
+            height: 1px;
+            background: #b9bcbc;
+        }
+
+        .sub-nav span {
+
+            display: block;
+            transition: all 0.3s ease-out;
+        }
+
+        .sub-nav a:hover span {
+
+            transform: translateX(3px);
+        }
+
+        .sub-nav a:hover {
+
+            background: hsla(0, 0%, 77%, 0.7);
+        }
+
+        .sub-nav a:active {
+            background: hsla(0, 0%, 20%, 0.4);
+        }
+
+        .nav-ul li:hover .sub-nav {
+
+            transform: translateY(-10px);
+            z-index: 9999;
+            opacity: 1;
+        }
+
+        /** Home导航栏下拉菜单结束 */
+
+        .space {
+            margin: 0 auto;
+            width: 1142px;
+        }
+
+        .inner {
+            background: inherit;
+            height: 50px;
+            filter: blur(3px);
+            box-shadow: #505050 1px 0 2px;
+        }
+
+        .out {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 50px;
+            width: 100%;
+            min-width: 1142px;
+            background: hsla(0, 0%, 100%, .4);
+        }
+
+        .nav-ul li > a:hover {
+            color: black;
+            text-shadow: #c0c0c0 0 1px 5px;
+            background: hsla(0, 0%, 100%, .5);
+        }
+
+        .nav-ul li > a {
+            display: block;
+            width: 70px;
+
+            font-size: 1em;
+            font-weight: bolder;
+            color: #3d3e3e;
+            text-align: center;
+            line-height: 50px;
+
+            transition: all 0.5s ease;
+            text-decoration: none;
+        }
+
+        .search-right {
+            margin-right: 1%;
+        }
+
+        .search {
+            display: block;
+            float: right;
+            font-weight: bolder;
+            font-size: 0.9em;
+            text-align: center;
+            height: 27px;
+            margin-top: 0.65em;
+            border: 3px solid rgba(0, 0, 0, .12);
+            border-radius: 9px;
+            padding: 0;
+        }
+
+        .search input {
+
+            float: left;
+            outline-style: none;
+            padding: 5px 10px;
+            border-radius: 7px 0 0 7px;
+            color: #4b4b4b;
+            background: hsla(0, 0%, 100%, .4);
+            border: 0;
+            overflow: hidden;
+            transition: all 0.5s ease;
+            height: 17px;
+
+        }
+
+        .search-btn {
+            float: left;
+            cursor: pointer;
+            position: relative;
+            right: 0;
+            height: 27px;
+            width: 32px;
+            background: url("http://119.3.170.239/icon/search_icon_a.png") no-repeat 5px 3px;
+            background-size: 70%;
+            border: 0;
+            transition: all 0.3s ease;
+            border-top-right-radius: 9px;
+            border-bottom-right-radius: 9px;
+            outline: none;
+        }
+
+        .search:hover input {
+            color: #1c1c1c;
+            background: white;
+        }
+
+        .search:hover button {
+            background: url("http://119.3.170.239/icon/search_icon_b.png") no-repeat 5px 3px;
+            background-size: 70%;
+        }
+
+        .user-group {
+            position: relative;
+            float: right;
+            line-height: 50px;
+
+            user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            -moz-user-select: none;
+        }
+
+        .user-group img {
+            width: 37px;
+            height: 37px;
+            border-radius: 50%;
+            margin-top: 6px;
+            /*transform: rotate(-45deg);*/
+            cursor: pointer;
+            /*box-shadow: hsla(0, 0%, 34%, 0.95) 0 0 2px;*/
+            border: hsla(0, 0%, 100%, .4) solid 1px;
+        }
+
+        .user-group .user-des {
+            position: absolute;
+            top: 66px;
+            left: -41px;
+            width: 120px;
+            border: 1px solid #ebebeb;
+            border-radius: 2px 2px 5px 5px;
+            background: white;
+            opacity: 0;
+            z-index: -1;
+            transition: all 0.2s ease;
+
+            box-shadow: #818181 0 0 10px;
+        }
+
+        .user-des div:first-child {
+            margin: 5px 0;
+        }
+
+        .user-des:before {
+            content: "";
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            top: -6px;
+            left: 50%;
+            margin-left: -5px;
+            transform: rotate(45deg);
+            background: white;
+
+            border-bottom-right-radius: 100%;
+            border-top: 1px solid #ebebeb;
+            border-left: 1px solid #ebebeb;
+        }
+
+        .user-des span {
+            position: relative;
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            background-size: 18px;
+            text-align: center;
+            line-height: 18px;
+            top: 3px;
+            padding: 0 0 0 3px;
+        }
+
+        .user-space {
+            background: url("http://119.3.170.239/icon/user-space.png") no-repeat;
+        }
+
+        .user-exit {
+            background: url("http://119.3.170.239/icon/user-exit.png") no-repeat;
+        }
+
+        .user-des a {
+            display: block;
+            padding: 0 15px;
+            color: #8590a6;
+            font-size: 14px;
+            height: 35px;
+            line-height: 35px;
+            cursor: pointer;
+        }
+
+        .user-des a:hover {
+            background: hsla(0, 0%, 55%, 0.34);
+        }
+
+        .user-group:hover .user-des {
+            opacity: 1;
+            transform: translate3d(0, -9px, 0);
+            z-index: 1;
+        }
+
+        .icon {
+            float: left;
+            line-height: 50px;
+            width: 200px;
+            height: 50px;
+            background: url("http://119.3.170.239/icon/xiaozhu_icon.png");
+            background-size: cover;
+
+            cursor: pointer;
+        }
+
+        .icon:before {
+            content: "";
+            position: absolute;
+            z-index: 999;
+            width: 200px;
+            height: 50px;
+            background: hsla(0, 0%, 100%, .1);
+            filter: blur(4px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .icon:hover:before {
+            opacity: 1;
+        }
+
+        /** 导航栏结束 */
+        /** top 结束 */
+
+        /** main 开始 */
+        .main {
+            border-radius: 3px;
+            background: white;
+            grid-area: m;
+            position: relative;
+
+            height: 1300px;
+        }
+
+        .group-left {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            width: 400px;
+            height: 700px;
+            background: #4c4c4c;
+        }
+
+        .user-portrait {
+            margin: 20px auto auto;
+            width: 350px;
+            height: 350px;
+            background: red;
+        }
+
+        .user-portrait img {
+            margin: 10px;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: hsla(0, 0%, 100%, .4) solid 1px;
+            cursor: pointer;
+
+            transition: all 0.3s ease;
+        }
+        .user-portrait img:active {
+            height: 150px;
+        }
+
+
+
+        .group-top {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            width: 720px;
+            height: 200px;
+            background: #4c4c4c;
+        }
+
+        /** main 结束 */
+
+    </style>
+</head>
+<body>
+<div class="content content-box">
+    <div class="nav">
+        <div class="inner"></div>
+        <div class="out">
+            <div class="space">
+                <div class="icon" onclick="window.open('http://119.3.170.239','_self')"></div>
+                <div class="user-group">
+                    <img>
+                    <div class="user-des">
+                        <div>
+                            <a><span class="user-space"></span>个人中心</a>
+                            <a><span class="user-exit"></span>退出</a>
+                        </div>
+                    </div>
+                </div>
+
+                <ul class="nav-ul">
+                    <li>
+                        <a href="#">Home</a>
+                        <div class="sub-nav">
+                            <a href="#"><span>第一条asdfasdf</span></a>
+                            <a href="#"><span>第二条</span></a>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="#">Movie</a>
+                        <div class="sub-nav">
+                            <a href="#"><span>超级好看的电影</span></a>
+                            <a href="#"><span>第二条</span></a>
+                            <a href="#"><span>第三条</span></a>
+                            <a href="#"><span>第四条</span></a>
+                            <div class="sub-nav-split"></div>
+                            <a href="#"><span>五</span></a>
+                        </div>
+                    </li>
+                    <li><a href="#">Music</a></li>
+                    <li><a href="#">Book</a></li>
+                </ul>
+                <div class="search search-right">
+                    <!--<label>搜索</label>-->
+                    <input type="text" placeholder="搜索...">
+                    <button type="button" class="search-btn"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="main">
+        <div class="group-left">
+            <div class="user-portrait">
+                <img>
+                <span></span>
+            </div>
+        </div>
+        <div class="group-top">
+
+        </div>
+        <div class="group-main">
+
+        </div>
+    </div>
+</div>
+</body>
+<script src="http://119.3.170.239/js/jquery-3.4.1.min.js"></script>
+<script src="/static/js/details.js"></script>
+</html>
