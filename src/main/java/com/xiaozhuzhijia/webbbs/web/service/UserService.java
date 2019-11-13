@@ -34,5 +34,6 @@ public interface UserService {
 
     Result logout();
 
+    Result getUserByUserName(String userName);
 
 }

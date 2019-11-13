@@ -14,6 +14,8 @@ import java.util.Date;
 @Accessors(chain = true)
 public class UserVo {
 
+    /** Id */
+    private Integer id;
     /** 邮箱 */
     private String email;
     /** 昵称 */

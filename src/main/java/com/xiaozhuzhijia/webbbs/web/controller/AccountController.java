@@ -113,4 +113,9 @@ public class AccountController {
 
         return userService.logout();
     }
+    @PostMapping("/getUserByUserName")
+    public Result getUserByUserName(String userName){
+
+        return userService.getUserByUserName(userName);
+    }
 }

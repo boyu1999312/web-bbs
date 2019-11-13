@@ -367,7 +367,7 @@
         .container-left .subscript {
             cursor: default;
             position: absolute;
-            z-index: 10;
+            z-index: 2;
             top: 230px;
             left: 15px;
         }
@@ -480,13 +480,22 @@
         /** main 任务卡片 开始 */
         .container-card {
             position: relative;
-            width: auto;
         }
         .card-left {
             margin-left: 10px;
-            margin-top: 10px;
-            max-width: 770px;
-            border-radius: 15px;
+            margin-top: 15px;
+            max-width: 800px;
+        }
+        .card-tip {
+            padding: 0 15px;
+        }
+        .card-tip h2 {
+            cursor: default;
+            width: 100px;
+            transition: all 0.2s ease;
+        }
+        .card-tip h2:hover {
+            color: #93D1FF;
         }
 
         .container-card .card {
@@ -495,9 +504,12 @@
             width: 250px;
             height: 300px;
             border-radius: 15px;
-            border: black solid 1px;
             overflow: hidden;
-            background: #891c0b;
+            background: #e12d12;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            margin-right: 15px;
+            margin-bottom: 20px;
+
         }
         .card .des {
             position: relative;
@@ -543,7 +555,7 @@
             background: url("http://119.3.170.239/images/xiaozhu.jpg") no-repeat;
             background-size: 300px;
         }*/
-        .card:hover .des{
+        .des:hover {
             top: 75px;
         }
         /** main 任务卡片 结束 */
@@ -557,6 +569,137 @@
             background: #e5e5e5;
             border-radius: 3px;
         }
+        /** card添加 */
+        .container-card .card-plus {
+            cursor: pointer;
+            transition: ease 0.3s ease;
+            background: rgba(0, 102, 204, 0.64);
+        }
+        .card-plus div {
+            position: absolute;
+            z-index: 2;
+            top: 111px;
+            left: 86px;
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            background: url("http://119.3.170.239/icon/card-plus-hover.png") no-repeat;
+            background-size: cover;
+            transition: all 0.3s ease;
+        }
+        .card-plus:hover div {
+            /*background: url("http://119.3.170.239/icon/card-plus-hover.png") no-repeat;*/
+            /*background-size: cover;*/
+            transform: rotate(90deg);
+            top: 200px;
+        }
+        .card-plus:hover {
+            background: rgba(0, 102, 204, 0.61);
+        }
+
+
+        .card-plus:before {
+            content: "添加一个任务卡片";
+            position: absolute;
+            z-index: -1;
+            opacity: 0;
+            top: -100px;
+            left: 52px;
+            width: 128px;
+            height: auto;
+            background: hsla(0, 0%, 0%, 0.4);
+            border-radius: 10px;
+            padding: 16px;
+            color: white;
+            text-shadow: 0 3px 3px rgba(0, 0, 0, 0.75);
+            transition: all 0.3s ease;
+        }
+        .card-plus:hover:before {
+            z-index: 1;
+            opacity: 1;
+            top: 80px;
+        }
+
+        /** 任务卡片遮罩层 */
+        .card-mask {
+            position: absolute;
+            z-index: -1;
+            opacity: 0;
+            width: 520px;
+            height: 500px;
+            background: hsla(0, 0%, 0%, 0.4);
+
+            transition: all 0.3s ease;
+        }
+        .card-mask form {
+            margin: 20px 20px auto;
+            height: 500px;
+        }
+        .card-mask input {
+            display: block;
+            outline: none;
+            height: 30px;
+            width: 300px;
+            line-height: 30px;
+            font-size: 1.2em;
+            margin: 5px auto;
+
+        }
+        .card-mask .up-pic {
+            display: none;
+            opacity: 0;
+        }
+        .checkUser-input {
+
+        }
+        .checkUser-div {
+            position: absolute;
+            top: 136px;
+            left: 108px;
+            /*z-index: -1;*/
+            /*opacity: 0;*/
+            background: red;
+            width: 303px;
+            height: 100px;
+            overflow-y: scroll;
+        }
+        .checkUser {
+            margin-top: 5px;
+            width: 100%;
+            height: 50px;
+            background: white;
+            border-top: black solid 1px;
+            border-bottom: black solid 1px;
+
+        }
+        .label-up-pic {
+            display: block;
+            cursor: pointer;
+            margin: 0 auto;
+            text-align: center;
+            line-height: 150px;
+            width: 150px;
+            height: 150px;
+            border: black solid 1px;
+        }
+        .close-mask {
+            margin: 0 auto;
+            width: 100px;
+            height: 50px;
+            cursor: pointer;
+            background: rgb(216, 58, 0);
+            color: white;
+            font-size: 1.2em;
+            text-align: center;
+            line-height: 50px;
+            border-radius: 20px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            transition: all 0.3s ease;
+        }
+        .close-mask:hover {
+            background: orangered;
+        }
+
         /** main 数据卡片 结束 */
 
         @keyframes switch {
@@ -602,7 +745,34 @@
         /*}*/
         /*}*/
 
+        /** 引用login.html 的样式 */
+        /** 提示框 */
+        .t-box {
+            position: absolute;
+            width: 200px;
+            text-align: center;
+            color: white;
+            font-size: 1em;
+            padding: 30px 15px;
 
+            top: 35%;
+            left: 50%;
+            background: rgba(254, 0, 0, 0.8);
+            border-radius: 10px;
+            margin-left: -100px;
+            z-index: 99;
+
+            user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            -webkit-user-select: none;
+
+            word-wrap: break-word;
+            word-break: break-all;
+        }
+        .t-box-flash {
+            animation: shake 0.3s ease;
+        }
 
 
     </style>
@@ -685,39 +855,39 @@
 
         </div>
         <div class="container-card">
+            <div class="card-tip"><h2>任务卡片</h2></div>
             <div class="card-left">
-                <div class="card" name="love">
-                    <div class="des">
-                        <h2 class="time">19:24:12</h2>
-                        <span class="time-des">据与小阿姨的爱情纪念日还有...</span>
-                        <pre class="more-des">哎呀<br/>亲亲这只香小猪吧~<br/>嘻嘻！</pre>
-                        <div class="btm-des"></div>
-                    </div>
+                <div class="card card-plus">
+                    <div></div>
                 </div>
-                <div class="card" name="nvl">
-                    <div class="des">
-                        <h2 class="time">19:24:12</h2>
-                        <span class="time-des">进行中</span>
-                        <pre class="more-des">阿萨的开发了就打算减肥来到拉萨附近看到阿斯顿发大水发大水f阿萨的开发了就打算减肥来到拉萨附近看到阿斯顿发大水发大水f阿萨的开发了就打算减肥来到拉萨附近看到阿斯顿发大水发大水f</pre>
-                    </div>
-                </div>
-                <div class="card" name="noe"></div>
-                <div class="card" name="noe"></div>
-                <div class="card" name="nvl">
-                    <div class="des">
-                        <h2 class="time">19:24:12</h2>
-                        <span class="time-des">进行中</span>
-                        <pre class="more-des">阿萨的开发了就打算减肥来到拉萨附近看到阿斯顿发大水发大水f阿萨的开发了就打算减肥来到拉萨附近看到阿斯顿发大水发大水f阿萨的开发了就打算减肥来到拉萨附近看到阿斯顿发大水发大水f</pre>
-                    </div>
-                </div>
-                <div class="card"></div>
             </div>
             <div class="container-data"></div>
+
         </div>
     </div>
+
     <div class="footer"></div>
 </div>
-
+<!--遮罩层-->
+<div class="card-mask">
+    <div>
+        <form id="cardForm" method="post">
+            <input name="title" placeholder="输入标题...">
+            <input name="time" type="datetime-local" placeholder="输入日期...">
+            <input name="checkUserId" class="checkUser-input" placeholder="请输入监督人的用户名...">
+            <div class="checkUser-div">
+                <div class="checkUser"></div>
+                <div class="checkUser"></div>
+                <div class="checkUser"></div>
+            </div>
+            <input name="msg" placeholder="输入简介...">
+            <input name="pic" id="cardPic" class="up-pic" type="file">
+            <label for="cardPic" class="label-up-pic">上传图片</label>
+            <input type="submit" value="提交">
+        </form>
+        <div class="close-mask">关闭</div>
+    </div>
+</div>
 
 </body>
 <script src="http://119.3.170.239/js/jquery-3.4.1.min.js"></script>

@@ -67,7 +67,7 @@ function submit(url){
             if (result.code === 200) {
                 success_show(result.msg);
                 setTimeout(function () {
-                    window.location.replace("http://119.3.170.239/xzzj/login");
+                    window.location.replace("http://localhost:9400/xzzj/login");
                 }, 3000)
             } else {
                 errtip_show(result.msg);
@@ -96,5 +96,5 @@ $('#login-form input[type="submit"]').click(function (e) {
         return
     }
 
-    submit("http://119.3.170.239/xzzj/bbs/account/updPassword");
+    submit("http://localhost:9400/xzzj/bbs/account/updPassword");
 });

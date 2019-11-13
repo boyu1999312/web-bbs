@@ -6,7 +6,7 @@ spring:
     encoding: UTF-8
     mode: HTML
   profiles:
-    active: prod
+    active: dev
 
 mybatis-plus:
   type-aliases-package: com.xiaozhuzhijia.webbs.common.entity
