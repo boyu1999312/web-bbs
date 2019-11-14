@@ -395,14 +395,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public Result getUserByUserName(String userName) {
 
-        UserBean userBean = userMapper.selectOne(
+        List<UserBean> userBeans = userMapper.selectList(
                 new QueryWrapper<UserBean>()
-                .select("id" ,"user_name", "portrait", "nick_name")
+                        .select("id", "user_name", "portrait", "nick_name")
                         .eq("user_name", userName));
-        if(!Objects.isNull(userBean)){
+        if(userBeans.size() == 0){
             return Result.error("找不到用户");
         }
-        return Result.ok();
+
+        return Result.ok(userBeans);
     }
 
 }

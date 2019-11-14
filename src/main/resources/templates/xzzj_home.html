@@ -11,6 +11,7 @@
             margin: 0;
             background: #f5f5f5;
             scroll-behavior:smooth;
+
         }
         /** grid父级容器 */
         .content {
@@ -622,17 +623,22 @@
 
         /** 任务卡片遮罩层 */
         .card-mask {
-            position: absolute;
-            z-index: -1;
-            opacity: 0;
-            width: 520px;
-            height: 500px;
+            position: fixed;
+            z-index: 5;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
             background: hsla(0, 0%, 0%, 0.4);
-
+            overflow-y: scroll;
             transition: all 0.3s ease;
         }
+        .mask-hide {
+            z-index: -1;
+            opacity: 0;
+        }
         .card-mask form {
-            margin: 20px 20px auto;
+            margin: 250px 20px auto;
             height: 500px;
         }
         .card-mask input {
@@ -649,41 +655,109 @@
             display: none;
             opacity: 0;
         }
-        .checkUser-input {
+        .card-mask .checkUser-input {
+            margin-bottom: 0;
+        }
 
+
+        .overflow-hide {
+            overflow: hidden;
+            margin-right: 17px;
         }
         .checkUser-div {
-            position: absolute;
-            top: 136px;
-            left: 108px;
-            /*z-index: -1;*/
-            /*opacity: 0;*/
-            background: red;
+            position: relative;
+            margin: 0 auto;
             width: 303px;
-            height: 100px;
+            height: 60px;
             overflow-y: scroll;
+            background: #d9d9d9;
+
+            transition: height 0.4s ease;
         }
+        .checkUser-tip {
+            position: absolute;
+            width: 286px;
+            height: 60px;
+            background: #d9d9d9;
+            text-align: center;
+            line-height: 60px;
+
+            transition: all 0.4s ease;
+        }
+        .hide {
+            z-index: -1;
+            opacity: 0;
+            height: 0;
+        }
+        .high-height {
+            height: 100px;
+        }
+        .checkUser-content {
+
+        }
+
         .checkUser {
+            position: relative;
             margin-top: 5px;
             width: 100%;
             height: 50px;
-            background: white;
-            border-top: black solid 1px;
-            border-bottom: black solid 1px;
-
+            background: #ededed;
+            transition: all 0.2s ease;
         }
+        .checkUser:hover {
+            background: white;
+        }
+        .checkUser-p {
+            position: relative;
+            left: 10px;
+            top: 5px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 25px;
+            border: hsla(0, 0%, 77%, 0.4) solid 1px;
+            cursor: pointer;
+        }
+        .checkUser-p:hover {
+            border: hsla(91, 53%, 50%, 0.4) solid 1px;
+        }
+        .checkUser-name {
+            position: absolute;
+            font-size: 1.2em;
+            height: 50px;
+            line-height: 50px;
+            cursor: pointer;
+        }
+        .add-user {
+            position: absolute;
+            right: 7px;
+            height: 30px;
+            width: 11px;
+            margin-top: 10px;
+            line-height: 30px;
+            padding: 0 5px;
+            color: white;
+            box-shadow: 0 2px 2px rgba(26, 177, 26, 0.59);
+            background: #1AB11A;
+            border-radius: 7px;
+            cursor: pointer;
+            overflow: hidden;
+            white-space: nowrap;
+            transition: all 0.3s ease;
+        }
+
         .label-up-pic {
             display: block;
             cursor: pointer;
             margin: 0 auto;
             text-align: center;
             line-height: 150px;
-            width: 150px;
+            width: 300px;
             height: 150px;
             border: black solid 1px;
         }
         .close-mask {
-            margin: 0 auto;
+            margin: -100px auto;
             width: 100px;
             height: 50px;
             cursor: pointer;
@@ -869,16 +943,22 @@
     <div class="footer"></div>
 </div>
 <!--遮罩层-->
-<div class="card-mask">
+<div class="card-mask mask-hide">
     <div>
-        <form id="cardForm" method="post">
+        <form id="cardForm" method="post" enctype="multipart/form-data">
             <input name="title" placeholder="输入标题...">
             <input name="time" type="datetime-local" placeholder="输入日期...">
-            <input name="checkUserId" class="checkUser-input" placeholder="请输入监督人的用户名...">
-            <div class="checkUser-div">
-                <div class="checkUser"></div>
-                <div class="checkUser"></div>
-                <div class="checkUser"></div>
+            <input name="checkUserName" class="checkUser-input" placeholder="请输入监督人的用户名...">
+            <div class="checkUser-div hide">
+                <div class="checkUser-tip hide">搜索中...</div>
+                <div class="checkUser-content"></div>
+                <!--<div class="checkUser">-->
+                    <!--<img class="checkUser-p" src="http://119.3.170.239/images/pig_head.jpg">-->
+                    <!--<span class="checkUser-name">admin</span>-->
+                    <!--<span class="add-user">添加</span>-->
+                <!--</div>-->
+                <!--<div class="checkUser"></div>-->
+                <!--<div class="checkUser"></div>-->
             </div>
             <input name="msg" placeholder="输入简介...">
             <input name="pic" id="cardPic" class="up-pic" type="file">

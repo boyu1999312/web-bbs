@@ -6,4 +6,7 @@ public interface LoginFinal {
 
     /** 忘记密码token名称 */
     String FORGET_PASSWORD_TOKEN = "_XZZJ_FORGET_PASSWORD_";
+
+    /** 图片前缀 */
+    String Picture_PREFIX = "http://119.3.170.239";
 }

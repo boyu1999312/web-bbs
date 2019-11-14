@@ -21,21 +21,23 @@ public class CardBean {
     private Integer id;
     /** 创建人id */
     private Integer userId;
-    /** 监督人id */
-    private Integer cardSuperintendent;
+    /** 监督人用户名 */
+    private String cardSuperintendent;
     /** 任务标题 */
     private String cardTitle;
     /** 任务到期时间 */
     private Date cardTime;
+    /** 任务审核时间 */
+    private Date cardExamineTime;
     /** 任务简介 */
     private String cardMsg;
     /** 任务图片 */
     private String cardPic;
-    /** 创建时间 */
+    /** 注册时间 */
     private Date createdTime;
     /** 修改时间 */
     private Date updatedTime;
-    /** 状态 1-正在进行 2-完成 3-未完成 4-禁用 */
+    /** 状态 1-就绪 2-正在进行 3-审核中 4-完成 5-未完成 6-禁用 */
     private Integer cardEffect;
     /** 修改次数 */
     private Integer version;

@@ -3,6 +3,7 @@ package com.xiaozhuzhijia.webbbs.common.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.xiaozhuzhijia.webbbs.common.constant.LoginFinal;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,16 +30,21 @@ public class UserBean {
     private Integer gender;
     /** 邮箱 */
     private String email;
+    /** 修改次数 */
+    private Integer version;
     /** 注册时间 */
     private Date createdTime;
     /** 修改时间 */
     private Date updatedTime;
-    /** 修改次数 */
-    private Integer version;
     /** 头像 */
     private String portrait;
     /** 盐值 */
     private String salt;
+
+    public UserBean setPortrait(String portrait){
+        this.portrait = LoginFinal.Picture_PREFIX + portrait;
+        return this;
+    }
 
 
 

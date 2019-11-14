@@ -1,5 +1,6 @@
 package com.xiaozhuzhijia.webbbs.common.vo;
 
+import com.xiaozhuzhijia.webbbs.common.entity.UserBean;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,5 +31,15 @@ public class UserVo {
     private String token;
     /** 头像 */
     private String portrait;
+
+    public UserVo addUserBean(UserBean userBean){
+
+        return this.setId(userBean.getId())
+                .setEmail(userBean.getEmail())
+                .setNickName(userBean.getNickName())
+                .setUserName(userBean.getUserName())
+                .setCreatedTime(userBean.getCreatedTime())
+                .setPortrait("http://119.3.170.239" + userBean.getPortrait());
+    }
 
 }
