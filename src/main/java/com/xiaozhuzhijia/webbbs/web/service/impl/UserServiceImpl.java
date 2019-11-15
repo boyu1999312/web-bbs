@@ -73,7 +73,7 @@ public class UserServiceImpl implements UserService {
         UserVo userVo = new UserVo()
                 .setId(userBean.getId())
                 .setUserName(userBean.getUserName())
-                .setPortrait("http://119.3.170.239"+userBean.getPortrait())
+                .setPortrait(userBean.getPortrait())
                 .setToken(loginToken)
                 .setCreatedTime(userBean.getCreatedTime())
                 .setEmail(userBean.getEmail())
@@ -398,7 +398,7 @@ public class UserServiceImpl implements UserService {
         List<UserBean> userBeans = userMapper.selectList(
                 new QueryWrapper<UserBean>()
                         .select("id", "user_name", "portrait", "nick_name")
-                        .eq("user_name", userName));
+                        .like("user_name", userName));
         if(userBeans.size() == 0){
             return Result.error("找不到用户");
         }

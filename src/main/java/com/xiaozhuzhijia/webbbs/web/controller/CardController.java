@@ -9,9 +9,7 @@ import org.apache.juli.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
@@ -25,11 +23,16 @@ public class CardController {
     private Log log = LogFactory.getLog(CardController.class);
 
 
-    @RequestMapping("/addCard")
-    public Result add(CardDto cardDto, @RequestParam("pic") MultipartFile file){
+    @PostMapping("/addCard")
+    public Result add(CardDto cardDto, @RequestParam(value = "filePic", required = false) MultipartFile file){
 
-        log.info("卡片DTO信息：" + cardDto);
-
+        log.info("卡片DTO信息：" + cardDto + "\r\n" + "图片信息：" + file);
         return cardService.addCard(cardDto, file);
+    }
+
+    @GetMapping("/getMyCard")
+    public Result getMyCard(){
+
+        return cardService.getMyCard();
     }
 }

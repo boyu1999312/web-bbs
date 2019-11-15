@@ -74,6 +74,12 @@
             <artifactId>activation</artifactId>
             <version>1.1.1</version>
         </dependency>
+        <!--出参时间类型转字符串-->
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>2.3</version>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>

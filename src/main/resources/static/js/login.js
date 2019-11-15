@@ -160,7 +160,7 @@ function checkUserName($el){
 }
 function checkReUserName(flag){
     $.ajax({
-        url: "http://localhost:9400/xzzj/bbs/account/checkUserName",
+        url: "http://119.3.170.239/xzzj/bbs/account/checkUserName",
         type: "POST",
         data: {"userName": $("input[name='acc']").val()},
         datatype: "json",
@@ -203,13 +203,13 @@ function checkReEmail(flag, url, $email, $tip){
 }
 $("input[name='email']").blur(function () {
     if(!email_check($("input[name='email']"),$(".checkEmail"))){
-        var url = "http://localhost:9400/xzzj/bbs/account/checkEmail";
+        var url = "http://119.3.170.239/xzzj/bbs/account/checkEmail";
         checkReEmail(true, url, $(this), $(".checkEmail"));
     }
 });
 $("input[name='forgetEmail']").blur(function () {
     if(!email_check($("input[name='forgetEmail']"),$(".checkForgetEmail"))){
-        var url = "http://localhost:9400/xzzj/bbs/account/emailExists";
+        var url = "http://119.3.170.239/xzzj/bbs/account/emailExists";
         checkReEmail(true, url, $(this), $(".checkForgetEmail"));
     }
 });
@@ -219,7 +219,7 @@ $("input[name='code']").blur(function () {
 });
 function checkCode(flag, codeCache, $inputCode, $inputEmail, $checkTip){
     $.ajax({
-        url: "http://localhost:9400/xzzj/bbs/account/checkCode",
+        url: "http://119.3.170.239/xzzj/bbs/account/checkCode",
         type: "POST",
         data: {"codeCache": codeCache,
             "code": $inputCode.val(),
@@ -262,12 +262,12 @@ function countDown($el){
 $(".get-code").click(function () {
     if(tip_show($("input[name='email']"), $(".reg-email")) ||
         email_check($("input[name='email']"), $(".checkEmail"))){return}
-    var url = "http://localhost:9400/xzzj/bbs/account/checkEmail";
+    var url = "http://119.3.170.239/xzzj/bbs/account/checkEmail";
     checkReEmail(false, url, $("input[name='email']"), $(".checkEmail"));
     if(!reEmail){return}
 
     $.ajax({
-        url: "http://localhost:9400/xzzj/bbs/account/getCode",
+        url: "http://119.3.170.239/xzzj/bbs/account/getCode",
         type: "GET",
         data: {"codeCache": codeCache,"email": $("input[name='email']").val()},
         datatype: "json",
@@ -290,12 +290,12 @@ $(".get-code").click(function () {
 $(".get-forget-code").click(function () {
     if(tip_show($("input[name='forgetEmail']"), $(".d-forget .in")) ||
         email_check($("input[name='forgetEmail']"), $(".checkForgetEmail"))){return}
-    var url = "http://localhost:9400/xzzj/bbs/account/emailExists";
+    var url = "http://119.3.170.239/xzzj/bbs/account/emailExists";
     checkReEmail(false, url, $("input[name='forgetEmail']"), $(".checkForgetEmail"));
     if(!reEmail){return}
 
     $.ajax({
-        url: "http://localhost:9400/xzzj/bbs/account/getCode",
+        url: "http://119.3.170.239/xzzj/bbs/account/getCode",
         type: "GET",
         data: {"codeCache": forgetCodeCache,"email": $("input[name='forgetEmail']").val()},
         datatype: "json",
@@ -361,7 +361,7 @@ $('#login-form input[type="submit"]').click(function (e) {
     if(forget){
         var flag = false;
         $.ajax({
-            url: "http://localhost:9400/xzzj/bbs/account/forgetPassword",
+            url: "http://119.3.170.239/xzzj/bbs/account/forgetPassword",
             type: "POST",
             data:
                 {
@@ -384,7 +384,7 @@ $('#login-form input[type="submit"]').click(function (e) {
         });
         if(flag){
             setTimeout(function () {
-                window.location.replace("http://localhost:9400/xzzj/login");
+                window.location.replace("http://119.3.170.239/xzzj/login");
             }, 3000)
         }
         return
@@ -422,7 +422,7 @@ $('#login-form input[type="submit"]').click(function (e) {
         $("input[name='codeCache']").val(codeCache);
 
         //重新验证是否填写正确
-        var url = "http://localhost:9400/xzzj/bbs/account/checkEmail";
+        var url = "http://119.3.170.239/xzzj/bbs/account/checkEmail";
         checkReEmail(true, url, $("input[name='email']"), $(".checkEmail"));
         checkReUserName(false);
         checkCode(true, codeCache, $("input[name='code']"),
@@ -430,11 +430,11 @@ $('#login-form input[type="submit"]').click(function (e) {
 
         if(reUserName && reCode && reEmail){
             success_show("正在注册，请稍等", 5000);
-            if(submit("http://localhost:9400/xzzj/bbs/account/register")){
+            if(submit("http://119.3.170.239/xzzj/bbs/account/register")){
                 $(".t-box").remove();
                 success_show("注册成功，一秒后跳转",1500);
                 setTimeout(function () {
-                    window.location.replace("http://localhost:9400/xzzj/login");
+                    window.location.replace("http://119.3.170.239/xzzj/login");
                 }, 1500)
             }
         }
@@ -449,8 +449,8 @@ $('#login-form input[type="submit"]').click(function (e) {
             errtip_show("请不要使用中文字符哦~");
             return
         }
-        if(submit("http://localhost:9400/xzzj/bbs/account/login")) {
-            window.location.replace("http://localhost:9400");
+        if(submit("http://119.3.170.239/xzzj/bbs/account/login")) {
+            window.location.replace("http://119.3.170.239");
         }
     }
 });

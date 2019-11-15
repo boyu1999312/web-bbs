@@ -6,7 +6,7 @@ spring:
     encoding: UTF-8
     mode: HTML
   profiles:
-    active: dev
+    active: prod
 
 
 mybatis-plus:

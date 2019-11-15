@@ -4,7 +4,7 @@ getUserInfo();
 
 function getUserInfo() {
     $.ajax({
-        url: "http://localhost:9400/xzzj/bbs/account/getUserInfo",
+        url: "http://119.3.170.239/xzzj/bbs/account/getUserInfo",
         type: "POST",
         datatype: "json",
         success: function (result) {

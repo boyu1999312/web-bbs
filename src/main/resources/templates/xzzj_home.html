@@ -512,6 +512,10 @@
             margin-bottom: 20px;
 
         }
+        .card-move {
+
+            animation: load 0.5s ease;
+        }
         .card .des {
             position: relative;
             text-align: center;
@@ -544,6 +548,9 @@
             color: white;
             border-top: green solid 4px;
             padding-top: 5px;
+
+            overflow: hidden;
+            white-space: nowrap;
         }
         .card .btm-des {
             position: absolute;
@@ -638,10 +645,10 @@
             opacity: 0;
         }
         .card-mask form {
-            margin: 250px 20px auto;
+            margin: 10% 20px auto;
             height: 500px;
         }
-        .card-mask input {
+        .card-mask-input {
             display: block;
             outline: none;
             height: 30px;
@@ -670,6 +677,7 @@
             width: 303px;
             height: 60px;
             overflow-y: scroll;
+            scroll-behavior:smooth;
             background: #d9d9d9;
 
             transition: height 0.4s ease;
@@ -707,6 +715,10 @@
         .checkUser:hover {
             background: white;
         }
+        .click-cuser {
+            width: 100%;
+            height: 50px;
+        }
         .checkUser-p {
             position: relative;
             left: 10px;
@@ -730,6 +742,7 @@
         }
         .add-user {
             position: absolute;
+            top: 0;
             right: 7px;
             height: 30px;
             width: 11px;
@@ -745,7 +758,11 @@
             white-space: nowrap;
             transition: all 0.3s ease;
         }
-
+        .mask-pic-div {
+            position: relative;
+            width: 300px;
+            margin: 0 auto;
+        }
         .label-up-pic {
             display: block;
             cursor: pointer;
@@ -757,7 +774,7 @@
             border: black solid 1px;
         }
         .close-mask {
-            margin: -100px auto;
+            margin: 50px auto;
             width: 100px;
             height: 50px;
             cursor: pointer;
@@ -772,6 +789,26 @@
         }
         .close-mask:hover {
             background: orangered;
+        }
+        .close-pic {
+            position: absolute;
+            top: 5px;
+            right: -50px;
+            width: 32px;
+            padding: 0 5px;
+            line-height: 23px;
+            border-radius: 7px;
+            background: rgba(183, 0, 0, 0.82);
+            color: whitesmoke;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            overflow: hidden;
+
+            cursor: pointer;
+        }
+        .close-pic:hover {
+            background: rgba(255, 0, 0, 0.94);
+            color: white;
         }
 
         /** main 数据卡片 结束 */
@@ -833,7 +870,7 @@
             left: 50%;
             background: rgba(254, 0, 0, 0.8);
             border-radius: 10px;
-            margin-left: -100px;
+            margin-left: -120px;
             z-index: 99;
 
             user-select: none;
@@ -848,6 +885,18 @@
             animation: shake 0.3s ease;
         }
 
+        @keyframes shake {
+            10% {transform: translate3d(0,+5px,0)}
+            20% {transform: translate3d(0,-5px,0)}
+            40% {transform: translate3d(0,+3px,0)}
+            50% {transform: translate3d(0,-3px,0)}
+            70% {transform: translate3d(0,+1px,0)}
+            80% {transform: translate3d(0,-1px,0)}
+        }
+        @keyframes load {
+            0% {transform: translate3d(0,60px,0);opacity: 0}
+            100% {transform: translate3d(0,0,0);opacity: 1}
+        }
 
     </style>
 </head>
@@ -946,26 +995,31 @@
 <div class="card-mask mask-hide">
     <div>
         <form id="cardForm" method="post" enctype="multipart/form-data">
-            <input name="title" placeholder="输入标题...">
-            <input name="time" type="datetime-local" placeholder="输入日期...">
-            <input name="checkUserName" class="checkUser-input" placeholder="请输入监督人的用户名...">
+            <input class="card-mask-input" name="title" placeholder="输入标题...">
+            <input class="card-mask-input" name="time" type="datetime-local" min="2019-11-15T14:13" placeholder="输入日期...">
+            <input class="card-mask-input checkUser-input" name="checkUserName" placeholder="请输入监督人的用户名...">
             <div class="checkUser-div hide">
                 <div class="checkUser-tip hide">搜索中...</div>
                 <div class="checkUser-content"></div>
                 <!--<div class="checkUser">-->
-                    <!--<img class="checkUser-p" src="http://119.3.170.239/images/pig_head.jpg">-->
-                    <!--<span class="checkUser-name">admin</span>-->
+                    <!--<div class="click-cuser">-->
+                        <!--<img class="checkUser-p" src="http://119.3.170.239/images/pig_head.jpg">-->
+                        <!--<span class="checkUser-name">admin</span>-->
+                    <!--</div>-->
                     <!--<span class="add-user">添加</span>-->
                 <!--</div>-->
                 <!--<div class="checkUser"></div>-->
                 <!--<div class="checkUser"></div>-->
             </div>
-            <input name="msg" placeholder="输入简介...">
-            <input name="pic" id="cardPic" class="up-pic" type="file">
-            <label for="cardPic" class="label-up-pic">上传图片</label>
-            <input type="submit" value="提交">
+            <textarea class="card-mask-input" name="msg" placeholder="输入简介..."></textarea>
+            <div class="mask-pic-div">
+                <input class="card-mask-input up-pic" name="pic" id="cardPic" type="file">
+                <label for="cardPic" class="label-up-pic">上传图片</label>
+                <div class="close-pic hide">撤销</div>
+            </div>
+            <input class="card-mask-input" type="submit" value="提交">
+            <div class="close-mask">关闭</div>
         </form>
-        <div class="close-mask">关闭</div>
     </div>
 </div>
 

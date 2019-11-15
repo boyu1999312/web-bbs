@@ -8,4 +8,7 @@ public interface CardService {
 
     Result addCard(CardDto cardDto, MultipartFile file);
 
+    Result getMyCard();
+
+
 }

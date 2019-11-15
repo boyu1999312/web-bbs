@@ -1,5 +1,7 @@
 package com.xiaozhuzhijia.webbbs.common.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.xiaozhuzhijia.webbbs.common.entity.CardBean;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,7 +9,6 @@ import lombok.experimental.Accessors;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.util.StringUtils;
 
-import java.io.File;
 import java.util.Date;
 import java.util.Objects;
 
@@ -27,6 +28,7 @@ public class CardDto {
     /** 任务标题 */
     private String title;
     /** 任务到期时间 */
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm",timezone = "GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private Date time;
     /** 任务审核时间 */
@@ -34,7 +36,7 @@ public class CardDto {
     /** 任务简介 */
     private String msg;
     /** 任务图片 */
-    private String cardPic;
+    private String pic;
     /** 创建时间 */
     private Date createdTime;
     /** 修改时间 */
@@ -44,10 +46,22 @@ public class CardDto {
 
     public boolean isNull(){
 
-        return !StringUtils.isEmpty(this.getMsg()) &&
-                !StringUtils.isEmpty(this.getTitle()) &&
-                !StringUtils.isEmpty(this.getCheckUserName()) &&
-                !Objects.isNull(this.getTime());
+        return  !StringUtils.isEmpty(this.getTitle()) &&
+        !StringUtils.isEmpty(this.getCheckUserName()) &&
+        !Objects.isNull(this.getTime());
+    }
+
+    public CardDto toCardDto(CardBean cardBean){
+
+        return this.setTitle(cardBean.getCardTitle())
+                .setTime(cardBean.getCardTime())
+                .setCheckUserName(cardBean.getCardSuperintendent())
+                .setMsg(cardBean.getCardMsg())
+                .setPic(cardBean.getCardPic())
+                .setState(cardBean.getCardEffect())
+                .setCreatedTime(cardBean.getCreatedTime())
+                .setUpdatedTime(cardBean.getUpdatedTime())
+                .setExamineTime(cardBean.getCardExamineTime());
     }
 
 }

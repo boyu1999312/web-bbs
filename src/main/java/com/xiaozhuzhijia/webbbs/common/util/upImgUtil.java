@@ -24,6 +24,8 @@ public class upImgUtil {
         if(!localFile.getParentFile().exists()){
             localFile.getParentFile().mkdirs();
         }
+
+        //检测文件是否存在
         if(!localFile.exists()){
 
             try {
