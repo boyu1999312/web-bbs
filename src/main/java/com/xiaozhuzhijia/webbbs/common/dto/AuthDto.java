@@ -45,4 +45,6 @@ public class AuthDto {
     private String head;
     /** leftKey 用于修改密码 */
     private String left;
+    /** 用于验证用户信息(防止重复提交) */
+    private String token;
 }

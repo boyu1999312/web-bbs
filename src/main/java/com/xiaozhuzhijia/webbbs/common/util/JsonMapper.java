@@ -10,6 +10,8 @@ import java.io.IOException;
 
 public class JsonMapper {
 
+    private JsonMapper(){}
+
     private static final ObjectMapper mapper = new ObjectMapper();
 
     public static String toJson(Object data){

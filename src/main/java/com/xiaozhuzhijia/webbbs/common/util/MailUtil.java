@@ -10,6 +10,8 @@ import java.util.Properties;
 
 public class MailUtil {
 
+    private MailUtil(){}
+
     private static final String form = "boyu155115@163.com";
 
     private String toEmail = null;

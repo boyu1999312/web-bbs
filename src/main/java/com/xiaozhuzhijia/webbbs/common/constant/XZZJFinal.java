@@ -1,6 +1,6 @@
 package com.xiaozhuzhijia.webbbs.common.constant;
 
-public interface LoginFinal {
+public interface XZZJFinal {
     /** 登录cookie名称 */
     String COOKIE_LOGIN_TOKEN = "xzzj_loto_kginen";
 
@@ -9,4 +9,10 @@ public interface LoginFinal {
 
     /** 图片前缀 */
     String Picture_PREFIX = "http://119.3.170.239";
+
+    /** 防重复注册token */
+    String REGISTER_TOKEN = "_register";
+
+    /** 防重复提交卡片token */
+    String ADDCARD_TOKEN = "_add_card";
 }

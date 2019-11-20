@@ -22,7 +22,8 @@ import java.util.Objects;
 @Accessors(chain = true)
 public class CardDto {
 
-
+    /** 卡片ID */
+    private Integer id;
     /** 监督人id */
     private String checkUserName;
     /** 任务标题 */
@@ -43,6 +44,8 @@ public class CardDto {
     private Date updatedTime;
     /** 任务状态 */
     private Integer state;
+    /** 验证token */
+    private String token;
 
     public boolean isNull(){
 
@@ -53,7 +56,8 @@ public class CardDto {
 
     public CardDto toCardDto(CardBean cardBean){
 
-        return this.setTitle(cardBean.getCardTitle())
+        return this.setId(cardBean.getId())
+                .setTitle(cardBean.getCardTitle())
                 .setTime(cardBean.getCardTime())
                 .setCheckUserName(cardBean.getCardSuperintendent())
                 .setMsg(cardBean.getCardMsg())

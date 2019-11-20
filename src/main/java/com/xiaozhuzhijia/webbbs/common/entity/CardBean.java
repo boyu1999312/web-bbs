@@ -3,12 +3,12 @@ package com.xiaozhuzhijia.webbbs.common.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.xiaozhuzhijia.webbbs.common.constant.LoginFinal;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Data
@@ -16,7 +16,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Accessors(chain = true)
-public class CardBean {
+public class CardBean implements Serializable {
 
     @TableId(type = IdType.AUTO)
     private Integer id;

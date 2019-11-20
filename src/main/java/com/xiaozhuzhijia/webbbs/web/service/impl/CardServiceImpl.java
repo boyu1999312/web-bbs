@@ -1,12 +1,13 @@
 package com.xiaozhuzhijia.webbbs.web.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.xiaozhuzhijia.webbbs.common.constant.XZZJFinal;
 import com.xiaozhuzhijia.webbbs.common.dto.CardDto;
 import com.xiaozhuzhijia.webbbs.common.entity.CardBean;
 import com.xiaozhuzhijia.webbbs.common.util.Result;
-import com.xiaozhuzhijia.webbbs.common.util.upImgUtil;
+import com.xiaozhuzhijia.webbbs.common.util.TokenUtil;
+import com.xiaozhuzhijia.webbbs.common.util.UpImgUtil;
 import com.xiaozhuzhijia.webbbs.common.vo.UserVo;
-import com.xiaozhuzhijia.webbbs.web.controller.CardController;
 import com.xiaozhuzhijia.webbbs.web.local.LocalUser;
 import com.xiaozhuzhijia.webbbs.web.mapper.CardMapper;
 import com.xiaozhuzhijia.webbbs.web.service.CardService;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -35,14 +37,23 @@ public class CardServiceImpl implements CardService {
      * @return
      */
     @Override
-    public Result addCard(CardDto cardDto, MultipartFile file) {
+    public Result addCard(CardDto cardDto, MultipartFile file,
+                          HttpServletRequest request) {
 
+        String token = (String) request.getSession()
+                .getAttribute(LocalUser.get().getId() + XZZJFinal.ADDCARD_TOKEN);
 
-        Result result = Result.ok("已添加一个任务卡片");
-
+        System.out.println(cardDto.getToken() + "|" + token);
+        if(!TokenUtil.equalsToken(token, cardDto.getToken())){
+            return Result.error("请勿重复添加卡片");
+        }
+        request.getSession().removeAttribute(LocalUser.get().getId() +
+                XZZJFinal.ADDCARD_TOKEN);
         if(!cardDto.isNull()){
             return Result.error("请检查填写是否有误");
         }
+        Result result = Result.okMsg("已添加一个任务卡片");
+
 
         CardBean cardBean = new CardBean().setUserId(LocalUser.get().getId())
                 .setCardSuperintendent(cardDto.getCheckUserName())
@@ -60,7 +71,7 @@ public class CardServiceImpl implements CardService {
                 path = CardServiceImpl.class.getClassLoader().getResource("static/images/").getPath();
             }
             //调用图片上传工具
-            String filePath = upImgUtil.upImg(file, path);
+            String filePath = UpImgUtil.upImg(file, path);
             if(StringUtils.isEmpty(filePath)){
                 result.setCode(302);
                 result.setMsg("照片上传失败");
@@ -93,6 +104,34 @@ public class CardServiceImpl implements CardService {
         }
         System.out.println(cardDtos);
         return Result.ok(cardDtos);
+    }
+
+    /**
+     * 获取token
+     * @param request
+     * @return
+     */
+    @Override
+    public Result getAddCardToken(HttpServletRequest request) {
+
+        Integer id = LocalUser.get().getId();
+        String toekn = TokenUtil.getToekn(id);
+        request.getSession().setAttribute(id + XZZJFinal.ADDCARD_TOKEN, toekn);
+        return Result.ok(toekn);
+    }
+
+    /**
+     * 根据ID删除卡片
+     * @param id
+     * @return
+     */
+    @Override
+    public Result delCard(Integer id) {
+        int index = cardMapper.deleteById(new CardBean().setId(id));
+        if(index == 0){
+            return Result.error("卡片删除失败");
+        }
+        return Result.okMsg("卡片删除成功");
     }
 
 }

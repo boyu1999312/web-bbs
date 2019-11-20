@@ -1,25 +1,26 @@
 package com.xiaozhuzhijia.webbbs.web.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.xiaozhuzhijia.webbbs.common.constant.LoginFinal;
+import com.xiaozhuzhijia.webbbs.common.constant.XZZJFinal;
 import com.xiaozhuzhijia.webbbs.common.dto.AuthDto;
 import com.xiaozhuzhijia.webbbs.common.entity.UserBean;
-import com.xiaozhuzhijia.webbbs.common.util.JsonMapper;
-import com.xiaozhuzhijia.webbbs.common.util.MailUtil;
-import com.xiaozhuzhijia.webbbs.common.util.Result;
+import com.xiaozhuzhijia.webbbs.common.util.*;
 import com.xiaozhuzhijia.webbbs.common.vo.UserVo;
 import com.xiaozhuzhijia.webbbs.web.local.LocalUser;
 import com.xiaozhuzhijia.webbbs.web.mapper.UserMapper;
 import com.xiaozhuzhijia.webbbs.web.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -33,6 +34,8 @@ public class UserServiceImpl implements UserService {
 
     @Value("${xzzj.local}")
     private String local;
+    @Value("${xzzj.imgPath}")
+    private String path;
 
     /**
      * 登录
@@ -66,7 +69,7 @@ public class UserServiceImpl implements UserService {
         String loginToken = DigestUtils.md5DigestAsHex((authDto.getAccEmail()
                 + "XZZJ_LOGIN" + System.currentTimeMillis()).getBytes());
         int time = 3600 * 24 * 30 * 6;
-        Cookie cookie = new Cookie(LoginFinal.COOKIE_LOGIN_TOKEN, loginToken);
+        Cookie cookie = new Cookie(XZZJFinal.COOKIE_LOGIN_TOKEN, loginToken);
         cookie.setMaxAge(time);//设置半年
         cookie.setPath("/");
         //初始化UserInfo
@@ -100,7 +103,7 @@ public class UserServiceImpl implements UserService {
         if(Objects.isNull(userBean)){
             return Result.error("该邮箱未注册");
         }
-        return Result.ok("邮箱正确");
+        return Result.okMsg("邮箱正确");
     }
 
     /**
@@ -109,7 +112,7 @@ public class UserServiceImpl implements UserService {
      * @return
      */
     @Override
-    public Result register(AuthDto authDto) {
+    public Result register(AuthDto authDto, HttpServletRequest request) {
 
         //将DTO数据封装到PO对象中
         UserBean userBean = new UserBean().setUserName(authDto.getAcc())
@@ -119,17 +122,14 @@ public class UserServiceImpl implements UserService {
                 .setUpdatedTime(authDto.getCreatedTime())
                 .setSalt(System.currentTimeMillis() + "");
 
-        //从redis中获取注册信息
-        //进行信息比对，如果不匹配，提示注册信息有误
-        String auth = redis.opsForValue().get("auth," + authDto.getCodeCache());
-        if(StringUtils.isEmpty(auth)){
-            return Result.error("注册超时，请重新注册");
-        }
-        String[] auths = auth.split(",");
-        if(!auths[0].equals(authDto.getEmail())){
-            return Result.error("注册信息不匹配");
-        }
+        //从session中把token取出来校验
+        String token = (String) request.getSession()
+                .getAttribute(authDto.getEmail() + XZZJFinal.REGISTER_TOKEN);
+        System.out.println("获取的token:" + token);
 
+        if(!TokenUtil.equalsToken(token, authDto.getToken())){
+            return Result.error("请勿重复提交");
+        }
 
         //将密码加密成MD5值
         String pwdMd5 = DigestUtils.md5DigestAsHex(
@@ -137,15 +137,15 @@ public class UserServiceImpl implements UserService {
         userBean.setPassWord(pwdMd5)
                 .setNickName(authDto.getAcc());
 
-
         int index = userMapper.insert(userBean);
         //注册成功
-        if(1 == index) {
-            redis.delete("auth," + authDto.getCodeCache());
-            return Result.ok();
+        if(1 != index) {
+            return Result.error("注册失败");
         }
 
-        return Result.ok("注册成功, 3 秒后自动跳转");
+        redis.delete(authDto.getCodeCache());
+        request.getSession().removeAttribute(authDto.getEmail() + XZZJFinal.REGISTER_TOKEN);
+        return Result.ok();
     }
 
     /**
@@ -159,7 +159,7 @@ public class UserServiceImpl implements UserService {
         UserBean userBean = userMapper.selectOne(new QueryWrapper<UserBean>(
                 new UserBean().setUserName(userName)).select("user_name"));
         return Objects.isNull(userBean)
-                ? Result.ok("用户名可用")
+                ? Result.okMsg("用户名可用")
                 : Result.error("用户名已注册");
     }
 
@@ -174,7 +174,7 @@ public class UserServiceImpl implements UserService {
         UserBean userBean = userMapper.selectOne(new QueryWrapper<UserBean>(
                 new UserBean().setEmail(email)).select("email"));
         return Objects.isNull(userBean)
-                ? Result.ok("邮箱可用")
+                ? Result.okMsg("邮箱可用")
                 : Result.error("邮箱已注册");
     }
 
@@ -198,7 +198,7 @@ public class UserServiceImpl implements UserService {
         }
 
 
-        return Result.ok("验证码正确");
+        return Result.okMsg("验证码正确");
     }
 
     /**
@@ -219,7 +219,7 @@ public class UserServiceImpl implements UserService {
      * @param authDto
      */
     @Override
-    public Result getCode(AuthDto authDto) {
+    public Result getCode(AuthDto authDto, HttpServletRequest request) {
 
         String emailCode = authDto.getEmail() + ",";
         for (int i = 0; i < 5; i++) {
@@ -235,17 +235,14 @@ public class UserServiceImpl implements UserService {
         }
 
 
-        //将验证码存入redis，120s
+        //将验证码存入redis，300s
         redis.opsForValue().set(authDto.getCodeCache(), emailCode,
                 300, TimeUnit.SECONDS);
-
-        //将注册信息存入redis,30m
-        redis.opsForValue().set(
-                "auth," + authDto.getCodeCache(),
-                emailCode, 30, TimeUnit.MINUTES);
-
-
-        return Result.ok();
+        String toekn = TokenUtil.getToekn(authDto.getEmail());
+        request.getSession().setAttribute(authDto.getEmail() +
+                        XZZJFinal.REGISTER_TOKEN, toekn);
+        System.out.println("生成token:" + toekn);
+        return Result.ok(toekn);
     }
 
 
@@ -267,7 +264,7 @@ public class UserServiceImpl implements UserService {
                     .getEmail() + System.currentTimeMillis()).getBytes());
             String codeMD5 = DigestUtils.md5DigestAsHex((authDto
                     .getCode() + System.currentTimeMillis()).getBytes());
-            String temp = emailMD5 + LoginFinal.FORGET_PASSWORD_TOKEN + codeMD5;
+            String temp = emailMD5 + XZZJFinal.FORGET_PASSWORD_TOKEN + codeMD5;
 
             String text =   "小猪之家的忘记密码邮件：<br/>" +
                             "哦！糟糕！忘记密码了吗！呆胶布！点击下面这个链接就可以重新设置您的密码了呢！<br/>" +
@@ -303,7 +300,7 @@ public class UserServiceImpl implements UserService {
     public String checkForgetPassword(String head, String left, Model model) {
 
         String email = redis.opsForValue().get(head +
-                LoginFinal.FORGET_PASSWORD_TOKEN + left);
+                XZZJFinal.FORGET_PASSWORD_TOKEN + left);
         if(StringUtils.isEmpty(email)){
             return "error/404";
         }
@@ -322,7 +319,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Result updPassword(AuthDto authDto) {
         String key = authDto.getHead()
-                + LoginFinal.FORGET_PASSWORD_TOKEN
+                + XZZJFinal.FORGET_PASSWORD_TOKEN
                 + authDto.getLeft();
         String email = "";
 
@@ -354,7 +351,7 @@ public class UserServiceImpl implements UserService {
             return Result.error("系统错误，请刷新重试");
         }
         redis.delete(key);
-        return Result.ok("修改密码成功，3 秒后自动跳转");
+        return Result.okMsg("修改密码成功，3 秒后自动跳转");
     }
 
     /**
@@ -404,6 +401,40 @@ public class UserServiceImpl implements UserService {
         }
 
         return Result.ok(userBeans);
+    }
+
+    /**
+     * 更换头像
+     * @param file
+     * @return
+     */
+    @Override
+    public Result setPic(MultipartFile file) {
+        if(Objects.isNull(file)){
+            return Result.error("上传错误");
+        }
+        String picPath = null;
+        try {
+            picPath = UpImgUtil.upImg(file, path);
+        }catch (Exception e){
+            e.printStackTrace();
+            return Result.error("上传错误");
+        }
+        if(StringUtils.isEmpty(picPath)){
+            return Result.error("更换失败");
+        }
+
+        int index = userMapper.updateById(new UserBean().setId(LocalUser.get()
+                .getId()).setPortrait(picPath));
+        if(index == 0){
+            return Result.error("用户信息更新失败");
+        }
+        UserVo userVo = LocalUser.get();
+        userVo.setPortrait(picPath);
+        String userInfo = JsonMapper.toJson(userVo);
+        redis.opsForValue().set(userVo.getToken(),
+                userInfo, 3600 * 24 * 30 * 6, TimeUnit.SECONDS);
+        return Result.okMsg("更换成功");
     }
 
 }

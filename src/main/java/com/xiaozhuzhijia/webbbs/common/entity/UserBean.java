@@ -3,7 +3,7 @@ package com.xiaozhuzhijia.webbbs.common.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.xiaozhuzhijia.webbbs.common.constant.LoginFinal;
+import com.xiaozhuzhijia.webbbs.common.constant.XZZJFinal;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -41,10 +41,10 @@ public class UserBean {
     /** 盐值 */
     private String salt;
 
-    public UserBean setPortrait(String portrait){
-        this.portrait = LoginFinal.Picture_PREFIX + portrait;
-        return this;
-    }
+//    public UserBean setPortrait(String portrait){
+//        this.portrait = XZZJFinal.Picture_PREFIX + portrait;
+//        return this;
+//    }
 
 
 

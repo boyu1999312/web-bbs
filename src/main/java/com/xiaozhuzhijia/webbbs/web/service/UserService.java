@@ -3,6 +3,7 @@ package com.xiaozhuzhijia.webbbs.web.service;
 import com.xiaozhuzhijia.webbbs.common.dto.AuthDto;
 import com.xiaozhuzhijia.webbbs.common.util.Result;
 import org.springframework.ui.Model;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
@@ -10,9 +11,9 @@ import java.util.Map;
 public interface UserService {
 
 
-    Result register(AuthDto authDto);
+    Result register(AuthDto authDto, HttpServletRequest request);
 
-    Result getCode(AuthDto authDto);
+    Result getCode(AuthDto authDto, HttpServletRequest request);
 
     Result checkUserName(String userName);
 
@@ -35,5 +36,7 @@ public interface UserService {
     Result logout();
 
     Result getUserByUserName(String userName);
+
+    Result setPic(MultipartFile file);
 
 }

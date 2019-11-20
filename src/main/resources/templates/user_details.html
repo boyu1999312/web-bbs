@@ -223,7 +223,9 @@
             -ms-user-select: none;
             -moz-user-select: none;
         }
-
+        .pic-input {
+            display: none;
+        }
         .user-group img {
             width: 37px;
             height: 37px;
@@ -365,19 +367,43 @@
             height: 350px;
             background: red;
         }
-
-        .user-portrait img {
+        .user-portrait .div-pic {
+            position: absolute;
             margin: 10px;
             width: 80px;
             height: 80px;
             border-radius: 50%;
-            border: hsla(0, 0%, 100%, .4) solid 1px;
+            /*background: url("http://119.3.170.239/images/pig_head.jpg") no-repeat;*/
+            /*background-size: cover;*/
             cursor: pointer;
 
             transition: all 0.3s ease;
         }
-        .user-portrait img:active {
-            height: 150px;
+        .div-pic:hover + .portrait {
+            z-index: 3;
+            opacity: 1;
+        }
+
+        .portrait {
+            position: absolute;
+            top: 30px;
+            left: 35px;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.49);
+            line-height: 80px;
+            text-align: center;
+            color: white;
+            cursor: pointer;
+            z-index: -1;
+            opacity: 0;
+
+            transition: all 0.3s ease;
+        }
+        .portrait:hover {
+            z-index: 3;
+            opacity: 1;
         }
 
 
@@ -393,6 +419,42 @@
 
         /** main 结束 */
 
+        /** 引用 */
+        /** 提示框 */
+        .t-box {
+            position: fixed;
+            width: 200px;
+            text-align: center;
+            color: white;
+            font-size: 1em;
+            padding: 30px 15px;
+
+            top: 35%;
+            left: 50%;
+            background: rgba(254, 0, 0, 0.8);
+            border-radius: 10px;
+            margin-left: -100px;
+            z-index: 99;
+
+            user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            -webkit-user-select: none;
+
+            word-wrap: break-word;
+            word-break: break-all;
+        }
+        .t-box-flash {
+            animation: shake 0.3s ease;
+        }
+        @keyframes shake {
+            10% {transform: translate3d(0,+5px,0)}
+            20% {transform: translate3d(0,-5px,0)}
+            40% {transform: translate3d(0,+3px,0)}
+            50% {transform: translate3d(0,-3px,0)}
+            70% {transform: translate3d(0,+1px,0)}
+            80% {transform: translate3d(0,-1px,0)}
+        }
     </style>
 </head>
 <body>
@@ -403,7 +465,7 @@
             <div class="space">
                 <div class="icon" onclick="window.open('http://119.3.170.239','_self')"></div>
                 <div class="user-group">
-                    <img>
+                    <img/>
                     <div class="user-des">
                         <div>
                             <a><span class="user-space"></span>个人中心</a>
@@ -436,7 +498,7 @@
                 </ul>
                 <div class="search search-right">
                     <!--<label>搜索</label>-->
-                    <input type="text" placeholder="搜索...">
+                    <input type="text" placeholder="搜索..."/>
                     <button type="button" class="search-btn"></button>
                 </div>
             </div>
@@ -445,7 +507,9 @@
     <div class="main">
         <div class="group-left">
             <div class="user-portrait">
-                <img>
+                <div class="div-pic"></div>
+                <label for="inputPic" class="portrait">更换头像</label>
+                <input type="file" name="pic" id="inputPic" class="pic-input">
                 <span></span>
             </div>
         </div>

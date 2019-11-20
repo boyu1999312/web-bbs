@@ -491,14 +491,33 @@
             padding: 0 15px;
         }
         .card-tip h2 {
+            display: inline-block;
             cursor: default;
             width: 100px;
             transition: all 0.2s ease;
+            margin-right: 10px;
+        }
+        .card-tip-switch {
+            display: inline-block;
         }
         .card-tip h2:hover {
             color: #93D1FF;
         }
+        .card-tip-it {
+            display: inline-block;
+            width: auto;
+            margin-right: 5px;
+            cursor: pointer;
 
+            transition: all 0.2s ease;
+        }
+        .card-tip-it:hover {
+            color: #19b4ef;
+        }
+        .on {
+            color: #1598ca;
+            border-bottom: #19b4ef solid 2px;
+        }
         .container-card .card {
             position: relative;
             display: inline-block;
@@ -522,7 +541,7 @@
             height: 230px;
             top: 230px;
             transition: .4s;
-            background: orangered;
+            background: #FFDEAD;
         }
         .card .time {
             width: 100%;
@@ -546,8 +565,9 @@
             left: 0;
             font-size: 14px;
             color: white;
-            border-top: green solid 4px;
+            border-top: rgba(0, 0, 0, 0.41) solid 4px;
             padding-top: 5px;
+            box-shadow: 0 -8px 15px -5px rgba(36, 36, 36, 0.37);
 
             overflow: hidden;
             white-space: nowrap;
@@ -557,7 +577,25 @@
             bottom: 0;
             height: 40px;
             width: 100%;
-            background: green;
+            background: rgba(0, 0, 0, 0.41);
+        }
+        .card-del {
+            position: absolute;
+            right: 10px;
+            bottom: 13px;
+            height: 20px;
+            padding: 0 3px;
+            cursor: pointer;
+            background: #d60000;
+            color: #dfdfdf;
+            border-radius: 7px;
+            font-size: 0.8em;
+            transition: all 0.2s ease;
+        }
+        .card-del:hover {
+            background: #e20000;
+            color: white;
+            box-shadow: 2px 1px 10px #ff0000;
         }
 /*        .card:nth-child(1) {
             background: url("http://119.3.170.239/images/xiaozhu.jpg") no-repeat;
@@ -859,7 +897,7 @@
         /** 引用login.html 的样式 */
         /** 提示框 */
         .t-box {
-            position: absolute;
+            position: fixed;
             width: 200px;
             text-align: center;
             color: white;
@@ -978,7 +1016,15 @@
 
         </div>
         <div class="container-card">
-            <div class="card-tip"><h2>任务卡片</h2></div>
+            <div class="card-tip">
+                <h2>任务卡片</h2>
+                <div class="card-tip-switch">
+                    <div class="card-tip-it on">自己</div>
+                    <div class="card-tip-it">好友</div>
+                    <div class="card-tip-it">小公举</div>
+                    <div class="card-tip-it">小陀螺</div>
+                </div>
+            </div>
             <div class="card-left">
                 <div class="card card-plus">
                     <div></div>
@@ -1019,6 +1065,7 @@
             </div>
             <input class="card-mask-input" type="submit" value="提交">
             <div class="close-mask">关闭</div>
+            <input type="hidden" name="token"/>
         </form>
     </div>
 </div>

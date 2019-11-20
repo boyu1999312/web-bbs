@@ -6,12 +6,14 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Result implements Serializable {
 
-    private int code;
+
+    private Integer code;
     private String msg;
     private Object data;
 
@@ -32,7 +34,7 @@ public class Result implements Serializable {
         return new Result(200, "ok", data);
     }
 
-    public static Result ok(String msg) {
+    public static Result okMsg(String msg) {
         return new Result(200, msg, null);
     }
 }

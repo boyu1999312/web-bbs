@@ -6,6 +6,9 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 public class CookieUtil {
+
+    private CookieUtil(){}
+
     /**
      * 根据名称获取cookie
      * @param name

@@ -39,7 +39,7 @@ public class UserVo {
                 .setNickName(userBean.getNickName())
                 .setUserName(userBean.getUserName())
                 .setCreatedTime(userBean.getCreatedTime())
-                .setPortrait("http://119.3.170.239" + userBean.getPortrait());
+                .setPortrait(userBean.getPortrait());
     }
 
 }

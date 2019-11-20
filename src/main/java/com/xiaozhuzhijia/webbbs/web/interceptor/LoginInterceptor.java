@@ -1,8 +1,7 @@
 package com.xiaozhuzhijia.webbbs.web.interceptor;
 
 
-import com.xiaozhuzhijia.webbbs.common.constant.LoginFinal;
-import com.xiaozhuzhijia.webbbs.common.entity.UserBean;
+import com.xiaozhuzhijia.webbbs.common.constant.XZZJFinal;
 import com.xiaozhuzhijia.webbbs.common.util.CookieUtil;
 import com.xiaozhuzhijia.webbbs.common.util.JsonMapper;
 import com.xiaozhuzhijia.webbbs.common.vo.UserVo;
@@ -55,7 +54,7 @@ public class LoginInterceptor implements HandlerInterceptor {
         String servletPath = request.getServletPath();
         log.info("当前访问网址：" + servletPath);
 
-        Cookie cookie = CookieUtil.getCookie(LoginFinal.COOKIE_LOGIN_TOKEN, request);
+        Cookie cookie = CookieUtil.getCookie(XZZJFinal.COOKIE_LOGIN_TOKEN, request);
         if(Objects.isNull(cookie)){
             if(checkCurrentUrl(servletPath)){
                 return true;
