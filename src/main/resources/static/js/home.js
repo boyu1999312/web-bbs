@@ -57,43 +57,27 @@ $(".card-plus").click(function (e) {
         cardMask = !cardMask;
         $("body").addClass("overflow-hide");
         timeInit();
-        getToken();
     }
 
     // return;
 });
-/** 获取信息token */
-function getToken() {
-    $.ajax({
-        url: "http://localhost:9400/xzzj/bbs/card/getAddCardToken",
-        type: "GET",
-        datatype: "json",
-        success: function (result) {
-            if(result.code == 200){
-                console.log(result.data);
-                $("input[name='token']").val(result.data);
-            }else {
-                errtip_show(result.msg, 1500);
-            }
-        }
-    })
-}
+
 /** 将卡片信息装填到页面 */
-function cardInit(id, time, title, msg, pic) {
+function cardInit(time, title, msg, pic) {
     msg = msg === "" ? "这个人很懒，没有简介了..." : msg;
-    var $card = $("<div class='card card-move' id='"+id+"'>" +
+    var $card = $("<div class='card card-move'>" +
         "<div class='des'>" +
         "<h2 class='time' time='" + time + "'></h2>" +
-        "<span class='time-des'>完成 ["+title+"] 的时间还有...</span>" +
-        "<pre class='more-des'>"+msg+"</pre>" +
-        "<div class='btm-des'><div class='card-del'>删除</div></div></div></div>");
-    $card.css({"background":"url('"+pic+"') no-repeat","background-size":"contain"});
+        "<span class='time-des'>完成 [" + title + "] 的时间还有...</span>" +
+        "<pre class='more-des'>" + msg + "</pre>" +
+        "<div class='btm-des'></div></div></div>");
+    $card.css({"background": "url('" + pic + "') no-repeat", "background-size": "contain"});
     $(".card-plus").before($card);
     cardCountdown();
 }
 
 /** 关闭任务卡片添加层 */
-function closeMask(){
+function closeMask() {
     var $mask = $(".card-mask");
     if (cardMask) {
         $mask.addClass("mask-hide");
@@ -107,6 +91,7 @@ function closeMask(){
     });
     clearPic();
 }
+
 $(".close-mask").click(function () {
     closeMask();
 });
@@ -120,17 +105,20 @@ function checkIsNull() {
     }
     return false;
 }
+
 /** 时间初始化 */
-function timeInit(){
+function timeInit() {
     let date = new Date().Format("yyyy-MM-ddThh:mm");
     $("input[name='time']").val(date);
 }
+
 /** 时间blur */
 $("input[name='time']").blur(function () {
-   minTime();
+    minTime();
 });
+
 /** 设置时间不得小于当前时间 */
-function minTime(){
+function minTime() {
     let $el = $("#cardForm input[name='time']");
     let time = new Date(reTime($el.val()).replace("-", "/").replace("-", "/"));
     let date = new Date();
@@ -138,13 +126,14 @@ function minTime(){
     // console.log("date: " + date);
     let flag = time > date;
     // console.log("大小比对：" + (flag));
-    if(!flag){
+    if (!flag) {
         $el.val(date.Format("yyyy-MM-ddThh:mm"))
         errtip_show("设置时间不能小于等于当前时间");
         return false;
     }
     return true;
 }
+
 /** 时间格式转成字符串 */
 Date.prototype.Format = function (fmt) {
     var o = {
@@ -158,7 +147,7 @@ Date.prototype.Format = function (fmt) {
     };
     if (/(y+)/.test(fmt))
         fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
-    for (var k in o){
+    for (var k in o) {
         if (new RegExp("(" + k + ")").test(fmt)) {
             fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
         }
@@ -181,13 +170,15 @@ $("input[name='pic']").change(function (e) {
     }).text("");
     $(".close-pic").removeClass("hide");
 });
+
 /** 图片撤销 */
-function clearPic(){
+function clearPic() {
     $("input[name='pic']").val("");
-    $(".label-up-pic").css({"background":"",}).text("上传图片");
+    $(".label-up-pic").css({"background": "",}).text("上传图片");
     $(".close-pic").addClass("hide");
     imgfile = null;
 }
+
 $(".close-pic").click(function () {
     clearPic();
 });
@@ -203,7 +194,7 @@ $(".checkUser-input").bind("input propertychange", function () {
         $(".checkUser-tip").removeClass("hide").text("搜索中...");
 
         $.ajax({
-            url: "http://localhost:9400/xzzj/bbs/account/getUserByUserName",
+            url: "http://119.3.170.239/xzzj/bbs/account/getUserByUserName",
             type: "POST",
             data: {"userName": $(this).val()},
             datatype: "json",
@@ -264,35 +255,14 @@ $("body").on("click", ".click-cuser", function () {
     $(".checkUser-div").addClass("hide");
     $(".checkUser-div").removeClass("high-height");
 });
-/** 删除card */
-$("body").on("click", ".card-del",function () {
-    let id = $(this).parents(".card-move").attr("id");
-    console.log(id);
-    $.ajax({
-        url: "http://localhost:9400/xzzj/bbs/card/delCard",
-        type: "POST",
-        data: {"id": id},
-        datatype: "json",
-        success: function (result) {
-            if(result.code === 200){
-                success_show(result.msg, 1500);
-                setTimeout(function () {
-                    window.location.replace("http://localhost:9400");
-                },500)
-            }else {
-                errtip_show(result.msg);
-            }
-        }
-    });
-});
+
+
 /** 切换卡片页 */
-var $switchCardIt = $(".on");
+var $cardPage = $(".on");
 $(".card-tip-it").click(function () {
-    $switchCardIt.removeClass("on");
-    $switchCardIt = $(this);
-
+    $cardPage.removeClass("on");
+    $cardPage = $(this);
    $(this).addClass("on");
-
 });
 /** 拦截添加任务层提交 */
 $("#cardForm input[type='submit']").click(function (e) {
@@ -300,12 +270,14 @@ $("#cardForm input[type='submit']").click(function (e) {
     event.preventDefault(); // 兼容标准浏览器
     window.event.returnValue = false; // 兼容IE6~8
 
-    if(!checkIsNull()){
+    if (!checkIsNull()) {
         errtip_show("标题和监督人不能为空");
         return;
     }
     //检查时间是否正确
-    if(!minTime()){ return; }
+    if (!minTime()) {
+        return;
+    }
 
     var fd = new FormData();
     fd.append("filePic", imgfile);
@@ -313,9 +285,8 @@ $("#cardForm input[type='submit']").click(function (e) {
     fd.append("checkUserName", $("input[name='checkUserName']").val());
     fd.append("time", reTime($("input[name='time']").val()));
     fd.append("msg", $("textarea[name='msg']").val());
-    fd.append("token", $("input[name='token']").val());
     $.ajax({
-        url: "http://localhost:9400/xzzj/bbs/card/addCard",
+        url: "http://119.3.170.239/xzzj/bbs/card/addCard",
         type: "POST",
         data: fd,
         datatype: "json",
@@ -327,9 +298,6 @@ $("#cardForm input[type='submit']").click(function (e) {
                 flag = true;
                 success_show(result.msg, 3000);
                 closeMask();
-                setTimeout(function () {
-                    window.location.replace("http://localhost:9400");
-                },500)
             } else {
                 flag = false;
                 errtip_show(result.msg);
@@ -345,15 +313,16 @@ function reTime(obj) {
     return obj.replace(/T/g, " ");
     //document.getElementById('date1').value = obj.value.replace(/T/g, " ").replace(/\.[\x00-\xff]*/g, '');
 }
+
 /** 点击用户组下退出链接 */
 $(".user-exit").parent("a").click(function () {
     $.ajax({
-        url: "http://localhost:9400/xzzj/bbs/account/logout",
+        url: "http://119.3.170.239/xzzj/bbs/account/logout",
         type: "POST",
         datatype: "json",
         success: function (result) {
             if (result.code === 200) {
-                window.location.replace("http://localhost:9400");
+                window.location.replace("http://119.3.170.239");
             } else {
                 console.log(result.msg);
             }
@@ -362,12 +331,13 @@ $(".user-exit").parent("a").click(function () {
 });
 /** 点击用户组下个人中心链接 */
 $(".user-space").parent("a").click(function () {
-    window.location.replace("http://localhost:9400/xzzj/user_details");
+    window.location.replace("http://119.3.170.239/xzzj/user_details");
 });
+
 /** 获取自己的用户信息 */
 function getUserInfo() {
     $.ajax({
-        url: "http://localhost:9400/xzzj/bbs/account/getUserInfo",
+        url: "http://119.3.170.239/xzzj/bbs/account/getUserInfo",
         type: "POST",
         datatype: "json",
         success: function (result) {
@@ -380,22 +350,22 @@ function getUserInfo() {
         }
     })
 }
+
 /** 获取自己的卡片信息 */
 function getMyCard() {
     $.ajax({
-        url: "http://localhost:9400/xzzj/bbs/card/getMyCard",
+        url: "http://119.3.170.239/xzzj/bbs/card/getMyCard",
         type: "GET",
         datatype: "json",
         success: function (result) {
-            if(result.code === 200){
+            if (result.code === 200) {
 
                 for (let i = 0; i < result.data.length; i++) {
                     let card = result.data[i];
-                    // console.log(card);
-                    cardInit(card.id,card.time,card.title,card.msg,card.pic);
+                    cardInit(card.time, card.title, card.msg, card.pic);
                 }
 
-            }else {
+            } else {
                 // errtip_show(result.msg);
             }
         }

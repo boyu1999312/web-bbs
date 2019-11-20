@@ -2,17 +2,23 @@ package com.xiaozhuzhijia.webbbs.web.controller;
 
 import com.xiaozhuzhijia.webbbs.common.constant.XZZJFinal;
 import com.xiaozhuzhijia.webbbs.common.dto.AuthDto;
+import com.xiaozhuzhijia.webbbs.common.entity.UserBean;
+import com.xiaozhuzhijia.webbbs.common.util.CookieUtil;
 import com.xiaozhuzhijia.webbbs.common.util.Result;
 import com.xiaozhuzhijia.webbbs.web.service.UserService;
 import org.apache.juli.logging.Log;
 import org.apache.juli.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/xzzj/bbs/account")
@@ -111,11 +117,5 @@ public class AccountController {
     public Result getUserByUserName(String userName){
 
         return userService.getUserByUserName(userName);
-    }
-
-    @PostMapping("/setPic")
-    public Result setPic(@RequestParam(value = "filePic" ,required = false) MultipartFile file){
-
-        return userService.setPic(file);
     }
 }

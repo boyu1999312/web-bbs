@@ -10,20 +10,19 @@
         body {
             margin: 0;
             background: #f5f5f5;
-            scroll-behavior:smooth;
+            scroll-behavior: smooth;
 
         }
+
         /** grid父级容器 */
         .content {
             display: grid;
             grid-template-rows: 170px auto 250px;
-            grid-template-areas:
-                    "h h h"
-                    "l m r"
-                    "f f f";
+            grid-template-areas: "h h h" "l m r" "f f f";
 
             gap: 10px 15px;
         }
+
         .content-box {
             grid-template-columns: auto 1142px auto;
         }
@@ -49,6 +48,7 @@
             margin: 0;
             padding: 0;
         }
+
         .nav-ul li {
             float: left;
             display: inline-block;
@@ -71,6 +71,7 @@
             -ms-user-select: none;
             -webkit-user-select: none;
         }
+
         .sub-nav a {
             display: block;
             text-align: center;
@@ -81,41 +82,47 @@
             padding: 0 20px;
             transition: all 0.3s ease;
         }
+
         .sub-nav-split {
             margin: 5px 0 5px 0;
             height: 1px;
             background: #b9bcbc;
         }
+
         .sub-nav span {
 
             display: block;
             transition: all 0.3s ease-out;
         }
 
-        .sub-nav a:hover span{
+        .sub-nav a:hover span {
 
             transform: translateX(3px);
         }
+
         .sub-nav a:hover {
 
             background: hsla(0, 0%, 77%, 0.7);
         }
+
         .sub-nav a:active {
             background: hsla(0, 0%, 20%, 0.4);
         }
 
-        .nav-ul li:hover .sub-nav{
+        .nav-ul li:hover .sub-nav {
 
             transform: translateY(-10px);
             z-index: 9999;
             opacity: 1;
         }
+
         /** Home导航栏下拉菜单结束 */
 
         .space {
             margin: 0 auto;
             width: 1142px;
         }
+
         .inner {
             background: inherit;
             height: 50px;
@@ -130,13 +137,13 @@
             height: 50px;
             width: 100%;
             min-width: 1142px;
-            background: hsla(0,0%,100%,.4);
+            background: hsla(0, 0%, 100%, .4);
         }
 
         .nav-ul li > a:hover {
             color: black;
             text-shadow: #c0c0c0 0 1px 5px;
-            background: hsla(0,0%,100%,.5);
+            background: hsla(0, 0%, 100%, .5);
         }
 
         .nav-ul li > a {
@@ -165,7 +172,7 @@
             text-align: center;
             height: 27px;
             margin-top: 0.65em;
-            border: 3px solid rgba(0,0,0,.12);
+            border: 3px solid rgba(0, 0, 0, .12);
             border-radius: 9px;
             padding: 0;
         }
@@ -177,7 +184,7 @@
             padding: 5px 10px;
             border-radius: 7px 0 0 7px;
             color: #4b4b4b;
-            background: hsla(0,0%,100%,.4);
+            background: hsla(0, 0%, 100%, .4);
             border: 0;
             overflow: hidden;
             transition: all 0.5s ease;
@@ -200,14 +207,17 @@
             border-bottom-right-radius: 9px;
             outline: none;
         }
+
         .search:hover input {
             color: #1c1c1c;
             background: white;
         }
+
         .search:hover button {
             background: url("http://119.3.170.239/icon/search_icon_b.png") no-repeat 5px 3px;
             background-size: 70%;
         }
+
         .user-group {
             position: relative;
             float: right;
@@ -218,6 +228,7 @@
             -ms-user-select: none;
             -moz-user-select: none;
         }
+
         .user-group img {
             width: 37px;
             height: 37px;
@@ -226,8 +237,9 @@
             /*transform: rotate(-45deg);*/
             cursor: pointer;
             /*box-shadow: hsla(0, 0%, 34%, 0.95) 0 0 2px;*/
-            border: hsla(0,0%,100%,.4) solid 1px;
+            border: hsla(0, 0%, 100%, .4) solid 1px;
         }
+
         .user-group .user-des {
             position: absolute;
             top: 66px;
@@ -242,9 +254,11 @@
 
             box-shadow: #818181 0 0 10px;
         }
+
         .user-des div:first-child {
             margin: 5px 0;
         }
+
         .user-des:before {
             content: "";
             position: absolute;
@@ -260,6 +274,7 @@
             border-top: 1px solid #ebebeb;
             border-left: 1px solid #ebebeb;
         }
+
         .user-des span {
             position: relative;
             display: inline-block;
@@ -271,28 +286,108 @@
             top: 3px;
             padding: 0 0 0 3px;
         }
+
         .user-space {
             background: url("http://119.3.170.239/icon/user-space.png") no-repeat;
         }
+
+        .user-msg {
+            background: url("http://119.3.170.239/icon/user-msg.png") no-repeat;
+        }
+
+        .user-des .ab {
+            display: inline-block;
+            position: absolute;
+            width: 20px;
+            height: 17px;
+            line-height: 17px;
+            border-radius: 10px;
+            color: white;
+            background: red;
+            text-align: center;
+            padding: 0 2px;
+            font-size: 5px;
+            top: 9px;
+            margin-left: 5px;
+        }
+        .msg-box-bottom {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+        }
+        .msg-box {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 700px;
+            height: 500px;
+            background: #e5e5e5;
+            margin: auto;
+            border-radius: 7px;
+            overflow: hidden;
+            z-index: 3;
+
+            transition: all 0.2s ease;
+        }
+        .msg-header {
+            position: relative;
+            width: 100%;
+            height: 60px;
+            background: white;
+            color: #84bde6;
+        }
+        .h-bottom {
+            margin: 0 auto;
+            width: 300px;
+        }
+        .h-div {
+            display: inline-block;
+            width: 32%;
+            height: 60px;
+            line-height: 60px;
+            text-align: center;
+            cursor: pointer;
+
+            transition: background 0.2s ease;
+        }
+        .h-div:hover {
+            color: white;
+            background: #6e9dbf;
+            box-shadow: 0 0 10px #6e9dbf;
+        }
+
         .user-exit {
             background: url("http://119.3.170.239/icon/user-exit.png") no-repeat;
         }
+
         .user-des a {
+            position: relative;
             display: block;
             padding: 0 15px;
-            color: #8590a6;
+            color: #273638;
             font-size: 14px;
             height: 35px;
             line-height: 35px;
             cursor: pointer;
         }
+
         .user-des a:hover {
             background: hsla(0, 0%, 55%, 0.34);
         }
+
         .user-group:hover .user-des {
             opacity: 1;
-            transform: translate3d(0,-9px,0);
+            transform: translate3d(0, -9px, 0);
             z-index: 1;
+        }
+
+        .user-des-split {
+            height: 1px;
+            background: #e5e5e5;
+            margin: 5px auto;
+            padding: 0 5px;
         }
 
         .icon {
@@ -305,17 +400,19 @@
 
             cursor: pointer;
         }
+
         .icon:before {
             content: "";
             position: absolute;
             z-index: 999;
             width: 200px;
             height: 50px;
-            background: hsla(0,0%,100%,.1);
+            background: hsla(0, 0%, 100%, .1);
             filter: blur(4px);
             opacity: 0;
             transition: all 0.3s ease;
         }
+
         .icon:hover:before {
             opacity: 1;
         }
@@ -330,6 +427,7 @@
             /*background: lightgrey;*/
             grid-area: l;
         }
+
         /** left 结束 */
 
 
@@ -362,9 +460,11 @@
             -ms-user-select: none;
             -moz-user-select: none;
         }
+
         .container-left input {
             display: none;
         }
+
         .container-left .subscript {
             cursor: default;
             position: absolute;
@@ -381,26 +481,28 @@
             height: 17px;
             cursor: default;
             margin-left: 1px;
-            background: hsla(0,0%,13%,.2);
+            background: hsla(0, 0%, 13%, .2);
             color: white;
             text-align: center;
             line-height: 17px;
             transition: all 0.3s ease;
         }
+
         .container-left .subscript span:first-child {
             background: red;
         }
+
         /*.container-left .sub-more {*/
-            /*position: absolute;*/
-            /*bottom: 55px;*/
-            /*right: 25px;*/
-            /*font-size: 9px;*/
-            /*padding: 5px;*/
-            /*border-radius: 7px;*/
-            /*background: white;*/
-            /*opacity: 0;*/
-            /*transition: all 0.3s ease;*/
-            /*z-index: 3;*/
+        /*position: absolute;*/
+        /*bottom: 55px;*/
+        /*right: 25px;*/
+        /*font-size: 9px;*/
+        /*padding: 5px;*/
+        /*border-radius: 7px;*/
+        /*background: white;*/
+        /*opacity: 0;*/
+        /*transition: all 0.3s ease;*/
+        /*z-index: 3;*/
         /*}*/
 
         .subscript span:hover {
@@ -436,29 +538,35 @@
             height: 300px;
             color: white;
         }
+
         /*.sub-more:hover {*/
-            /*color: white;*/
-            /*background: #93D1FF;*/
+        /*color: white;*/
+        /*background: #93D1FF;*/
         /*}*/
         /*.container-left:hover .sub-more {*/
-            /*opacity: 1;*/
+        /*opacity: 1;*/
         /*}*/
         .photo div span:hover {
             color: white;
         }
-        .photo div:nth-child(1){
+
+        .photo div:nth-child(1) {
             background: url("http://119.3.170.239/images/rockimg/dongman_1.jpeg");
         }
-        .photo div:nth-child(2){
+
+        .photo div:nth-child(2) {
             background: url("http://119.3.170.239/images/rockimg/dongman_2.jpeg");
         }
-        .photo div:nth-child(3){
+
+        .photo div:nth-child(3) {
             background: url("http://119.3.170.239/images/rockimg/dongman_3.jpeg");
         }
-        .photo div:nth-child(4){
+
+        .photo div:nth-child(4) {
             background: url("http://119.3.170.239/images/rockimg/dongman_4.jpg");
         }
-        .photo div:nth-child(5){
+
+        .photo div:nth-child(5) {
             background: url("http://119.3.170.239/images/rockimg/dongman_5.jpeg");
         }
 
@@ -482,14 +590,17 @@
         .container-card {
             position: relative;
         }
+
         .card-left {
             margin-left: 10px;
             margin-top: 15px;
             max-width: 800px;
         }
+
         .card-tip {
             padding: 0 15px;
         }
+
         .card-tip h2 {
             display: inline-block;
             cursor: default;
@@ -500,6 +611,7 @@
         .card-tip-switch {
             display: inline-block;
         }
+
         .card-tip h2:hover {
             color: #93D1FF;
         }
@@ -531,10 +643,12 @@
             margin-bottom: 20px;
 
         }
+
         .card-move {
 
             animation: load 0.5s ease;
         }
+
         .card .des {
             position: relative;
             text-align: center;
@@ -543,12 +657,14 @@
             transition: .4s;
             background: #FFDEAD;
         }
+
         .card .time {
             width: 100%;
             position: absolute;
             top: 35px;
             margin: 0;
         }
+
         .card .more-des {
             position: absolute;
             font-size: 15px;
@@ -558,6 +674,7 @@
             padding-top: 25px;
             width: 100%;
         }
+
         .card .time-des {
             position: absolute;
             display: block;
@@ -572,6 +689,7 @@
             overflow: hidden;
             white-space: nowrap;
         }
+
         .card .btm-des {
             position: absolute;
             bottom: 0;
@@ -597,13 +715,15 @@
             color: white;
             box-shadow: 2px 1px 10px #ff0000;
         }
-/*        .card:nth-child(1) {
-            background: url("http://119.3.170.239/images/xiaozhu.jpg") no-repeat;
-            background-size: 300px;
-        }*/
+
+        /*        .card:nth-child(1) {
+                    background: url("http://119.3.170.239/images/xiaozhu.jpg") no-repeat;
+                    background-size: 300px;
+                }*/
         .des:hover {
             top: 75px;
         }
+
         /** main 任务卡片 结束 */
         /** main 数据卡片 开始 */
         .container-data {
@@ -615,12 +735,14 @@
             background: #e5e5e5;
             border-radius: 3px;
         }
+
         /** card添加 */
         .container-card .card-plus {
             cursor: pointer;
             transition: ease 0.3s ease;
             background: rgba(0, 102, 204, 0.64);
         }
+
         .card-plus div {
             position: absolute;
             z-index: 2;
@@ -633,12 +755,14 @@
             background-size: cover;
             transition: all 0.3s ease;
         }
+
         .card-plus:hover div {
             /*background: url("http://119.3.170.239/icon/card-plus-hover.png") no-repeat;*/
             /*background-size: cover;*/
             transform: rotate(90deg);
             top: 200px;
         }
+
         .card-plus:hover {
             background: rgba(0, 102, 204, 0.61);
         }
@@ -660,6 +784,7 @@
             text-shadow: 0 3px 3px rgba(0, 0, 0, 0.75);
             transition: all 0.3s ease;
         }
+
         .card-plus:hover:before {
             z-index: 1;
             opacity: 1;
@@ -678,14 +803,17 @@
             overflow-y: scroll;
             transition: all 0.3s ease;
         }
+
         .mask-hide {
             z-index: -1;
             opacity: 0;
         }
+
         .card-mask form {
             margin: 10% 20px auto;
             height: 500px;
         }
+
         .card-mask-input {
             display: block;
             outline: none;
@@ -696,10 +824,12 @@
             margin: 5px auto;
 
         }
+
         .card-mask .up-pic {
             display: none;
             opacity: 0;
         }
+
         .card-mask .checkUser-input {
             margin-bottom: 0;
         }
@@ -709,17 +839,19 @@
             overflow: hidden;
             margin-right: 17px;
         }
+
         .checkUser-div {
             position: relative;
             margin: 0 auto;
             width: 303px;
             height: 60px;
             overflow-y: scroll;
-            scroll-behavior:smooth;
+            scroll-behavior: smooth;
             background: #d9d9d9;
 
             transition: height 0.4s ease;
         }
+
         .checkUser-tip {
             position: absolute;
             width: 286px;
@@ -730,14 +862,17 @@
 
             transition: all 0.4s ease;
         }
+
         .hide {
             z-index: -1;
             opacity: 0;
             height: 0;
         }
+
         .high-height {
             height: 100px;
         }
+
         .checkUser-content {
 
         }
@@ -750,13 +885,16 @@
             background: #ededed;
             transition: all 0.2s ease;
         }
+
         .checkUser:hover {
             background: white;
         }
+
         .click-cuser {
             width: 100%;
             height: 50px;
         }
+
         .checkUser-p {
             position: relative;
             left: 10px;
@@ -768,9 +906,11 @@
             border: hsla(0, 0%, 77%, 0.4) solid 1px;
             cursor: pointer;
         }
+
         .checkUser-p:hover {
             border: hsla(91, 53%, 50%, 0.4) solid 1px;
         }
+
         .checkUser-name {
             position: absolute;
             font-size: 1.2em;
@@ -778,6 +918,7 @@
             line-height: 50px;
             cursor: pointer;
         }
+
         .add-user {
             position: absolute;
             top: 0;
@@ -796,11 +937,13 @@
             white-space: nowrap;
             transition: all 0.3s ease;
         }
+
         .mask-pic-div {
             position: relative;
             width: 300px;
             margin: 0 auto;
         }
+
         .label-up-pic {
             display: block;
             cursor: pointer;
@@ -811,6 +954,7 @@
             height: 150px;
             border: black solid 1px;
         }
+
         .close-mask {
             margin: 50px auto;
             width: 100px;
@@ -825,9 +969,11 @@
             box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             transition: all 0.3s ease;
         }
+
         .close-mask:hover {
             background: orangered;
         }
+
         .close-pic {
             position: absolute;
             top: 5px;
@@ -844,6 +990,7 @@
 
             cursor: pointer;
         }
+
         .close-pic:hover {
             background: rgba(255, 0, 0, 0.94);
             color: white;
@@ -880,6 +1027,7 @@
             /*background: lightgrey;*/
             grid-area: r;
         }
+
         .footer {
             border: 1px solid black;
             background: lightgrey;
@@ -919,21 +1067,41 @@
             word-wrap: break-word;
             word-break: break-all;
         }
+
         .t-box-flash {
             animation: shake 0.3s ease;
         }
 
         @keyframes shake {
-            10% {transform: translate3d(0,+5px,0)}
-            20% {transform: translate3d(0,-5px,0)}
-            40% {transform: translate3d(0,+3px,0)}
-            50% {transform: translate3d(0,-3px,0)}
-            70% {transform: translate3d(0,+1px,0)}
-            80% {transform: translate3d(0,-1px,0)}
+            10% {
+                transform: translate3d(0, +5px, 0)
+            }
+            20% {
+                transform: translate3d(0, -5px, 0)
+            }
+            40% {
+                transform: translate3d(0, +3px, 0)
+            }
+            50% {
+                transform: translate3d(0, -3px, 0)
+            }
+            70% {
+                transform: translate3d(0, +1px, 0)
+            }
+            80% {
+                transform: translate3d(0, -1px, 0)
+            }
         }
+
         @keyframes load {
-            0% {transform: translate3d(0,60px,0);opacity: 0}
-            100% {transform: translate3d(0,0,0);opacity: 1}
+            0% {
+                transform: translate3d(0, 60px, 0);
+                opacity: 0
+            }
+            100% {
+                transform: translate3d(0, 0, 0);
+                opacity: 1
+            }
         }
 
     </style>
@@ -945,44 +1113,46 @@
         <div class="inner"></div>
         <div class="out">
             <div class="space">
-            <div class="icon" onclick="window.open('http://119.3.170.239','_self')"></div>
-            <div class="user-group">
-                <img>
-                <div class="user-des">
-                    <div>
-                        <a><span class="user-space"></span>个人中心</a>
-                        <a><span class="user-exit"></span>退出</a>
+                <div class="icon" onclick="window.open('http://119.3.170.239','_self')"></div>
+                <div class="user-group">
+                    <img>
+                    <div class="user-des">
+                        <div>
+                            <a><span class="user-space"></span>个人中心</a>
+                            <a class="msga"><span class="user-msg"></span>消息<div class="ab">10</div></a>
+                            <a><span class="user-exit"></span>退出</a>
+                            <!--<div class="user-des-split"></div>-->
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <ul class="nav-ul">
-                <li>
-                    <a href="#">Home</a>
-                    <div class="sub-nav">
-                        <a href="#"><span>第一条asdfasdf</span></a>
-                        <a href="#"><span>第二条</span></a>
-                    </div>
-                </li>
-                <li>
-                    <a href="#">Movie</a>
-                    <div class="sub-nav">
-                        <a href="#"><span>超级好看的电影</span></a>
-                        <a href="#"><span>第二条</span></a>
-                        <a href="#"><span>第三条</span></a>
-                        <a href="#"><span>第四条</span></a>
-                        <div class="sub-nav-split"></div>
-                        <a href="#"><span>五</span></a>
-                    </div>
-                </li>
-                <li><a href="#">Music</a></li>
-                <li><a href="#">Book</a></li>
-            </ul>
-            <div class="search search-right">
-                <!--<label>搜索</label>-->
-                <input type="text" placeholder="搜索...">
-                <button type="button" class="search-btn"></button>
-            </div>
+                <ul class="nav-ul">
+                    <li>
+                        <a href="#">Home</a>
+                        <div class="sub-nav">
+                            <a href="#"><span>第一条asdfasdf</span></a>
+                            <a href="#"><span>第二条</span></a>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="#">Movie</a>
+                        <div class="sub-nav">
+                            <a href="#"><span>超级好看的电影</span></a>
+                            <a href="#"><span>第二条</span></a>
+                            <a href="#"><span>第三条</span></a>
+                            <a href="#"><span>第四条</span></a>
+                            <div class="sub-nav-split"></div>
+                            <a href="#"><span>五</span></a>
+                        </div>
+                    </li>
+                    <li><a href="#">Music</a></li>
+                    <li><a href="#">Book</a></li>
+                </ul>
+                <div class="search search-right">
+                    <!--<label>搜索</label>-->
+                    <input type="text" placeholder="搜索...">
+                    <button type="button" class="search-btn"></button>
+                </div>
             </div>
         </div>
     </div>
@@ -1042,17 +1212,18 @@
     <div>
         <form id="cardForm" method="post" enctype="multipart/form-data">
             <input class="card-mask-input" name="title" placeholder="输入标题...">
-            <input class="card-mask-input" name="time" type="datetime-local" min="2019-11-15T14:13" placeholder="输入日期...">
+            <input class="card-mask-input" name="time" type="datetime-local" min="2019-11-15T14:13"
+                   placeholder="输入日期...">
             <input class="card-mask-input checkUser-input" name="checkUserName" placeholder="请输入监督人的用户名...">
             <div class="checkUser-div hide">
                 <div class="checkUser-tip hide">搜索中...</div>
                 <div class="checkUser-content"></div>
                 <!--<div class="checkUser">-->
-                    <!--<div class="click-cuser">-->
-                        <!--<img class="checkUser-p" src="http://119.3.170.239/images/pig_head.jpg">-->
-                        <!--<span class="checkUser-name">admin</span>-->
-                    <!--</div>-->
-                    <!--<span class="add-user">添加</span>-->
+                <!--<div class="click-cuser">-->
+                <!--<img class="checkUser-p" src="http://119.3.170.239/images/pig_head.jpg">-->
+                <!--<span class="checkUser-name">admin</span>-->
+                <!--</div>-->
+                <!--<span class="add-user">添加</span>-->
                 <!--</div>-->
                 <!--<div class="checkUser"></div>-->
                 <!--<div class="checkUser"></div>-->
@@ -1069,9 +1240,31 @@
         </form>
     </div>
 </div>
-
+<!--消息框-->
+<div class="msg-box hide">
+    <div>
+        <div class="msg-header">
+            <div class="h-bottom">
+                <div class="h-div">卡片</div>
+                <div class="h-div">通知</div>
+                <div class="h-div">关心</div>
+            </div>
+        </div>
+        <div class="msg-main">
+            <div class="msg-bottom">
+                <div class="msg-content">
+                    <div class="c-div co"></div>
+                    <div class="c-div ct"></div>
+                    <div class="c-div ch"></div>
+                </div>
+            </div>
+        </div>
+        <div class="msg-footer"></div>
+    </div>
+</div>
 </body>
 <script src="http://119.3.170.239/js/jquery-3.4.1.min.js"></script>
 <script src="http://119.3.170.239/js/jquery.countdown.min.js"></script>
 <script src="/static/js/home.js"></script>
+<script src="/static/js/header.js"></script>
 </html>
