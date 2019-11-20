@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>学习vue</title>
+    <script src="../static/js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    {{ message }}
+</div>
+<div id="app-2">
+    <span v-bind:title="message">
+        鼠标悬停查看信息
+    </span>
+</div>
+<div id="app-3">
+    <p v-if="seen">现在你看到我了</p>
+</div>
+<div id="app-4">
+    <ol>
+        <li v-for="todo in todos">
+            {{todo.message}}
+            {{todo.msg}}
+            {{todo.msg}}
+            {{todo.message}}
+        </li>
+        <li v-for="todo in todos" v-if="seen">
+            {{todo.message}}
+        </li>
+    </ol>
+</div>
+<div id="app-5">
+    <p @click="reMsg">{{message}}</p>
+    <button @click="reMsg">点我</button>
+</div>
+
+<div id="app-6">
+    <p>{{msg}}</p>
+    <input v-model="msg">
+</div>
+
+<div id="app-7">
+    <ol>
+        <item
+                v-for="item in objs"
+                :todo="item"
+                :key="item.key">
+        </item>
+    </ol>
+</div>
+
+<div id="cpp">
+    <p>{{msg}}</p>
+    <p>{{reMsg}}</p>
+</div>
+
+
+<div id="checkUser">
+    <P>
+        请输入要找的用户名:
+        <input v-model="search">
+    </P>
+    <p>{{msg}}</p>
+</div>
+</body>
+
+<script src="/static/js/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lodash@4.13.1/lodash.min.js"></script>
+<script>
+
+
+    var watch = new Vue({
+        el: '#checkUser',
+        data: {
+            search: '',
+            msg: '啦啦啦啦'
+        },
+        watch: {
+            // 如果 search 发生变化，这个函数就会执行
+            search: function (newS, oldS) {
+                this.msg = "等待输入完成...";
+                this.debouncedGetAnswer();
+            }
+        },
+        created: function () {
+            this.debouncedGetAnswer = _.debounce(this.getUser, 500);
+        },
+        methods: {
+            getUser: function () {
+                if (this.search === '') {
+                    this.msg = "啦啦啦啦";
+                    return
+                }
+                this.msg = "正在搜索，请稍等...";
+                var vm = this;
+                console.log(vm.search);
+                let data = {"userName":vm.search};
+                axios.get("http://localhost:9400/xzzj/bbs/account/getUserInfo")
+                    .then(res=>{
+                        console.log(res.data.data);
+                        vm.msg = res.data.data;
+                    })
+            }
+        }
+    });
+
+    var cpp = new Vue({
+        el: '#cpp',
+        data: {
+            msg: "我细化你学习"
+        },
+        computed: {
+            reMsg: function () {
+                return this.msg.split('').reverse().join('')
+            }
+        }
+    });
+
+    Vue.component('item', {
+        props: ['todo'],
+        template: '<li>{{ todo.msg }}</li>'
+    });
+
+    var app7 = new Vue({
+        el: '#app-7',
+        data: {
+            objs: [
+                {id: 1, msg: "嘻嘻"},
+                {id: 2, msg: "哈哈"},
+                {id: 3, msg: "嘿嘿"},
+            ]
+        }
+    });
+
+
+    var app6 = new Vue({
+        el: '#app-6',
+        data: {
+            msg: "hello"
+        }
+    });
+    var app5 = new Vue({
+        el: '#app-5',
+        data: {
+            message: "123456"
+        },
+        methods: {
+            reMsg: function () {
+                this.message = this.message.split('').reverse().join('')
+            }
+        }
+    });
+    var app4 = new Vue({
+        el: '#app-4',
+        data: {
+            todos: [
+                {message: "快乐"},
+                {message: "忧伤"},
+                {message: "骄傲"},
+                {msg: "灵魂"},
+
+            ],
+            seen: true
+        }
+    });
+    var app3 = new Vue({
+        el: "#app-3",
+        data: {
+            seen: true
+        }
+    });
+    var app = new Vue({
+        el: "#app",
+        data: {
+            message: "hello world"
+        }
+    });
+
+    var app2 = new Vue({
+        el: '#app-2',
+        data: {
+            message: "页面加载与 " + new Date().toLocaleString()
+        }
+    });
+</script>
+</html>

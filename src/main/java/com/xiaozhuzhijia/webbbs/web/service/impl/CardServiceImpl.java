@@ -6,7 +6,6 @@ import com.xiaozhuzhijia.webbbs.common.entity.CardBean;
 import com.xiaozhuzhijia.webbbs.common.util.Result;
 import com.xiaozhuzhijia.webbbs.common.util.upImgUtil;
 import com.xiaozhuzhijia.webbbs.common.vo.UserVo;
-import com.xiaozhuzhijia.webbbs.web.controller.CardController;
 import com.xiaozhuzhijia.webbbs.web.local.LocalUser;
 import com.xiaozhuzhijia.webbbs.web.mapper.CardMapper;
 import com.xiaozhuzhijia.webbbs.web.service.CardService;

@@ -2,7 +2,6 @@ var cardMask = false; //false为弹出层消失
 var imgfile = null; //存储图片数据
 /** 执行函数 */
 lunbo();
-getUserInfo();
 getMyCard();
 
 
@@ -186,7 +185,7 @@ $(".checkUser-input").bind("input propertychange", function () {
         $(".checkUser-tip").removeClass("hide").text("搜索中...");
 
         $.ajax({
-            url: "http://119.3.170.239/xzzj/bbs/account/getUserByUserName",
+            url: "http://localhost:9400/xzzj/bbs/account/getUserByUserName",
             type: "POST",
             data: {"userName": $(this).val()},
             datatype: "json",
@@ -268,7 +267,7 @@ $("#cardForm input[type='submit']").click(function (e) {
     fd.append("time", reTime($("input[name='time']").val()));
     fd.append("msg", $("textarea[name='msg']").val());
     $.ajax({
-        url: "http://119.3.170.239/xzzj/bbs/card/addCard",
+        url: "http://localhost:9400/xzzj/bbs/card/addCard",
         type: "POST",
         data: fd,
         datatype: "json",
@@ -295,45 +294,13 @@ function reTime(obj) {
     return obj.replace(/T/g, " ");
     //document.getElementById('date1').value = obj.value.replace(/T/g, " ").replace(/\.[\x00-\xff]*/g, '');
 }
-/** 点击用户组下退出链接 */
-$(".user-exit").parent("a").click(function () {
-    $.ajax({
-        url: "http://119.3.170.239/xzzj/bbs/account/logout",
-        type: "POST",
-        datatype: "json",
-        success: function (result) {
-            if (result.code === 200) {
-                window.location.replace("http://119.3.170.239");
-            } else {
-                console.log(result.msg);
-            }
-        }
-    })
-});
-/** 点击用户组下个人中心链接 */
-$(".user-space").parent("a").click(function () {
-    window.location.replace("http://119.3.170.239/xzzj/user_details");
-});
-/** 获取自己的用户信息 */
-function getUserInfo() {
-    $.ajax({
-        url: "http://119.3.170.239/xzzj/bbs/account/getUserInfo",
-        type: "POST",
-        datatype: "json",
-        success: function (result) {
-            if (result.code === 200) {
-                var userInfo = result.data;
-                $(".user-group").find("img").attr("src", userInfo.portrait);
-            } else {
-                console.log(result.msg)
-            }
-        }
-    })
-}
+
+
+
 /** 获取自己的卡片信息 */
 function getMyCard() {
     $.ajax({
-        url: "http://119.3.170.239/xzzj/bbs/card/getMyCard",
+        url: "http://localhost:9400/xzzj/bbs/card/getMyCard",
         type: "GET",
         datatype: "json",
         success: function (result) {

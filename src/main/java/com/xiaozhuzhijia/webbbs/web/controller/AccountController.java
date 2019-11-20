@@ -10,10 +10,7 @@ import org.apache.juli.logging.Log;
 import org.apache.juli.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -97,7 +94,7 @@ public class AccountController {
         log.info("修改密码的信息：" + authDto);
         return userService.updPassword(authDto);
     }
-    @PostMapping("/getUserInfo")
+    @GetMapping("/getUserInfo")
     public Result getUserInfo() {
 
         return userService.getUserInfo();
@@ -113,7 +110,7 @@ public class AccountController {
         return userService.logout();
     }
     @PostMapping("/getUserByUserName")
-    public Result getUserByUserName(String userName){
+    public Result getUserByUserName(@RequestBody String userName){
 
         return userService.getUserByUserName(userName);
     }
