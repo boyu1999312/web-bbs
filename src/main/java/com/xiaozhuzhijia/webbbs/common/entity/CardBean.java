@@ -38,7 +38,7 @@ public class CardBean implements Serializable {
     private Date createdTime;
     /** 修改时间 */
     private Date updatedTime;
-    /** 状态 1-就绪 2-正在进行 3-审核中 4-完成 5-未完成 6-禁用 */
+    /** 状态 1-就绪 2-正在进行 3-审核中 4-完成 5-未完成 6-禁用 7-删除 */
     private Integer cardEffect;
     /** 修改次数 */
     private Integer version;

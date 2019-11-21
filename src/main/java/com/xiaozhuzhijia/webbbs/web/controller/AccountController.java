@@ -98,7 +98,7 @@ public class AccountController {
         log.info("修改密码的信息：" + authDto);
         return userService.updPassword(authDto);
     }
-    @PostMapping("/getUserInfo")
+    @GetMapping("/getUserInfo")
     public Result getUserInfo() {
 
         return userService.getUserInfo();

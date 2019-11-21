@@ -61,6 +61,8 @@
             z-index: -1;
             background: white;
             opacity: 0;
+            color: #273638;
+            font-size: 14px;
             box-shadow: 1px 1px 10px #353535;
             transition: all 0.15s ease-out;
             padding: 7px 0;
@@ -76,8 +78,8 @@
             display: block;
             text-align: center;
             line-height: 30px;
-            font-size: 0.9em;
-            color: #4f5050;
+            font-size: 14px;
+            color: #273638;
             text-decoration: none;
             padding: 0 20px;
             transition: all 0.3s ease;
@@ -296,19 +298,20 @@
         }
 
         .user-des .ab {
-            display: inline-block;
             position: absolute;
-            width: 20px;
-            height: 17px;
-            line-height: 17px;
-            border-radius: 10px;
+            height: 18px;
+            width: 18px;
+            left: 50%;
+            bottom: 50%;
+            line-height: 18px;
+            border-radius: 20px;
             color: white;
             background: red;
             text-align: center;
-            padding: 0 2px;
-            font-size: 5px;
+            padding: 0 4px;
+            font-size: 11px;
             top: 9px;
-            margin-left: 5px;
+            margin-left: 8px;
         }
         .msg-box-bottom {
             position: fixed;
@@ -317,17 +320,18 @@
         }
         .msg-box {
             position: fixed;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            width: 700px;
+            top: 50px;
+            /*bottom: 0;*/
+            /*left: 0;*/
+            right: 50px;
+            width: 500px;
             height: 500px;
             background: #e5e5e5;
             margin: auto;
             border-radius: 7px;
             overflow: hidden;
             z-index: 3;
+            box-shadow: 0 0 10px #8f8f8f;
 
             transition: all 0.2s ease;
         }
@@ -337,25 +341,85 @@
             height: 60px;
             background: white;
             color: #84bde6;
+            border-bottom: #e5e5e5 solid 1px;
+        }
+        .msg-main {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            background: white;
+        }
+        .msg-bottom {
+            overflow: hidden;
+
+        }
+        .msg-content {
+            width: 1500px;
+            height: 0;
+            transition: all .2s ease;
+        }
+        .c-div {
+            position: relative;
+            float: left;
+            width: 500px;
+            height: 400px;
+            overflow-y: scroll;
+            background: white;
+        }
+        .c-div:after {
+            content: '';
+            position: absolute;
+            right: -17px;
+            height: 400px;
+            width: 17px;
+            background: white;
+        }
+        .msg-footer {
+            position: relative;
+            width: 100%;
+            height: 40px;
+            text-align: center;
+            line-height: 40px;
+            border-top: #e5e5e5 solid 1px;
+            background: white;
+
         }
         .h-bottom {
             margin: 0 auto;
             width: 300px;
         }
         .h-div {
+            position: relative;
             display: inline-block;
             width: 32%;
             height: 60px;
             line-height: 60px;
             text-align: center;
             cursor: pointer;
+            font-size: 1.1em;
 
             transition: background 0.2s ease;
         }
         .h-div:hover {
+            color: #6e9dbf;
+            /*background: #6e9dbf;*/
+            /*box-shadow: 0 0 10px #6e9dbf;*/
+        }
+
+        .h-div-tip {
+            position: absolute;
+            top: 10px;
+            right: 12px;
+            width: 14px;
+            height: 14px;
+            line-height: 14px;
+            font-size: 11px;
+            border-radius: 20px;
+            padding: 2px;
             color: white;
-            background: #6e9dbf;
-            box-shadow: 0 0 10px #6e9dbf;
+            background: red;
+
+            transition: all .3s ease;
         }
 
         .user-exit {
@@ -380,7 +444,7 @@
         .user-group:hover .user-des {
             opacity: 1;
             transform: translate3d(0, -9px, 0);
-            z-index: 1;
+            z-index: 999;
         }
 
         .user-des-split {
@@ -597,8 +661,10 @@
             max-width: 800px;
         }
 
+
         .card-tip {
             padding: 0 15px;
+            margin-top: 10px;
         }
 
         .card-tip h2 {
@@ -655,7 +721,7 @@
             height: 230px;
             top: 230px;
             transition: .4s;
-            background: #FFDEAD;
+            background: #fcfffc;
         }
 
         .card .time {
@@ -681,13 +747,22 @@
             width: 100%;
             left: 0;
             font-size: 14px;
-            color: white;
-            border-top: rgba(0, 0, 0, 0.41) solid 4px;
+            color: #0d4f25;
+            border-top: #1fb554 solid 4px;
             padding-top: 5px;
-            box-shadow: 0 -8px 15px -5px rgba(36, 36, 36, 0.37);
 
             overflow: hidden;
             white-space: nowrap;
+        }
+        .time-des:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: #1fb554;
+            box-shadow: 0 -8px 15px -5px black;
+        /*rgba(36, 36, 36, 0.37)*/
         }
 
         .card .btm-des {
@@ -695,25 +770,30 @@
             bottom: 0;
             height: 40px;
             width: 100%;
-            background: rgba(0, 0, 0, 0.41);
+            background: #1fb554;
+        }
+        .btm-icon {
+            position: absolute;
+            bottom: 10px;
+            height: 24px;
+            width: 24px;
+            cursor: pointer;
+            background: url("http://119.3.170.239/icon/card-del.png") 50% 50% no-repeat;
+            background-size: 20px;
+            color: #dfdfdf;
+            border-radius: 20px;
+            border: #e6e6e6 solid 1px;
+            font-size: 0.8em;
+
+            transition: all .3s ease;
+        }
+        .btm-icon:hover {
+            border: white solid 1px;
+            background: url("http://119.3.170.239/icon/card-del-hover.png") 50% 50% no-repeat;
+            background-size: 20px;
         }
         .card-del {
-            position: absolute;
-            right: 10px;
-            bottom: 13px;
-            height: 20px;
-            padding: 0 3px;
-            cursor: pointer;
-            background: #d60000;
-            color: #dfdfdf;
-            border-radius: 7px;
-            font-size: 0.8em;
-            transition: all 0.2s ease;
-        }
-        .card-del:hover {
-            background: #e20000;
-            color: white;
-            box-shadow: 2px 1px 10px #ff0000;
+            right: 15px;
         }
 
         /*        .card:nth-child(1) {
@@ -867,6 +947,12 @@
             z-index: -1;
             opacity: 0;
             height: 0;
+        }
+        .msg-box-hide{
+            z-index: -1;
+            opacity: 0;
+            width: 5px;
+            height: 5px;
         }
 
         .high-height {
@@ -1119,7 +1205,7 @@
                     <div class="user-des">
                         <div>
                             <a><span class="user-space"></span>个人中心</a>
-                            <a class="msga"><span class="user-msg"></span>消息<div class="ab">10</div></a>
+                            <a class="msga"><span class="user-msg"></span>消息<span class="ab">10</span></a>
                             <a><span class="user-exit"></span>退出</a>
                             <!--<div class="user-des-split"></div>-->
                         </div>
@@ -1241,21 +1327,27 @@
     </div>
 </div>
 <!--消息框-->
-<div class="msg-box hide">
+<div class="msg-box msga msg-box-hide">
     <div>
         <div class="msg-header">
             <div class="h-bottom">
-                <div class="h-div">卡片</div>
-                <div class="h-div">通知</div>
-                <div class="h-div">关心</div>
+                <div class="h-div switch-card" i="1">卡片
+                    <div class="h-div-tip">10</div>
+                </div>
+                <div class="h-div switch-notice" i="2">通知
+                    <div class="h-div-tip">10</div>
+                </div>
+                <div class="h-div switch-follow" i="3">关心
+                    <div class="h-div-tip">10</div>
+                </div>
             </div>
         </div>
         <div class="msg-main">
             <div class="msg-bottom">
                 <div class="msg-content">
-                    <div class="c-div co"></div>
-                    <div class="c-div ct"></div>
-                    <div class="c-div ch"></div>
+                    <div class="c-div co">嘻嘻</div>
+                    <div class="c-div ct">哈哈</div>
+                    <div class="c-div ch">有点东西</div>
                 </div>
             </div>
         </div>

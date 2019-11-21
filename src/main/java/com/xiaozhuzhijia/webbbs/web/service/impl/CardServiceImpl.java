@@ -127,7 +127,8 @@ public class CardServiceImpl implements CardService {
      */
     @Override
     public Result delCard(Integer id) {
-        int index = cardMapper.deleteById(new CardBean().setId(id));
+        int index = cardMapper.updateById(new CardBean()
+                .setId(id).setCardEffect(7));
         if(index == 0){
             return Result.error("卡片删除失败");
         }
