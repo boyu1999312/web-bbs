@@ -235,7 +235,7 @@ $(".checkUser-input").bind("input propertychange", function () {
                         var name = vo.nickName == null || vo.nickName === "" ? vo.userName : vo.nickName;
                         var $user = $("<div class='checkUser'><div class='click-cuser'>" +
                             "<img class='checkUser-p' src='" + vo.portrait + "'>" +
-                            "<span class='checkUser-name'>" + name + "</span></div>" +
+                            "<span class='checkUser-name' i='"+vo.id+"'>" + name + "</span></div>" +
                             "<span class='add-user'>+</span>" +
                             "</div>");
                         $(".checkUser-content").append($user);
@@ -272,10 +272,32 @@ $("body").on("mouseup", ".add-user", function () {
 });
 /** 添加监督人 */
 $("body").on("click", ".click-cuser", function () {
-    var uname = $(this).find(".checkUser-name").text();
+    let uname = $(this).find(".checkUser-name").text();
+    let id = $(this).find(".checkUser-name").attr("i");
     $("input[name='checkUserName']").val(uname);
+    $("input[name='checkUserId']").val(id);
     $(".checkUser-div").addClass("hide");
     $(".checkUser-div").removeClass("high-height");
+});
+/** 添加好友按钮 按下 */
+$("body").on("click", ".add-user", function () {
+    let id = $(this).parent().find(".checkUser-name").attr("i");
+
+
+    success_show("已发送添加好友请求", 1500);
+    $.ajax({
+        url: "http://localhost:9400/xzzj/bbs/account/friend/addFriend",
+        type: "POST",
+        data: {"id": id},
+        datatype: "json",
+        success: function (result) {
+            if(result.code === 200){
+                success_show(result.msg, 1500);
+            }else {
+                errtip_show(result.msg);
+            }
+        }
+    });
 });
 /** 关闭任务卡片添加层 */
 function closeMask() {
@@ -325,7 +347,7 @@ $("#cardForm input[type='submit']").click(function (e) {
     var fd = new FormData();
     fd.append("filePic", imgfile);
     fd.append("title", $("input[name='title']").val());
-    fd.append("checkUserName", $("input[name='checkUserName']").val());
+    fd.append("checkUserId", $("input[name='checkUserId']").val());
     fd.append("time", reTime($("input[name='time']").val()));
     fd.append("msg", $("textarea[name='msg']").val());
     fd.append("token", $("input[name='token']").val());
@@ -353,7 +375,10 @@ $("#cardForm input[type='submit']").click(function (e) {
 
     console.log("拦截成功");
 });
-
+/** 重新加载卡片，除新增卡片 */
+function loadCardNotPlus() {
+    
+}
 function reTime(obj) {
 
     return obj.replace(/T/g, " ");

@@ -12,34 +12,33 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Data
-@TableName("xzzj_card")
+@TableName("xzzj_friend")
 @NoArgsConstructor
 @AllArgsConstructor
 @Accessors(chain = true)
-public class CardBean implements Serializable {
+public class FriendBean implements Serializable {
+
 
     @TableId(type = IdType.AUTO)
     private Integer id;
-    /** 创建人id */
+    /** 本用户Id */
     private Integer userId;
-    /** 监督人Id */
-    private Integer cardSuperintendent;
-    /** 任务标题 */
-    private String cardTitle;
-    /** 任务到期时间 */
-    private Date cardTime;
-    /** 任务审核时间 */
-    private Date cardExamineTime;
-    /** 任务简介 */
-    private String cardMsg;
-    /** 任务图片 */
-    private String cardPic;
-    /** 注册时间 */
+    /** 好友用户名 */
+    private Integer otherId;
+    /** 备注 */
+    private String remarks;
+    /** 成为好友时间 */
     private Date createdTime;
     /** 修改时间 */
     private Date updatedTime;
-    /** 状态 1-就绪 2-正在进行 3-审核中 4-完成 5-未完成 6-禁用 7-删除 */
-    private Integer cardEffect;
+    /** 好友状态 1-好友 2-待验证 3-拉黑 4-陌生人 */
+    private Integer state;
+    /** 友好关系 */
+    private Integer friendlyLevel;
+    /** 权限 1-允许看卡片 2-不允许看卡片 */
+    private Integer jurisdiction;
+    /** 组 */
+    private Integer friendsGroup;
     /** 修改次数 */
     private Integer version;
 

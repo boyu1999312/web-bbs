@@ -2,6 +2,7 @@ package com.xiaozhuzhijia.webbbs.common.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.xiaozhuzhijia.webbbs.common.entity.CardBean;
+import com.xiaozhuzhijia.webbbs.common.util.IntegerUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,7 +26,7 @@ public class CardDto {
     /** 卡片ID */
     private Integer id;
     /** 监督人id */
-    private String checkUserName;
+    private Integer checkUserId;
     /** 任务标题 */
     private String title;
     /** 任务到期时间 */
@@ -50,7 +51,7 @@ public class CardDto {
     public boolean isNull(){
 
         return  !StringUtils.isEmpty(this.getTitle()) &&
-        !StringUtils.isEmpty(this.getCheckUserName()) &&
+        !IntegerUtils.NumIsEmpty(this.getCheckUserId()) &&
         !Objects.isNull(this.getTime());
     }
 
@@ -59,7 +60,7 @@ public class CardDto {
         return this.setId(cardBean.getId())
                 .setTitle(cardBean.getCardTitle())
                 .setTime(cardBean.getCardTime())
-                .setCheckUserName(cardBean.getCardSuperintendent())
+                .setCheckUserId(cardBean.getCardSuperintendent())
                 .setMsg(cardBean.getCardMsg())
                 .setPic(cardBean.getCardPic())
                 .setState(cardBean.getCardEffect())

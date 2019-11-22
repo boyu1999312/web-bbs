@@ -8,38 +8,26 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
-import java.io.Serializable;
 import java.util.Date;
 
 @Data
-@TableName("xzzj_card")
+@TableName("black_list")
 @NoArgsConstructor
 @AllArgsConstructor
 @Accessors(chain = true)
-public class CardBean implements Serializable {
+public class BlackListBean {
+
 
     @TableId(type = IdType.AUTO)
     private Integer id;
-    /** 创建人id */
+    /** 本用户ID */
     private Integer userId;
-    /** 监督人Id */
-    private Integer cardSuperintendent;
-    /** 任务标题 */
-    private String cardTitle;
-    /** 任务到期时间 */
-    private Date cardTime;
-    /** 任务审核时间 */
-    private Date cardExamineTime;
-    /** 任务简介 */
-    private String cardMsg;
-    /** 任务图片 */
-    private String cardPic;
+    /** 其他用户ID */
+    private Integer otherId;
     /** 注册时间 */
     private Date createdTime;
     /** 修改时间 */
     private Date updatedTime;
-    /** 状态 1-就绪 2-正在进行 3-审核中 4-完成 5-未完成 6-禁用 7-删除 */
-    private Integer cardEffect;
     /** 修改次数 */
     private Integer version;
 
