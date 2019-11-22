@@ -46,6 +46,9 @@ $(document).click(function (e) {
 /** 点击消息框的三个标签 */
 $(".h-div").click(function () {
     let i = -($(this).attr("i") - 1)*500;
+    setTimeout(function () {
+
+    },200);
     console.log(i);
     $(".msg-content").css({"margin-left":i+"px"})
 });
