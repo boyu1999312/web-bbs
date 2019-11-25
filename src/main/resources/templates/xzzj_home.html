@@ -57,7 +57,7 @@
         /** Home导航栏下拉菜单开始 */
         .sub-nav {
             position: absolute;
-            top: 60px;
+            top: 55px;
             z-index: -1;
             background: white;
             opacity: 0;
@@ -66,6 +66,7 @@
             /*box-shadow: 1px 1px 10px #353535;*/
             box-shadow: #818181 0 0 10px;
             transition: all 0.15s ease-out;
+            transition-delay: .2s;
             padding: 7px 0;
             border-radius: 3px 3px 6px 6px;
 
@@ -114,7 +115,7 @@
 
         .nav-ul li:hover .sub-nav {
 
-            transform: translateY(-10px);
+            transform: translateY(-5px);
             z-index: 9999;
             opacity: 1;
         }
@@ -387,7 +388,6 @@
             background: #f5f5f5;
             margin-bottom: 3px;
 
-            transition: all 0.2s ease;
         }
         .c-ct:last-child {
             margin: 0;
@@ -428,7 +428,7 @@
             white-space: normal;
             word-break: break-all;
             z-index: 4;
-            background: inherit;
+            background: initial;
         }
         .ct-msg:hover {
             /*background: #ebebeb;*/
@@ -461,14 +461,17 @@
             color: whitesmoke;
             background: rgb(204, 0, 0);
         }
-        .ct-ok, .ct-ero {
-            /*transition: all 0.2s ease;*/
+        .ct-ok, .ct-ero, .ct-info {
+            transition: all 0.2s ease;
         }
         .ct-ok:hover {
             background: rgba(0, 255, 0, 0.18);
         }
         .ct-ero:hover {
             background: rgba(255, 0, 0, 0.16);
+        }
+        .ct-info:hover {
+            background: rgb(255, 255, 0, 0.16);
         }
 
 
@@ -1395,7 +1398,7 @@
                                 <div class="c-div ch">
                                     <div class="c-ct ct-ok"><span>admin 向你发起了好友请求</span></div>
                                     <div class="c-ct ct-ero"><span>admin 向你发起了好友请求</span></div>
-                                    <div class="c-ct">
+                                    <div class="c-ct ct-info">
                                         <span>admin 向你发起了好友请求</span>
                                         <span class="ct-time">时间:2019-11-25 17:09</span>
                                         <pre class="ct-msg text-hide">附加消息:阿斯蒂芬就待机ask鲁大</br>师飞达拉斯复方咖磷大数据分开了贾师傅大卡司甲方可拉倒风口浪尖阿斯顿福建打算方可拉伸大姐夫刻录机打算风口浪尖安居客了鸡啊圣诞快乐房间安静打算方可拉伸大家啊</pre>
