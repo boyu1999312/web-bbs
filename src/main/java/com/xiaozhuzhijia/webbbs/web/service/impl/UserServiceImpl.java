@@ -77,11 +77,11 @@ public class UserServiceImpl implements UserService {
         UserVo userVo = new UserVo()
                 .setId(userBean.getId())
                 .setUserName(userBean.getUserName())
+                .setNickName(userBean.getNickName())
                 .setPortrait(userBean.getPortrait())
                 .setToken(loginToken)
                 .setCreatedTime(userBean.getCreatedTime())
-                .setEmail(userBean.getEmail())
-                .setLoginTime(new Date());
+                .setEmail(userBean.getEmail());
         String userInfo = JsonMapper.toJson(userVo);
 
         redis.opsForValue().set(loginToken,

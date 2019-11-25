@@ -8,8 +8,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 @Data
 @TableName("xzzj_friend")
@@ -31,8 +33,8 @@ public class FriendBean implements Serializable {
     private Date createdTime;
     /** 修改时间 */
     private Date updatedTime;
-    /** 好友状态 1-好友 2-待验证 3-拉黑 4-陌生人 */
-    private Integer state;
+    /** 好友状态 true-好友 false-陌生人 */
+    private Boolean state;
     /** 友好关系 */
     private Integer friendlyLevel;
     /** 权限 1-允许看卡片 2-不允许看卡片 */
@@ -42,4 +44,11 @@ public class FriendBean implements Serializable {
     /** 修改次数 */
     private Integer version;
 
+    /***
+     * 是否为好友
+     * @return
+     */
+    public boolean isFriend(){
+        return this.state;
+    }
 }
