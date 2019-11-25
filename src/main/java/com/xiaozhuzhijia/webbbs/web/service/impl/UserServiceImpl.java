@@ -3,6 +3,7 @@ package com.xiaozhuzhijia.webbbs.web.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.xiaozhuzhijia.webbbs.common.constant.XZZJFinal;
 import com.xiaozhuzhijia.webbbs.common.dto.AuthDto;
+import com.xiaozhuzhijia.webbbs.common.entity.FriendBean;
 import com.xiaozhuzhijia.webbbs.common.entity.UserBean;
 import com.xiaozhuzhijia.webbbs.common.util.*;
 import com.xiaozhuzhijia.webbbs.common.vo.UserVo;
@@ -436,5 +437,7 @@ public class UserServiceImpl implements UserService {
                 userInfo, 3600 * 24 * 30 * 6, TimeUnit.SECONDS);
         return Result.okMsg("更换成功");
     }
+
+
 
 }

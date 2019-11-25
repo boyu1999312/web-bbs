@@ -56,7 +56,7 @@ public class CardServiceImpl implements CardService {
 
 
         CardBean cardBean = new CardBean().setUserId(LocalUser.get().getId())
-                .setCardSuperintendent(cardDto.getCheckUserName())
+                .setCardSuperintendent(cardDto.getCheckUserId())
                 .setCardTitle(cardDto.getTitle())
                 .setCardTime(cardDto.getTime())
                 .setCardMsg(cardDto.getMsg())

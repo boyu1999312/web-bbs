@@ -44,12 +44,16 @@ $(document).click(function (e) {
     }
 });
 /** 点击消息框的三个标签 */
+var $hDiv = $(".h-div:first-child");
 $(".h-div").click(function () {
-    let i = -($(this).attr("i") - 1)*500;
+    let i = -($(this).attr("i") - 1)*400;
+    $hDiv.removeClass("h-div-active");
+    $hDiv = $(this);
+    $(this).addClass("h-div-active");
+    $(".c-div").css({"overflow-y":"hidden"});
     setTimeout(function () {
-
+        $(".c-div").css({"overflow-y":"auto"});
     },200);
-    console.log(i);
     $(".msg-content").css({"margin-left":i+"px"})
 });
 /** 点击用户组下个人中心链接 */
