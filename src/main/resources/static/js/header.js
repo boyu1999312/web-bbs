@@ -90,7 +90,16 @@ $(".h-div").click(function () {
     },200);
     $(".msg-content").css({"margin-left":i+"px"})
 });
-
+/** 点击通知文字展开与隐藏 */
+$(".ct-msg").click(function () {
+    if($(this).hasClass("text-hide")) {
+        $(this).removeClass("text-hide");
+        $(this).parents(".c-ct").addClass("c-ct-open");
+    }else {
+        $(this).addClass("text-hide");
+        $(this).parents(".c-ct").removeClass("c-ct-open");
+    }
+});
 /** 点击用户组下个人中心链接 */
 $(".user-space").parent("a").click(function () {
     window.location.replace("http://localhost:9400/xzzj/user_details");

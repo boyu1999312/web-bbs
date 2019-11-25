@@ -428,14 +428,7 @@ function getMyCard() {
         }
     })
 }
-/** 点击通知文字展开与隐藏 */
-$(".ct-msg").click(function () {
-    if($(this).hasClass("text-hide")) {
-        $(this).removeClass("text-hide");
-    }else {
-        $(this).addClass("text-hide");
-    }
-});
+
 /** 引用login.js 的方法 */
 /** 提示框 */
 function errtip_show(text) {
