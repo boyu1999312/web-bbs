@@ -11,39 +11,45 @@ import lombok.experimental.Accessors;
 
 import java.util.Date;
 
+
 @Data
-@TableName("black_list")
+@TableName("xzzj_friend_request")
 @NoArgsConstructor
 @AllArgsConstructor
 @Accessors(chain = true)
-public class BlackListBean {
-
+public class FriendRequestBean {
 
     @TableId(type = IdType.AUTO)
     private Integer id;
-    /** 本用户ID */
+    /** 用户ID */
     private Integer userId;
     /** 其他用户ID */
     private Integer otherId;
-    /** 1-拉黑 2-解除 */
+    /** 用户昵称 */
+    private String userNickname;
+    /** 其他用户昵称 */
+    private String otherNickname;
+    /** 附加消息 */
+    private String message;
+    /** 是否生效 1-进行中 2-同意 3-拒绝 */
     private Integer state;
-    /** 注册时间 */
+    /** 成为好友时间 */
     private Date createdTime;
     /** 修改时间 */
     private Date updatedTime;
-    /** 修改次数 */
+    /** 版本 */
     private Integer version;
 
-    /** 拉黑状态 */
+    /** 表示记录生效 */
     @TableField(exist = false)
-    private static final int BLACK = 1;
+    public static final int EFFECT = 1;
 
     /**
-     * 是否拉黑
+     * 是否为发起人
      * @return
      */
-    public boolean isBlack(){
-        return this.state == BlackListBean.BLACK;
+    public boolean isOriginator(Integer id){
+        return this.userId.equals(id);
     }
 
 }

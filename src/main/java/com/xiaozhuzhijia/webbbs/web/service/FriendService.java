@@ -4,6 +4,9 @@ import com.xiaozhuzhijia.webbbs.common.util.Result;
 
 public interface FriendService {
 
-    Result addFriend(Integer id);
+    Result addFriend(Integer id, String nickName);
+
+    Result getMyFriendNotice();
+
 
 }

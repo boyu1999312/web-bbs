@@ -1,4 +1,7 @@
+var friendNotice = []; //好友通知
+
 getUserInfo();
+
 /** 获取自己的用户信息 */
 function getUserInfo() {
     $.ajax({
@@ -33,6 +36,38 @@ $(".user-exit").parent("a").click(function () {
 /** 点击用户组下消息链接 */
 $(".user-msg").parent("a").click(function () {
     $(".msg-box").removeClass("msg-box-hide");
+
+    if(friendNotice.length === 0){
+        $.ajax({
+            url: "http://localhost:9400/xzzj/bbs/account/friend/getMyFriendNotice",
+            type: "GET",
+            datatype: "json",
+            success: function (result) {
+                console.log(result);
+                let $hct = $(".h-ct");
+                let $ct = $(".ct");
+                $ct.html('');
+                if(result.code === 200){
+                    let vo = result.data;
+                    friendNotice = vo;
+                    $hct.text(vo.length);
+                    for (let i = 0; i < vo.length; i++) {
+                        let $div = getdefaultNotice(vo[i]);
+                        $ct.append($div);
+                    }
+                }else {
+                    $ct.append("<div class='c-div-tip'>空空如也</div>");
+                    $hct.text('');
+                }
+            }
+        });
+    }
+});
+/** 当点下消息下的子菜单后 */
+$(".h-div").each(function () {
+   $(this).click(function () {
+       $(this).find(".h-div-tip").text('');
+   })
 });
 /** 当点击消息框外后关闭消息框 */
 $(document).click(function (e) {
@@ -40,7 +75,6 @@ $(document).click(function (e) {
     $el = $(e.target);
     if(!$el.isChildAndSelfOf(".msga")){
         $(".msg-box").addClass("msg-box-hide");
-
     }
 });
 /** 点击消息框的三个标签 */
@@ -56,6 +90,7 @@ $(".h-div").click(function () {
     },200);
     $(".msg-content").css({"margin-left":i+"px"})
 });
+
 /** 点击用户组下个人中心链接 */
 $(".user-space").parent("a").click(function () {
     window.location.replace("http://localhost:9400/xzzj/user_details");
@@ -65,3 +100,18 @@ $(".user-space").parent("a").click(function () {
 jQuery.fn.isChildAndSelfOf = function(b){
     return (this.closest(b).length > 0);
 };
+/** 获取默认通知 */
+function getdefaultNotice(vo) {
+    let $div;
+    if(vo.isOriginator){
+        $div = $("<div class='c-ct ct-ok' i='"+vo.id+"'>" +
+            "<span>&nbsp;"+vo.myNickname+"&nbsp;向&nbsp;"
+            +vo.otherNickname+"&nbsp;发起好友请求&nbsp;时间："+vo.time+"</span></div>");
+    }else {
+        if(vo.result)
+        $div = $("<div class='c-ct ct-ero' i='"+vo.id+"'>" +
+            "<span>&nbsp;"+vo.myNickname+"&nbsp;向&nbsp;"
+            +vo.otherNickname+"&nbsp;发起好友请求&nbsp;时间："+vo.time+"</span></div>");
+    }
+    return $div;
+}

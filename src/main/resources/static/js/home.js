@@ -282,13 +282,13 @@ $("body").on("click", ".click-cuser", function () {
 /** 添加好友按钮 按下 */
 $("body").on("click", ".add-user", function () {
     let id = $(this).parent().find(".checkUser-name").attr("i");
-
+    let name = $(this).parent().find(".checkUser-name").text();
 
     success_show("已发送添加好友请求", 1500);
     $.ajax({
         url: "http://localhost:9400/xzzj/bbs/account/friend/addFriend",
         type: "POST",
-        data: {"id": id},
+        data: {"id": id, "nickName": name},
         datatype: "json",
         success: function (result) {
             if(result.code === 200){
@@ -428,7 +428,14 @@ function getMyCard() {
         }
     })
 }
-
+/** 点击通知文字展开与隐藏 */
+$(".ct-msg").click(function () {
+    if($(this).hasClass("text-hide")) {
+        $(this).removeClass("text-hide");
+    }else {
+        $(this).addClass("text-hide");
+    }
+});
 /** 引用login.js 的方法 */
 /** 提示框 */
 function errtip_show(text) {
