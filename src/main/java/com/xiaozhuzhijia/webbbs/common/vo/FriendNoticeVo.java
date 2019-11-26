@@ -32,18 +32,19 @@ public class FriendNoticeVo {
 
     /**
      * 将结果添加到Vo中
-     * @param requestBean
+     * @param req
      * @return
      */
     public FriendNoticeVo addFriendRequestBean
-            (FriendRequestBean requestBean, Integer id){
+            (FriendRequestBean req, UserVo userVo){
+        boolean isOriginator = req.isOriginator(userVo.getId());
 
-        return this.setId(requestBean.getId())
-                .setMyNickname(requestBean.getUserNickname())
-                .setOtherNickname(requestBean.getOtherNickname())
-                .setIsOriginator(requestBean.isOriginator(id))
-                .setMessage(requestBean.getMessage())
-                .setTime(requestBean.getCreatedTime())
-                .setResult(requestBean.getState());
+        return this.setId(req.getId())
+                .setMyNickname(userVo.getNickName())
+                .setOtherNickname(isOriginator ? req.getOtherNickname() : req.getUserNickname())
+                .setIsOriginator(isOriginator)
+                .setMessage(req.getMessage())
+                .setTime(req.getCreatedTime())
+                .setResult(req.getState());
     }
 }

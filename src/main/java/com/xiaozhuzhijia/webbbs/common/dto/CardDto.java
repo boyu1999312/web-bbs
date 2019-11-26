@@ -48,11 +48,12 @@ public class CardDto {
     /** 验证token */
     private String token;
 
+    /** 检查必填项是否为空 */
     public boolean isNull(){
 
-        return  !StringUtils.isEmpty(this.getTitle()) &&
-        !IntegerUtils.NumIsEmpty(this.getCheckUserId()) &&
-        !Objects.isNull(this.getTime());
+        return  StringUtils.isEmpty(this.getTitle()) ||
+        IntegerUtils.NumIsEmpty(this.getCheckUserId()) ||
+        Objects.isNull(this.getTime());
     }
 
     public CardDto toCardDto(CardBean cardBean){

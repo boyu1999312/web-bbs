@@ -1,9 +1,12 @@
 package com.xiaozhuzhijia.webbbs.web.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.xiaozhuzhijia.webbbs.common.anno.RedisCache;
 import com.xiaozhuzhijia.webbbs.common.constant.XZZJFinal;
 import com.xiaozhuzhijia.webbbs.common.dto.CardDto;
 import com.xiaozhuzhijia.webbbs.common.entity.CardBean;
+import com.xiaozhuzhijia.webbbs.common.enu.CachePre;
+import com.xiaozhuzhijia.webbbs.common.enu.CacheType;
 import com.xiaozhuzhijia.webbbs.common.util.Result;
 import com.xiaozhuzhijia.webbbs.common.util.TokenUtil;
 import com.xiaozhuzhijia.webbbs.common.util.UpImgUtil;
@@ -30,12 +33,14 @@ public class CardServiceImpl implements CardService {
     private CardMapper cardMapper;
     @Value("${xzzj.imgPath}")
     private String path;
+
     /**
      * 新增任务卡片
      * @param cardDto
      * @param file
      * @return
      */
+    @RedisCache(value = CachePre.CARD_CACHE,type = CacheType.UPDATE)
     @Override
     public Result addCard(CardDto cardDto, MultipartFile file,
                           HttpServletRequest request) {
@@ -49,7 +54,7 @@ public class CardServiceImpl implements CardService {
         }
         request.getSession().removeAttribute(LocalUser.get().getId() +
                 XZZJFinal.ADDCARD_TOKEN);
-        if(!cardDto.isNull()){
+        if(cardDto.isNull()){
             return Result.error("请检查填写是否有误");
         }
         Result result = Result.okMsg("已添加一个任务卡片");
@@ -87,6 +92,7 @@ public class CardServiceImpl implements CardService {
      * 获取自己创建的卡片
      * @return
      */
+    @RedisCache(CachePre.CARD_CACHE)
     @Override
     public Result getMyCard() {
 
@@ -125,6 +131,7 @@ public class CardServiceImpl implements CardService {
      * @param id
      * @return
      */
+    @RedisCache(value = CachePre.CARD_CACHE,type = CacheType.UPDATE)
     @Override
     public Result delCard(Integer id) {
         int index = cardMapper.updateById(new CardBean()

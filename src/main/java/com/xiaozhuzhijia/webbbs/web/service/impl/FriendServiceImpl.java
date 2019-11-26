@@ -1,10 +1,11 @@
 package com.xiaozhuzhijia.webbbs.web.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.xiaozhuzhijia.webbbs.common.anno.RedisCache;
 import com.xiaozhuzhijia.webbbs.common.entity.BlackListBean;
 import com.xiaozhuzhijia.webbbs.common.entity.FriendBean;
 import com.xiaozhuzhijia.webbbs.common.entity.FriendRequestBean;
-import com.xiaozhuzhijia.webbbs.common.entity.UserBean;
+import com.xiaozhuzhijia.webbbs.common.enu.CachePre;
 import com.xiaozhuzhijia.webbbs.common.util.IntegerUtils;
 import com.xiaozhuzhijia.webbbs.common.util.Result;
 import com.xiaozhuzhijia.webbbs.common.vo.FriendNoticeVo;
@@ -15,7 +16,6 @@ import com.xiaozhuzhijia.webbbs.web.mapper.FriendMapper;
 import com.xiaozhuzhijia.webbbs.web.mapper.FriendRequestMapper;
 import com.xiaozhuzhijia.webbbs.web.mapper.UserMapper;
 import com.xiaozhuzhijia.webbbs.web.service.FriendService;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -139,6 +139,7 @@ public class FriendServiceImpl implements FriendService {
      * 获取自己的好友通知
      * @return
      */
+    @RedisCache(CachePre.FRIEND_NOTICE)
     @Override
     public Result getMyFriendNotice() {
 
@@ -152,11 +153,11 @@ public class FriendServiceImpl implements FriendService {
                         .eq("state", FriendRequestBean.EFFECT));
         List<FriendNoticeVo> friendNoticeVos = new ArrayList<>();
         if(requestBeans.size() == 0){
-            return Result.error("好友通知获取失败");
+            return Result.okMsg("没有通知");
         }
         for (FriendRequestBean requestBean : requestBeans) {
             friendNoticeVos.add(new FriendNoticeVo()
-                    .addFriendRequestBean(requestBean, userVo.getId()));
+                    .addFriendRequestBean(requestBean, userVo));
         }
         return Result.ok(friendNoticeVos);
     }

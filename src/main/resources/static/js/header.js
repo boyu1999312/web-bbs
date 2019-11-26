@@ -44,31 +44,34 @@ $(".user-msg").parent("a").click(function () {
             datatype: "json",
             success: function (result) {
                 console.log(result);
-                let $hct = $(".h-ct");
                 let $ct = $(".ct");
-                $ct.html('');
                 if(result.code === 200){
                     let vo = result.data;
+                    window.localStorage.setItem("ct",vo.length);
+                    flushReidPoint();
                     friendNotice = vo;
-                    $hct.text(vo.length);
                     for (let i = 0; i < vo.length; i++) {
                         let $div = getdefaultNotice(vo[i]);
                         $ct.append($div);
                     }
                 }else {
                     $ct.append("<div class='c-div-tip'>空空如也</div>");
-                    $hct.text('');
                 }
             }
         });
     }
 });
-/** 当点下消息下的子菜单后 */
+/** 消除小红点 */
 $(".h-div").each(function () {
    $(this).click(function () {
        $(this).find(".h-div-tip").text('');
    })
 });
+/** 刷新小红点 */
+function flushReidPoint(){
+    let ctNum = window.localStorage.getItem("ct");
+    $(".h-ct").text(ctNum);
+}
 /** 当点击消息框外后关闭消息框 */
 $(document).click(function (e) {
     var e = e || window.event;
@@ -100,6 +103,15 @@ $(".ct-msg").click(function () {
         $(this).parents(".c-ct").removeClass("c-ct-open");
     }
 });
+function clickMsg($el){
+    if($el.hasClass("text-hide")) {
+        $el.removeClass("text-hide");
+        $el.parents(".c-ct").addClass("c-ct-open");
+    }else {
+        $el.addClass("text-hide");
+        $el.parents(".c-ct").removeClass("c-ct-open");
+    }
+}
 /** 点击用户组下个人中心链接 */
 $(".user-space").parent("a").click(function () {
     window.location.replace("http://localhost:9400/xzzj/user_details");
@@ -112,15 +124,35 @@ jQuery.fn.isChildAndSelfOf = function(b){
 /** 获取默认通知 */
 function getdefaultNotice(vo) {
     let $div;
+    vo.msg = vo.msg === '' || vo.msg === undefined ? '' : "<span class='ct-msg text-hide ct-msg-lang'>附加消息："+vo.msg+"</span>";
     if(vo.isOriginator){
-        $div = $("<div class='c-ct ct-ok' i='"+vo.id+"'>" +
-            "<span>&nbsp;"+vo.myNickname+"&nbsp;向&nbsp;"
-            +vo.otherNickname+"&nbsp;发起好友请求&nbsp;时间："+vo.time+"</span></div>");
+        $div = $("<div class='c-ct' i='"+vo.id+"'>" +
+            "<span class='ct-title'>您已经对&nbsp;<a class='ct-a' href='#'>"+vo.otherNickname+"</a>"+
+            "&nbsp;发送了好友请求</span>" +
+            "<span class='ct-time' title='发送于："+vo.time+"'>发送于："+vo.time+"</span>" +
+            vo.msg +"</div>");
+        let $title = $div.find(".ct-title");
+        $title.attr("title", $title.text());
     }else {
         if(vo.result)
-        $div = $("<div class='c-ct ct-ero' i='"+vo.id+"'>" +
-            "<span>&nbsp;"+vo.myNickname+"&nbsp;向&nbsp;"
-            +vo.otherNickname+"&nbsp;发起好友请求&nbsp;时间："+vo.time+"</span></div>");
+            $div = $("<div class='c-ct' i='"+vo.id+"'>" +
+                "<span class='ct-title'><a class='ct-a' href='#'>"+vo.otherNickname+"</a>"+
+                "&nbsp;对您发出好友申请</span>" +
+                "<span class='ct-time' title='发送于："+vo.time+"'>发送于："+vo.time+"</span>" +
+                vo.msg+"</span>" +
+                "<div class='ct-btn-div'><button class='ct-btn-ok'>同意</button><button class='ct-btn-ero'>拒绝</button></div></div>");
+        let $title = $div.find(".ct-title");
+        $title.attr("title", $title.text());
     }
     return $div;
 }
+/** 绑定消息展开与关闭 */
+$("body").on("click", ".ct-msg", function () {
+    if($(this).hasClass("text-hide")) {
+        $(this).removeClass("text-hide");
+        $(this).parents(".c-ct").addClass("c-ct-open");
+    }else {
+        $(this).addClass("text-hide");
+        $(this).parents(".c-ct").removeClass("c-ct-open");
+    }
+});

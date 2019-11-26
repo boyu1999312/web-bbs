@@ -399,15 +399,28 @@
         .c-ct:hover {
             background: #ebebeb;
         }
-
-        .c-ct span {
+        .ct-a {
+            color: rgb(92, 127, 56);
+            text-decoration: none;
+            outline: none;
+        }
+        .ct-a:hover {
+            color: rgb(67, 91, 40);
+            text-decoration: rgb(67, 91, 40) underline;
+        }
+        .ct-title {
             display: block;
             padding-top: 7px;
             margin-left: 10px;
+            overflow: hidden;
+            max-width: 380px;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            font-size: 1em;
         }
         .ct-btn-div {
             float: right;
-            margin-top: 8px;
+            margin-top: 5px;
             margin-right: 5px;
             width: auto;
             height: auto;
@@ -422,13 +435,17 @@
         .ct-msg {
             display: inline-block;
             margin-left: 10px;
-            margin-top: 0;
-            margin-bottom: 0;
+            margin-top: 2px;
+            margin-bottom: 7px;
             width: 230px;
             white-space: normal;
             word-break: break-all;
             z-index: 4;
             background: initial;
+            font-size: 0.95em;
+        }
+        .ct-msg-lang {
+            width: 380px;
         }
         .ct-msg:hover {
             /*background: #ebebeb;*/
@@ -448,6 +465,7 @@
             width: 52px;
             height: 24px;
             border-radius: 5px;
+            margin-right: 5px;
         }
         .ct-btn-ok:active, .ct-btn-ero:active {
             opacity: .5;
@@ -471,7 +489,7 @@
             background: rgba(255, 0, 0, 0.16);
         }
         .ct-info:hover {
-            background: rgb(255, 255, 0, 0.16);
+            background: rgba(255, 255, 0, 0.16);
         }
 
 
@@ -1388,18 +1406,13 @@
                                     <div class="c-div-tip">空空如也</div>
                                 </div>
                                 <div class="c-div ct">
-                                    <div class="c-ct">
-                                        <span>admin 向你发起了好友请求</span>
-                                    </div>
 
-                                    <div class="c-ct"><span>admin 向你发起了好友请求</span></div>
-                                    <div class="c-ct"><span>admin 向你发起了好友请求</span></div>
                                 </div>
                                 <div class="c-div ch">
-                                    <div class="c-ct ct-ok"><span>admin 向你发起了好友请求</span></div>
-                                    <div class="c-ct ct-ero"><span>admin 向你发起了好友请求</span></div>
-                                    <div class="c-ct ct-info">
-                                        <span>admin 向你发起了好友请求</span>
+                                    <div class="c-ct"><span>admin 向你发起了好友请求</span></div>
+                                    <div class="c-ct"><span>admin 向你发起了好友请求</span></div>
+                                    <div class="c-ct">
+                                        <span class="ct-title">admin 向你发起了好友请求</span>
                                         <span class="ct-time">时间:2019-11-25 17:09</span>
                                         <pre class="ct-msg text-hide">附加消息:阿斯蒂芬就待机ask鲁大</br>师飞达拉斯复方咖磷大数据分开了贾师傅大卡司甲方可拉倒风口浪尖阿斯顿福建打算方可拉伸大姐夫刻录机打算风口浪尖安居客了鸡啊圣诞快乐房间安静打算方可拉伸大家啊</pre>
                                         <div class="ct-btn-div">
@@ -1408,7 +1421,12 @@
                                         </div>
                                     </div>
                                     <div class="c-ct"><span>admin 向你发起了好友请求</span></div>
-                                    <div class="c-div-tip">空空如也</div>
+                                    <div class="c-ct">
+                                        <span>admin 向你发起了好友请求</span>
+                                    </div>
+
+                                    <div class="c-ct"><span>admin 向你发起了好友请求</span></div>
+                                    <div class="c-ct"><span>admin 向你发起了好友请求</span></div>
                                 </div>
                             </div>
                         </div>
