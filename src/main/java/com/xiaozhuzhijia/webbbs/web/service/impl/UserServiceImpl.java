@@ -396,7 +396,8 @@ public class UserServiceImpl implements UserService {
         List<UserBean> userBeans = userMapper.selectList(
                 new QueryWrapper<UserBean>()
                         .select("id", "user_name", "portrait", "nick_name")
-                        .like("user_name", userName));
+                        .like("user_name", userName)
+                        .ne("id", LocalUser.get().getId()));
         if(userBeans.size() == 0){
             return Result.error("找不到用户");
         }

@@ -113,6 +113,7 @@ function cardInit(id, time, title, msg, pic) {
         "<div class='btm-des'><div title='删除卡片' class='btm-icon card-del'></div></div></div></div>");
     $card.css({"background": "url('" + pic + "') no-repeat", "background-size": "contain"});
     $(".card-plus").before($card);
+    // $(".card-content").append($card);
     cardCountdown();
 }
 
@@ -205,6 +206,7 @@ $(".close-pic").click(function () {
     clearPic();
 });
 /** 监督人搜索 */
+var isInput = false;
 $(".checkUser-input").bind("input propertychange", function () {
     var $cdiv = $(".checkUser-div");
     if ($(this).val() === '') {
@@ -365,7 +367,8 @@ $("#cardForm input[type='submit']").click(function (e) {
                 flag = true;
                 success_show(result.msg, 3000);
                 closeMask();
-                window.location.replace("/")
+                // window.location.replace("/")
+                loadCardNotPlus();
             } else {
                 flag = false;
                 errtip_show(result.msg);
@@ -377,7 +380,10 @@ $("#cardForm input[type='submit']").click(function (e) {
 });
 /** 重新加载卡片，除新增卡片 */
 function loadCardNotPlus() {
-    
+    $(".card-move").each(function () {
+       $(this).remove();
+    });
+    getMyCard();
 }
 function reTime(obj) {
 

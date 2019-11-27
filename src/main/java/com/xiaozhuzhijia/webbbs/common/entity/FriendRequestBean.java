@@ -37,6 +37,8 @@ public class FriendRequestBean {
     private Date createdTime;
     /** 修改时间 */
     private Date updatedTime;
+    /** 过期时间 */
+    private Date overduedTime;
     /** 版本 */
     private Integer version;
 

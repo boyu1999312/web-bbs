@@ -40,7 +40,7 @@ public class CardServiceImpl implements CardService {
      * @param file
      * @return
      */
-    @RedisCache(value = CachePre.CARD_CACHE,type = CacheType.UPDATE)
+    // @RedisCache(value = CachePre.CARD_CACHE,type = CacheType.UPDATE)
     @Override
     public Result addCard(CardDto cardDto, MultipartFile file,
                           HttpServletRequest request) {
@@ -92,7 +92,7 @@ public class CardServiceImpl implements CardService {
      * 获取自己创建的卡片
      * @return
      */
-    @RedisCache(CachePre.CARD_CACHE)
+    // @RedisCache(CachePre.CARD_CACHE)
     @Override
     public Result getMyCard() {
 
@@ -131,7 +131,7 @@ public class CardServiceImpl implements CardService {
      * @param id
      * @return
      */
-    @RedisCache(value = CachePre.CARD_CACHE,type = CacheType.UPDATE)
+    // @RedisCache(value = CachePre.CARD_CACHE,type = CacheType.UPDATE)
     @Override
     public Result delCard(Integer id) {
         int index = cardMapper.updateById(new CardBean()

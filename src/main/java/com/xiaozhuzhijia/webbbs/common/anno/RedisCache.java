@@ -13,4 +13,6 @@ import java.lang.annotation.Target;
 public @interface RedisCache {
     CachePre value();
     CacheType type() default CacheType.SELECT;
+    boolean isList() default true;
+    Class cla();
 }

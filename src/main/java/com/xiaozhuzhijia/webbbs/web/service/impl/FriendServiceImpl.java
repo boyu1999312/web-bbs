@@ -6,6 +6,7 @@ import com.xiaozhuzhijia.webbbs.common.entity.BlackListBean;
 import com.xiaozhuzhijia.webbbs.common.entity.FriendBean;
 import com.xiaozhuzhijia.webbbs.common.entity.FriendRequestBean;
 import com.xiaozhuzhijia.webbbs.common.enu.CachePre;
+import com.xiaozhuzhijia.webbbs.common.util.DateUtils;
 import com.xiaozhuzhijia.webbbs.common.util.IntegerUtils;
 import com.xiaozhuzhijia.webbbs.common.util.Result;
 import com.xiaozhuzhijia.webbbs.common.vo.FriendNoticeVo;
@@ -88,7 +89,8 @@ public class FriendServiceImpl implements FriendService {
                 .setOtherId(id).setState(FriendRequestBean.EFFECT)
                 .setCreatedTime(new Date())
                 .setUserNickname(userVo.getNickName())
-                .setOtherNickname(nickName);
+                .setOtherNickname(nickName)
+                .setOverduedTime(DateUtils.getDate(7));
         request.setUpdatedTime(request.getCreatedTime());
         // 如果两个人都没有建立关系
         if(null == myBean && null == otherBean){
@@ -139,7 +141,6 @@ public class FriendServiceImpl implements FriendService {
      * 获取自己的好友通知
      * @return
      */
-    @RedisCache(CachePre.FRIEND_NOTICE)
     @Override
     public Result getMyFriendNotice() {
 
@@ -156,6 +157,16 @@ public class FriendServiceImpl implements FriendService {
             return Result.okMsg("没有通知");
         }
         for (FriendRequestBean requestBean : requestBeans) {
+            // 判断这条好友申请是否过期
+            boolean before = requestBean.getCreatedTime()
+                    .before(requestBean.getOverduedTime());
+            if(!before){
+                requestBean.setState(4);
+                // 更新数据
+                friendRequestMapper.update(requestBean,
+                        new QueryWrapper<FriendRequestBean>()
+                                .eq("id", requestBean.getId()));
+            }
             friendNoticeVos.add(new FriendNoticeVo()
                     .addFriendRequestBean(requestBean, userVo));
         }

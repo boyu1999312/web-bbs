@@ -322,7 +322,7 @@
             height: 0;
         }
 
-        .msg-box-hide {
+        .msg-box-out .msg-box-hide {
             z-index: -1;
             opacity: 0;
             top: -5px;
@@ -417,6 +417,48 @@
             white-space: nowrap;
             text-overflow: ellipsis;
             font-size: 1em;
+        }
+        .ct-result-msg {
+            position: absolute;
+            right: 10px;
+            bottom: 7px;
+            width: 100px;
+            height: 26px;
+            border-radius: 3px;
+            background: hsla(0, 0%, 0%, 0.05);
+
+        }
+        .ct-rm {
+            display: inline-block;
+            margin-top: 2px;
+            margin-left: 10px;
+            margin-right: 5px;
+            width: 22px;
+            height: 22px;
+        }
+        .ct-rm-ero {
+            background: url("http://119.3.170.239/icon/sad-red.png") no-repeat;
+            background-size: cover;
+        }
+        .ct-rm-ok {
+            background: url("http://119.3.170.239/icon/smile-blue.png") no-repeat;
+            background-size: cover;
+        }
+        .ct-rm-load {
+            background: url("http://119.3.170.239/icon/loading-green.png") no-repeat;
+            background-size: cover;
+        }
+        .ct-rm-invalid {
+            background: url("http://119.3.170.239/icon/invalid-lightgrey.png") no-repeat;
+            background-size: cover;
+        }
+        .ct-rs {
+            position: absolute;
+            line-height: 26px;
+            color: #000000;
+        }
+        .ct-rs-invalid {
+            color: #a8a8a8;
         }
         .ct-btn-div {
             float: right;
@@ -803,6 +845,11 @@
             margin-left: 10px;
             margin-top: 15px;
             max-width: 800px;
+        }
+        .card-content {
+            display: inline-block;
+            width: 800px;
+            height: 0;
         }
 
 
@@ -1425,7 +1472,13 @@
                                         <span>admin 向你发起了好友请求</span>
                                     </div>
 
-                                    <div class="c-ct"><span>admin 向你发起了好友请求</span></div>
+                                    <div class="c-ct">
+                                        <span>admin 向你发起了好友请求</span>
+                                        <div class="ct-result-msg">
+                                            <div class="ct-rm"></div>
+                                            <span class="ct-rs">被拒绝</span>
+                                        </div>
+                                    </div>
                                     <div class="c-ct"><span>admin 向你发起了好友请求</span></div>
                                 </div>
                             </div>
@@ -1476,6 +1529,7 @@
                 </div>
             </div>
             <div class="card-left">
+                <div class="card-content"></div>
                 <div class="card card-plus">
                     <div></div>
                 </div>

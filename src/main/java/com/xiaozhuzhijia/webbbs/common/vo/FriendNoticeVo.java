@@ -47,4 +47,5 @@ public class FriendNoticeVo {
                 .setTime(req.getCreatedTime())
                 .setResult(req.getState());
     }
+
 }
