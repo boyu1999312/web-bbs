@@ -128,6 +128,11 @@ public class AccountController {
 
         return userService.getUserByUserName(userName);
     }
+    @GetMapping("/getMyInfo")
+    public Result getMyInfo(){
+
+        return userService.getMyInfo();
+    }
 
 
 }

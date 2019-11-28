@@ -16,12 +16,10 @@ import java.util.Date;
 import java.util.List;
 
 @Data
-@Component
 @NoArgsConstructor
 @AllArgsConstructor
 @Accessors(chain = true)
 public class FriendNoticeVo {
-
 
     private Integer id;
     /** 我的昵称 */

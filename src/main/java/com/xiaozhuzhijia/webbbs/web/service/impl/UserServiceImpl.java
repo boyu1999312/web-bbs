@@ -125,11 +125,12 @@ public class UserServiceImpl implements UserService {
     public Result register(AuthDto authDto, HttpServletRequest request) {
 
         //将DTO数据封装到PO对象中
+        Date date = new Date();
         UserBean userBean = new UserBean().setUserName(authDto.getAcc())
                 .setEmail(authDto.getEmail())
                 .setGender(authDto.getGender())
-                .setCreatedTime(authDto.getCreatedTime())
-                .setUpdatedTime(authDto.getCreatedTime())
+                .setCreatedTime(date)
+                .setUpdatedTime(date)
                 .setSalt(System.currentTimeMillis() + "");
 
         //从session中把token取出来校验
@@ -448,6 +449,11 @@ public class UserServiceImpl implements UserService {
         return Result.okMsg("更换成功");
     }
 
+    @Override
+    public Result getMyInfo() {
+
+        return Result.ok(LocalUser.get());
+    }
 
 
 }

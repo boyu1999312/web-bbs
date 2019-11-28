@@ -39,5 +39,6 @@ public interface UserService {
 
     Result setPic(MultipartFile file);
 
+    Result getMyInfo();
 
 }

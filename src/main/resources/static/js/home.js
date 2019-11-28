@@ -1,9 +1,11 @@
 var cardMask = false; //false为弹出层消失
 var imgfile = null; //存储图片数据
+var myInfo;     //自己的信息
 /** 执行函数 */
 lunbo();
 getMyCard();
 getCardToken();
+getMyInfo();
 
 /** 轮播图 */
 function lunbo() {
@@ -32,7 +34,19 @@ function lunbo() {
         $(".subscript span:eq(" + index + ")").css("background", "red")
     })
 }
-
+/** 获取自己的信息 */
+function getMyInfo() {
+    $.ajax({
+        url: "http://localhost:9400/xzzj/bbs/account/getMyInfo",
+        type: "GET",
+        datatype: "json",
+        success: function (result) {
+            if(result.code === 200){
+                myInfo = result.data;
+            }
+        }
+    });
+}
 /** 任务卡片倒计时 */
 function cardCountdown() {
     $('.time').each(function () {
@@ -286,7 +300,7 @@ $("body").on("click", ".add-user", function () {
     let id = $(this).parent().find(".checkUser-name").attr("i");
     let name = $(this).parent().find(".checkUser-name").text();
 
-    success_show("已发送添加好友请求", 1500);
+    success_show("正在发送", 1500);
     $.ajax({
         url: "http://localhost:9400/xzzj/bbs/account/friend/addFriend",
         type: "POST",

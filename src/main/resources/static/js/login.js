@@ -338,7 +338,6 @@ function submit(url){
                 "code": $("input[name='code']").val(),
                 "pwd": $("input[name='pwd']").val(),
                 "gender": $("input[name='gender']:checked").val(),
-                "createdTime": $("input[name='registerTime']").val(),
                 "codeCache": codeCache,
                 "token": $("input[name='token']").val()
             },
@@ -363,7 +362,6 @@ $('#login-form input[type="submit"]').click(function (e) {
     window.event.returnValue = false; // 兼容IE6~8
     var reg = /[\u4e00-\u9fa5]+/;
     var pwdReg = /^(?=.*[a-zA-Z]+)(?=.*[0-9]+)[a-zA-Z0-9]+$/;
-    $("input[name='registerTime']").val(new Date());
 
     if(forget){
         var flag = false;

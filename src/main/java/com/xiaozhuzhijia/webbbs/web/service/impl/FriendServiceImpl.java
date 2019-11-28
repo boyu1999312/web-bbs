@@ -67,13 +67,16 @@ public class FriendServiceImpl implements FriendService {
             return Result.error("请先解除黑名单状态");
         }
 
-        FriendBean my = new FriendBean().setUserId(userVo.getId())
-                .setOtherId(id);
-        FriendBean other = new FriendBean().setUserId(id)
-                .setOtherId(userVo.getId());
-        // 查询自己的好友记录
-        FriendBean myBean = friendMapper.selectOne(new QueryWrapper<>(my));
-        FriendBean otherBean = friendMapper.selectOne(new QueryWrapper<>(other));
+
+        // 查询好友记录
+        FriendBean friendBean = friendMapper.selectOne(
+                new QueryWrapper<FriendBean>()
+                        .eq("user_id", userVo.getId())
+                        .eq("other_id", id)
+                        .or()
+                        .eq("user_id", id)
+                        .eq("other_id", userVo.getId()));
+
         // 查询申请记录
         FriendRequestBean friendRequest = friendRequestMapper.selectOne(
                 new QueryWrapper<FriendRequestBean>()
@@ -91,7 +94,7 @@ public class FriendServiceImpl implements FriendService {
                 .setOverduedTime(DateUtils.getDate(7));
         request.setUpdatedTime(request.getCreatedTime());
         // 如果两个人都没有建立关系
-        if(null == myBean && null == otherBean){
+        if(Objects.isNull(friendBean)){
 
             if(!Objects.isNull(friendRequest)){
                 if(friendRequest.isOriginator(userVo.getId())){
@@ -115,11 +118,11 @@ public class FriendServiceImpl implements FriendService {
         // }
         // 是否为好友关系和待验证关系
 
-        if(myBean.isFriend() && other.isFriend()){
+        if(friendBean.isFriend()){
             return Result.error("您和对方已经是好友关系");
         }
         if(Objects.isNull(friendRequest)){
-            if(!myBean.isFriend() || !otherBean.isFriend()){
+            if(!friendBean.isFriend()){
                 int insert = friendRequestMapper.insert(request);
                 if(insert == 1){
                     return Result.okMsg("添加成功");
@@ -221,7 +224,10 @@ public class FriendServiceImpl implements FriendService {
         }
 
         if(res){
-
+            new FriendBean()
+                    .setUserId(friendRequestBean.getUserId())
+                    .setOtherId(friendRequestBean.getOtherId())
+                    .setCreatedTime(new Date());
         }
         return Result.ok();
     }
