@@ -2,14 +2,11 @@ package com.xiaozhuzhijia.webbbs.web.controller;
 
 import com.xiaozhuzhijia.webbbs.common.constant.XZZJFinal;
 import com.xiaozhuzhijia.webbbs.common.dto.AuthDto;
-import com.xiaozhuzhijia.webbbs.common.entity.UserBean;
-import com.xiaozhuzhijia.webbbs.common.util.CookieUtil;
 import com.xiaozhuzhijia.webbbs.common.util.Result;
 import com.xiaozhuzhijia.webbbs.web.service.UserService;
 import org.apache.juli.logging.Log;
 import org.apache.juli.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/xzzj/bbs/account")
@@ -36,21 +32,35 @@ public class AccountController {
 
         Result result = userService.login(authDto);
 
+        setLoginCookie(result, resp);
+
+        return result;
+    }
+
+    /**
+     * 登录的cookie处理
+     * @param result
+     * @param resp
+     */
+    private void setLoginCookie(Result result, HttpServletResponse resp){
         if (result.getCode() == 200) {
             Cookie cookie = (Cookie) result.getData();
             resp.addCookie(cookie);
             result.setData(null);
         }
-
-        return result;
     }
 
     @PostMapping("/register")
-    public Result register(AuthDto authDto, HttpServletRequest request) {
+    public Result register(AuthDto authDto,
+                           HttpServletRequest request,
+                           HttpServletResponse resp) {
 
         log.info("得到的表单信息：" + authDto);
+        Result result = userService.register(authDto, request);
 
-        return userService.register(authDto, request);
+        setLoginCookie(result, resp);
+
+        return result;
     }
 
     @GetMapping("/getCode")

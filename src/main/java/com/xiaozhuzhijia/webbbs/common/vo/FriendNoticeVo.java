@@ -2,18 +2,26 @@ package com.xiaozhuzhijia.webbbs.common.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.xiaozhuzhijia.webbbs.common.entity.FriendRequestBean;
+import com.xiaozhuzhijia.webbbs.common.entity.UserBean;
+import com.xiaozhuzhijia.webbbs.common.util.AuthSelect;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Data
+@Component
 @NoArgsConstructor
 @AllArgsConstructor
 @Accessors(chain = true)
 public class FriendNoticeVo {
+
 
     private Integer id;
     /** 我的昵称 */
@@ -38,14 +46,23 @@ public class FriendNoticeVo {
     public FriendNoticeVo addFriendRequestBean
             (FriendRequestBean req, UserVo userVo){
         boolean isOriginator = req.isOriginator(userVo.getId());
-
+        UserBean reqBean = AuthSelect.getUser(isOriginator ? req.getOtherId() : req.getUserId());
         return this.setId(req.getId())
                 .setMyNickname(userVo.getNickName())
-                .setOtherNickname(isOriginator ? req.getOtherNickname() : req.getUserNickname())
+                .setOtherNickname(reqBean.getNickName())
                 .setIsOriginator(isOriginator)
                 .setMessage(req.getMessage())
                 .setTime(req.getCreatedTime())
                 .setResult(req.getState());
+    }
+
+    /** 加入集合 */
+    public static List<FriendNoticeVo> toVos(List<FriendRequestBean> beans, UserVo userVo){
+        List<FriendNoticeVo> vos = new ArrayList<>();
+        for (FriendRequestBean bean : beans) {
+            vos.add(new FriendNoticeVo().addFriendRequestBean(bean, userVo));
+        }
+        return vos;
     }
 
 }

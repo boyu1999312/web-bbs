@@ -25,10 +25,6 @@ public class FriendRequestBean {
     private Integer userId;
     /** 其他用户ID */
     private Integer otherId;
-    /** 用户昵称 */
-    private String userNickname;
-    /** 其他用户昵称 */
-    private String otherNickname;
     /** 附加消息 */
     private String message;
     /** 是否生效 1-进行中 2-同意 3-拒绝 */

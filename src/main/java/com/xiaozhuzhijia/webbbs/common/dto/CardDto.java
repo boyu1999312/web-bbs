@@ -52,7 +52,7 @@ public class CardDto {
     public boolean isNull(){
 
         return  StringUtils.isEmpty(this.getTitle()) ||
-        IntegerUtils.NumIsEmpty(this.getCheckUserId()) ||
+        IntegerUtils.isEmpty(this.getCheckUserId()) ||
         Objects.isNull(this.getTime());
     }
 

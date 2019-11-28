@@ -44,7 +44,7 @@ public class FriendServiceImpl implements FriendService {
     @Override
     public Result addFriend(Integer id, String nickName) {
 
-        if(IntegerUtils.NumIsEmpty(id)){
+        if(IntegerUtils.isEmpty(id)){
             return Result.error("添加失败，请重试");
         }
 
@@ -88,8 +88,6 @@ public class FriendServiceImpl implements FriendService {
         FriendRequestBean request = new FriendRequestBean().setUserId(userVo.getId())
                 .setOtherId(id).setState(FriendRequestBean.EFFECT)
                 .setCreatedTime(new Date())
-                .setUserNickname(userVo.getNickName())
-                .setOtherNickname(nickName)
                 .setOverduedTime(DateUtils.getDate(7));
         request.setUpdatedTime(request.getCreatedTime());
         // 如果两个人都没有建立关系
@@ -151,7 +149,8 @@ public class FriendServiceImpl implements FriendService {
                         .eq("state", FriendRequestBean.EFFECT)
                         .or()
                         .eq("other_id", userVo.getId())
-                        .eq("state", FriendRequestBean.EFFECT));
+                        .eq("state", FriendRequestBean.EFFECT)
+                        .orderByDesc("created_time"));
         List<FriendNoticeVo> friendNoticeVos = new ArrayList<>();
         if(requestBeans.size() == 0){
             return Result.okMsg("没有通知");
@@ -173,5 +172,58 @@ public class FriendServiceImpl implements FriendService {
         return Result.ok(friendNoticeVos);
     }
 
+    /***
+     * 查询失效的好友申请
+     * @return
+     */
+    @RedisCache(value = CachePre.FRIEND_NOTICE,
+            cla = FriendRequestBean.class)
+    @Override
+    public Result getMyInvalidFriendNotice() {
+
+        UserVo userVo = LocalUser.get();
+        List<FriendRequestBean> requestBeans = friendRequestMapper.selectList(
+                new QueryWrapper<FriendRequestBean>()
+                        .eq("user_id", userVo.getId())
+                        .ne("state", FriendRequestBean.EFFECT)
+                        .or()
+                        .eq("other_id", userVo.getId())
+                        .ne("state", FriendRequestBean.EFFECT));
+        if(requestBeans.size() == 0){
+            return Result.error();
+        }
+        return Result.ok(FriendNoticeVo.toVos(requestBeans, userVo));
+    }
+
+    /***
+     * 同意或拒绝
+     * @return
+     */
+    @Override
+    public Result answer(Integer id,Boolean res) {
+        if(IntegerUtils.isEmpty(id) || null == res){
+            return Result.error("操作无效，请重试");
+        }
+
+        UserVo userVo = LocalUser.get();
+        FriendRequestBean friendRequestBean = friendRequestMapper.selectOne(new QueryWrapper<FriendRequestBean>()
+                .eq("id", id)
+                .eq("other_id", userVo.getId()));
+        if(Objects.isNull(friendRequestBean)){
+            return Result.error("操作无效，请重试");
+        }
+        friendRequestBean.setState(res ? 2 : 3);
+        int index = friendRequestMapper.update(friendRequestBean,
+                new QueryWrapper<FriendRequestBean>()
+                        .eq("id", id));
+        if(index == 0){
+            return Result.error("操作无效，请重试");
+        }
+
+        if(res){
+
+        }
+        return Result.ok();
+    }
 
 }

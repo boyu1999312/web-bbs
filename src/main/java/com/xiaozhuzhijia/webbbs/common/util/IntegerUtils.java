@@ -5,7 +5,7 @@ package com.xiaozhuzhijia.webbbs.common.util;
  */
 public class IntegerUtils {
 
-    public static boolean NumIsEmpty(Integer num){
+    public static boolean isEmpty(Integer num){
         return null == num || num == 0;
     }
 }

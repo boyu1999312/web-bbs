@@ -16,13 +16,13 @@ import java.util.Date;
 @Accessors(chain = true)
 public class AuthDto {
 
-    //注册
+    //登录
     /** 用户名或邮箱 */
     private String accEmail;
     /** 密码 */
     private String lPwd;
 
-    //登录
+    //注册
     /** 用户名 */
     private String acc;
     /** 邮箱 */

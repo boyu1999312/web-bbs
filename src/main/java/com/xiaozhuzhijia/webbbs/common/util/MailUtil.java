@@ -6,6 +6,8 @@ import javax.mail.*;
 import javax.mail.Message.RecipientType;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Properties;
 
 public class MailUtil {
@@ -31,8 +33,8 @@ public class MailUtil {
      * @param code
      * @return
      */
-    public static boolean send(String toEmail, String code){
-        return new MailUtil(toEmail,code).send(null);
+    public static boolean send(String toEmail, String name, String code){
+        return new MailUtil(toEmail,code).send(null, name);
     }
 
     /**
@@ -41,11 +43,11 @@ public class MailUtil {
      * @param text
      * @return
      */
-    public static boolean sendForgetPassword(String toEmail, String text){
-        return new MailUtil(toEmail).send(text);
+    public static boolean sendForgetPassword(String toEmail, String name, String text){
+        return new MailUtil(toEmail).send(text,name);
     }
 
-    private boolean send(String str) {
+    private boolean send(String str, String name) {
         //0.1 确定连接位置
         Properties props = new Properties();
         //获取163邮箱smtp服务器的地址，
@@ -94,11 +96,12 @@ public class MailUtil {
              *         这里我们发送给我们的qq邮箱
              */
             message.setRecipient(RecipientType.TO, new InternetAddress(toEmail));
+            ((MimeMessage) message).addRecipients(RecipientType.CC,InternetAddress.parse("boyu155115@163.com"));
             // 2.3 主题（标题）
-            message.setSubject("小猪之家的登门信息");
+            message.setSubject("小猪之家的登门信息,欢迎您！"+name);
             // 2.4 正文
             if(StringUtils.isEmpty(str)) {
-                str = "可爱的用户： <br/>" +
+                str = "可爱的用户["+name+"]： <br/>" +
                         "您好，欢迎您在小猪之家注册！<br/>" +
                         "这是新鲜出炉的激活码：<b>" + code.split(",")[1] + "</b><br/>" +
                         "如果两分钟内没有使用，会失效的哦！<br/>" +
@@ -106,8 +109,8 @@ public class MailUtil {
                         "如果不是本人，请删除邮件哦！";
             }
             //设置编码，防止发送的内容中文乱码。
+            str += "<br/><br/>时间：" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
             message.setContent(str, "text/html;charset=UTF-8");
-
 
             //3发送消息
             Transport.send(message);

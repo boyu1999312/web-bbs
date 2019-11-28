@@ -2,8 +2,8 @@ package com.xiaozhuzhijia.webbbs.common.enu;
 
 public enum CachePre {
     /** 卡片缓存名称 */
-    CARD_CACHE("myCard"),
-    FRIEND_NOTICE("friendNotice");
+    CARD_CACHE(",Card"),
+    FRIEND_NOTICE(",friendNotice");
     /** 具体信息 */
     private String name;
     private CachePre(String name){

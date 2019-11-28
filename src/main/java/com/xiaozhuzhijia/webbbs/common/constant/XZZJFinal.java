@@ -15,4 +15,7 @@ public interface XZZJFinal {
 
     /** 防重复提交卡片token */
     String ADDCARD_TOKEN = "_add_card";
+
+    /** 缓存的用户信息前缀 */
+    String USER_PREFIX = "USER_INFO_";
 }

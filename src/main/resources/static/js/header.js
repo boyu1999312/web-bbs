@@ -1,5 +1,5 @@
 var friendNotice = []; //好友通知
-
+var invalidFN = [];     //失效的好友通知
 getUserInfo();
 
 /** 获取自己的用户信息 */
@@ -43,12 +43,11 @@ $(".user-msg").parent("a").click(function () {
             type: "GET",
             datatype: "json",
             success: function (result) {
-                console.log(result);
-                let $ct = $(".ct");
+                let $ct = $(".ct-ctt-des");
                 if(result.code === 200){
                     let vo = result.data;
                     window.localStorage.setItem("ct",vo.length);
-                    flushReidPoint();
+                    flushRedPoint();
                     friendNotice = vo;
                     for (let i = 0; i < vo.length; i++) {
                         let $div = getdefaultNotice(vo[i]);
@@ -60,7 +59,56 @@ $(".user-msg").parent("a").click(function () {
             }
         });
     }
+    if(invalidFN.length === 0){
+        $.ajax({
+            url: "http://localhost:9400/xzzj/bbs/account/friend/getMyInvalidFriendNotice",
+            type: "GET",
+            datatype: "json",
+            success: function (result) {
+                let $ct = $(".ct-ctt-inv");
+                if(result.code === 200){
+                    let vo = result.data;
+                    invalidFN = vo;
+                    for (let i = 0; i < vo.length; i++) {
+                        let $div = getdefaultNotice(vo[i]);
+                        $ct.append($div);
+                    }
+                }else {
+                    $ct.append("<div class='c-div-tip'>空空如也</div>");
+                }
+            }
+        })
+    }
 });
+/** 同意或拒绝好友申请 */
+$("body").on("click", ".ct-btn-ok", function () {
+    clickCtbtn($(this), true);
+});
+$("body").on("click", ".ct-btn-ero", function () {
+    clickCtbtn($(this), false);
+});
+function clickCtbtn($el, parm){
+    let $f = $el.parents(".c-ct");
+    let id = $f.attr("i");
+
+    $.ajax({
+        url: "http://localhost:9400/xzzj/bbs/account/friend/answer",
+        type: "POST",
+        data: {"id": id,"res": parm},
+        datatype: "json",
+        success: function (result) {
+            if(result.code === 200){
+                $el.parent().remove();
+                let rm = parm ? "ct-rm-ok" : "ct-rm-ero";
+                let rs = parm ? "已同意" : "已拒绝";
+                $f.append("<div class='ct-result-msg'><div class='ct-rm "+
+                    rm+"'></div><span class='ct-rs'>"+rs+"</span></div>");
+            }else {
+                errtip_show(result.msg);
+            }
+        }
+    });
+}
 /** 消除小红点 */
 $(".h-div").each(function () {
    $(this).click(function () {
@@ -68,7 +116,7 @@ $(".h-div").each(function () {
    })
 });
 /** 刷新小红点 */
-function flushReidPoint(){
+function flushRedPoint(){
     let ctNum = window.localStorage.getItem("ct");
     $(".h-ct").text(ctNum);
 }
@@ -116,6 +164,22 @@ function clickMsg($el){
 $(".user-space").parent("a").click(function () {
     window.location.replace("http://localhost:9400/xzzj/user_details");
 });
+/** 展开与关闭消息栏 */
+$(".ch-text").click(function () {
+   let $next = $(this).next();
+   if($next.hasClass("hide-notice")){
+
+       $(this).addClass("ch-text-blue");
+       $(this).text($(this).text().slice(0,4));
+       $next.removeClass("hide-notice");
+   }else {
+
+       $next.addClass("hide-notice");
+       $(this).removeClass("ch-text-blue");
+       $(this).text($(this).text()+ " ("+ ($next.children().length || 0) +")");
+   }
+
+});
 
 //判断:当前元素是否是被筛选元素的子元素或者本身
 jQuery.fn.isChildAndSelfOf = function(b){
@@ -129,7 +193,7 @@ function getdefaultNotice(vo) {
     let rmHtml = getResultBox(vo.result, vo.isOriginator);
     if(vo.isOriginator){
         $div = $("<div class='c-ct' i='"+vo.id+"'>" +
-            "<span class='ct-title'>您已经对&nbsp;<a class='ct-a' href='#'>"+vo.otherNickname+"</a>"+
+            "<span class='ct-title'>您对&nbsp;<a class='ct-a' href='#'>"+vo.otherNickname+"</a>"+
             "&nbsp;发送了好友请求</span>" +
             "<span class='ct-time' title='发送于："+vo.time+"'>发送于："+vo.time+"</span>" +
             vo.msg + rmHtml +"</div>");
@@ -149,9 +213,10 @@ function getdefaultNotice(vo) {
 
     return $div;
 }
+/** 创建消息元素 */
 function getResultBox(result, isOriginator){
 
-    let rss = ["已同意", "被拒绝", "已拒绝", "已过期", "等待中"];
+    let rss = ["已同意", "已通过", "被拒绝", "已拒绝", "已过期", "等待中"];
     let rms = ["ct-rm-ok", "ct-rm-ero", "ct-rm-invalid", "ct-rm-load"];
 
     let rm,rs;
@@ -160,16 +225,19 @@ function getResultBox(result, isOriginator){
         if(!isOriginator){
             return "<div class='ct-btn-div'><button class='ct-btn-ok'>同意</button><button class='ct-btn-ero'>拒绝</button></div>"
         }
-        rm = rms[3];rs = rss[4];
+        rm = rms[3];rs = rss[5];
     }else if(result === 2){
-        rm = rms[0];rs = rss[0];
+        if(isOriginator){
+            rm = rms[0];rs = rss[0];
+        }
+        rm = rms[0];rs = rss[1];
     }else if(result === 3){
         if(isOriginator){
-            rm = rms[1];rs = rss[1];
+            rm = rms[1];rs = rss[2];
         }
-        rm = rms[1];rs = rss[2];
+        rm = rms[1];rs = rss[3];
     }else {
-        rm = rms[2];rs = rss[3];
+        rm = rms[2];rs = rss[4];
     }
     return "<div class='ct-result-msg'><div class='ct-rm "+rm+"'></div><span class='ct-rs'>"+rs+"</span></div>";
 }

@@ -258,6 +258,7 @@ function countDown($el){
         }
     },1000)
 }
+
 /** 获取验证码按钮被按下 */
 $(".get-code").click(function () {
     if(tip_show($("input[name='email']"), $(".reg-email")) ||
@@ -269,7 +270,9 @@ $(".get-code").click(function () {
     $.ajax({
         url: "http://localhost:9400/xzzj/bbs/account/getCode",
         type: "GET",
-        data: {"codeCache": codeCache,"email": $("input[name='email']").val()},
+        data: {"codeCache": codeCache,
+            "email": $("input[name='email']").val(),
+            "acc": $("input[name='acc']").val()},
         datatype: "json",
         success: function (result) {
             if (result.code === 200) {
@@ -298,7 +301,9 @@ $(".get-forget-code").click(function () {
     $.ajax({
         url: "http://localhost:9400/xzzj/bbs/account/getCode",
         type: "GET",
-        data: {"codeCache": forgetCodeCache,"email": $("input[name='forgetEmail']").val()},
+        data: {"codeCache": forgetCodeCache,
+            "email": $("input[name='forgetEmail']").val(),
+            "acc": $("input[name='acc']")},
         datatype: "json",
         success: function (result) {
             if (result.code === 200) {
@@ -333,7 +338,7 @@ function submit(url){
                 "code": $("input[name='code']").val(),
                 "pwd": $("input[name='pwd']").val(),
                 "gender": $("input[name='gender']:checked").val(),
-                "createdTime": $("input[name='createdTime']").val(),
+                "createdTime": $("input[name='registerTime']").val(),
                 "codeCache": codeCache,
                 "token": $("input[name='token']").val()
             },
@@ -358,7 +363,7 @@ $('#login-form input[type="submit"]').click(function (e) {
     window.event.returnValue = false; // 兼容IE6~8
     var reg = /[\u4e00-\u9fa5]+/;
     var pwdReg = /^(?=.*[a-zA-Z]+)(?=.*[0-9]+)[a-zA-Z0-9]+$/;
-    $("input[name='createdTime']").val(new Date());
+    $("input[name='registerTime']").val(new Date());
 
     if(forget){
         var flag = false;
@@ -436,7 +441,7 @@ $('#login-form input[type="submit"]').click(function (e) {
                 $(".t-box").remove();
                 success_show("注册成功，一秒后跳转",1500);
                 setTimeout(function () {
-                    window.location.replace("http://localhost:9400/xzzj/login");
+                    window.location.replace("http://localhost:9400/");
                 }, 1500)
             }
         }

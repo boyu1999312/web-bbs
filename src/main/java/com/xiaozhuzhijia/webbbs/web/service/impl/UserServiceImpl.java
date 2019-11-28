@@ -3,7 +3,6 @@ package com.xiaozhuzhijia.webbbs.web.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.xiaozhuzhijia.webbbs.common.constant.XZZJFinal;
 import com.xiaozhuzhijia.webbbs.common.dto.AuthDto;
-import com.xiaozhuzhijia.webbbs.common.entity.FriendBean;
 import com.xiaozhuzhijia.webbbs.common.entity.UserBean;
 import com.xiaozhuzhijia.webbbs.common.util.*;
 import com.xiaozhuzhijia.webbbs.common.vo.UserVo;
@@ -12,7 +11,6 @@ import com.xiaozhuzhijia.webbbs.web.mapper.UserMapper;
 import com.xiaozhuzhijia.webbbs.web.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -66,8 +64,19 @@ public class UserServiceImpl implements UserService {
             return Result.error("密码错误");
         }
 
+
+        return Result.ok(loginCookie(authDto.getAccEmail(), userBean));
+    }
+
+    /**
+     * 根据用户信息创建登录cookie
+     * @param accEmail
+     * @param userBean
+     * @return
+     */
+    private Cookie loginCookie(String accEmail, UserBean userBean){
         //用账户和毫秒值生成token
-        String loginToken = DigestUtils.md5DigestAsHex((authDto.getAccEmail()
+        String loginToken = DigestUtils.md5DigestAsHex((accEmail
                 + "XZZJ_LOGIN" + System.currentTimeMillis()).getBytes());
         int time = 3600 * 24 * 30 * 6;
         Cookie cookie = new Cookie(XZZJFinal.COOKIE_LOGIN_TOKEN, loginToken);
@@ -78,17 +87,17 @@ public class UserServiceImpl implements UserService {
                 .setId(userBean.getId())
                 .setUserName(userBean.getUserName())
                 .setNickName(userBean.getNickName())
-                .setPortrait(userBean.getPortrait())
+                .setPortrait(StringUtils.isEmpty(userBean.getPortrait()) ?
+                        "/images/pig_head.jpg" : userBean.getPortrait())
                 .setToken(loginToken)
-                .setCreatedTime(userBean.getCreatedTime())
+                .setRegisterTime(userBean.getCreatedTime())
                 .setEmail(userBean.getEmail());
         String userInfo = JsonMapper.toJson(userVo);
 
         redis.opsForValue().set(loginToken,
                 userInfo, time, TimeUnit.SECONDS);
 
-
-        return Result.ok(cookie);
+        return cookie;
     }
 
     /**
@@ -127,7 +136,7 @@ public class UserServiceImpl implements UserService {
         String token = (String) request.getSession()
                 .getAttribute(authDto.getEmail() + XZZJFinal.REGISTER_TOKEN);
         System.out.println("获取的token:" + token);
-
+        System.out.println(authDto.getToken());
         if(!TokenUtil.equalsToken(token, authDto.getToken())){
             return Result.error("请勿重复提交");
         }
@@ -146,7 +155,7 @@ public class UserServiceImpl implements UserService {
 
         redis.delete(authDto.getCodeCache());
         request.getSession().removeAttribute(authDto.getEmail() + XZZJFinal.REGISTER_TOKEN);
-        return Result.ok();
+        return Result.ok(loginCookie(authDto.getAcc(), userBean));
     }
 
     /**
@@ -229,7 +238,7 @@ public class UserServiceImpl implements UserService {
 
         try {
             //发送邮箱认证邮件
-            MailUtil.send(authDto.getEmail(), emailCode);
+            MailUtil.send(authDto.getEmail(), authDto.getAcc(), emailCode);
         }catch (Exception e){
             e.printStackTrace();
             return Result.error("网络原因，请等待10分钟后重试");
@@ -279,7 +288,7 @@ public class UserServiceImpl implements UserService {
             redis.opsForValue().set(temp, authDto.getEmail(),
                     60 * 3, TimeUnit.MINUTES);
             try {
-                MailUtil.sendForgetPassword(authDto.getEmail(), text);
+                MailUtil.sendForgetPassword(authDto.getEmail(),"", text);
             } catch (Exception e){
                 e.printStackTrace();
                 return Result.error("邮箱发送失败，请十分钟后重试");

@@ -378,6 +378,36 @@
             overflow-y: auto;
             background: white;
         }
+        .div-split {
+            width: 380px;
+            height: 1px;
+            background: #a8a8a8;
+            margin: 5px auto;
+        }
+
+        .ch-text {
+            padding: 5px;
+            text-align: center;
+            font-size: 1.1em;
+            height: 15px;
+            width: 383px;
+            line-height: 15px;
+            /*background: #d7d7d7;*/
+            cursor: pointer;
+            color: #2f4455;
+            /*background: rgba(0, 0, 0, 0.28);*/
+
+            transition: all .2s ease;
+        }
+        .ch-text:hover {
+            opacity: .7;
+        }
+
+        .ch-content {
+            /*max-height: 1000px;*/
+            overflow: hidden;
+            transition: all .2s ease;
+        }
 
         .c-ct {
             position: relative;
@@ -1148,6 +1178,9 @@
             opacity: 0;
             height: 0;
         }
+        .hide-notice {
+            height: 0;
+        }
 
 
         .high-height {
@@ -1453,33 +1486,52 @@
                                     <div class="c-div-tip">空空如也</div>
                                 </div>
                                 <div class="c-div ct">
-
+                                    <div class="ch-div">
+                                        <div class="ch-text ch-desc">近期通知</div>
+                                        <div class="ch-content ct-ctt-des"></div>
+                                    </div>
+                                    <div class="div-split"></div>
+                                    <div class="ch-div">
+                                        <div class="ch-text ch-invalid">历史通知</div>
+                                        <div class="ch-content ct-ctt-inv"></div>
+                                    </div>
                                 </div>
                                 <div class="c-div ch">
-                                    <div class="c-ct"><span>admin 向你发起了好友请求</span></div>
-                                    <div class="c-ct"><span>admin 向你发起了好友请求</span></div>
-                                    <div class="c-ct">
-                                        <span class="ct-title">admin 向你发起了好友请求</span>
-                                        <span class="ct-time">时间:2019-11-25 17:09</span>
-                                        <pre class="ct-msg text-hide">附加消息:阿斯蒂芬就待机ask鲁大</br>师飞达拉斯复方咖磷大数据分开了贾师傅大卡司甲方可拉倒风口浪尖阿斯顿福建打算方可拉伸大姐夫刻录机打算风口浪尖安居客了鸡啊圣诞快乐房间安静打算方可拉伸大家啊</pre>
-                                        <div class="ct-btn-div">
-                                            <button class="ct-btn-ok">同意</button>
-                                            <button class="ct-btn-ero">拒绝</button>
-                                        </div>
-                                    </div>
-                                    <div class="c-ct"><span>admin 向你发起了好友请求</span></div>
-                                    <div class="c-ct">
-                                        <span>admin 向你发起了好友请求</span>
-                                    </div>
+                                    <div class="ch-div">
+                                        <div class="ch-text ch-desc">最近联系</div>
+                                        <div class="ch-content ch-ctt-des">
+                                            <div class="c-ct"><span>admin 向你发起了好友请求</span></div>
+                                            <div class="c-ct"><span>admin 向你发起了好友请求</span></div>
+                                            <div class="c-ct">
+                                                <span class="ct-title">admin 向你发起了好友请求</span>
+                                                <span class="ct-time">时间:2019-11-25 17:09</span>
+                                                <pre class="ct-msg text-hide">附加消息:阿斯蒂芬就待机ask鲁大</br>师飞达拉斯复方咖磷大数据分开了贾师傅大卡司甲方可拉倒风口浪尖阿斯顿福建打算方可拉伸大姐夫刻录机打算风口浪尖安居客了鸡啊圣诞快乐房间安静打算方可拉伸大家啊</pre>
+                                                <div class="ct-btn-div">
+                                                    <button class="ct-btn-ok">同意</button>
+                                                    <button class="ct-btn-ero">拒绝</button>
+                                                </div>
+                                            </div>
+                                            <div class="c-ct"><span>admin 向你发起了好友请求</span></div>
+                                            <div class="c-ct">
+                                                <span>admin 向你发起了好友请求</span>
+                                            </div>
 
-                                    <div class="c-ct">
-                                        <span>admin 向你发起了好友请求</span>
-                                        <div class="ct-result-msg">
-                                            <div class="ct-rm"></div>
-                                            <span class="ct-rs">被拒绝</span>
+                                            <div class="c-ct">
+                                                <span>admin 向你发起了好友请求</span>
+                                                <div class="ct-result-msg">
+                                                    <div class="ct-rm"></div>
+                                                    <span class="ct-rs">被拒绝</span>
+                                                </div>
+                                            </div>
+                                            <div class="c-ct"><span>admin 向你发起了好友请求</span></div>
                                         </div>
                                     </div>
-                                    <div class="c-ct"><span>admin 向你发起了好友请求</span></div>
+                                    <div class="ch-div">
+                                        <div class="ch-text ch-invalid">好友列表</div>
+                                        <div class="ch-content ch-ctt-inv">
+                                            <div class="c-ct"><span>admin 向你发起了好友请求</span></div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

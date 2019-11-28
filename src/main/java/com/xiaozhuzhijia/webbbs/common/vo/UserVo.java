@@ -24,7 +24,7 @@ public class UserVo {
     /** 用户民 */
     private String userName;
     /** 注册时间 */
-    private Date createdTime;
+    private Date registerTime;
     /** 登陆时间 */
     // private Date loginTime;
     /** 在线密匙 */
@@ -38,7 +38,7 @@ public class UserVo {
                 .setUserName(userBean.getUserName())
                 .setEmail(userBean.getEmail())
                 .setNickName(userBean.getNickName())
-                .setCreatedTime(userBean.getCreatedTime())
+                .setRegisterTime(userBean.getCreatedTime())
                 .setPortrait(userBean.getPortrait());
     }
 

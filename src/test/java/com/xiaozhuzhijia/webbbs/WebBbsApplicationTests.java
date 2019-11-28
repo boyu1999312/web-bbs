@@ -1,6 +1,7 @@
 package com.xiaozhuzhijia.webbbs;
 
 import com.xiaozhuzhijia.webbbs.common.util.DateUtils;
+import com.xiaozhuzhijia.webbbs.common.util.IdWorker;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.DigestUtils;
@@ -39,4 +40,12 @@ class WebBbsApplicationTests {
         System.out.println(before);
     }
 
+    @Test
+    void test03(){
+        IdWorker idWorker = new IdWorker(0, 0);
+        for (int i = 0; i < 100; i++) {
+            long l = idWorker.nextId();
+            System.out.println(l);
+        }
+    }
 }

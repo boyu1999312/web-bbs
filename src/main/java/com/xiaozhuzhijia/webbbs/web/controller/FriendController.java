@@ -25,5 +25,15 @@ public class FriendController {
 
         return friendService.getMyFriendNotice();
     }
+    @GetMapping("/getMyInvalidFriendNotice")
+    public Result getMyInvalidFriendNotice(){
+
+        return friendService.getMyInvalidFriendNotice();
+    }
+    @PostMapping("/answer")
+    public Result accept(Integer id,Boolean res){
+
+        return friendService.answer(id, res);
+    }
 
 }

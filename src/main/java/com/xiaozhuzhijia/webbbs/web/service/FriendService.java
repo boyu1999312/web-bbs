@@ -8,5 +8,8 @@ public interface FriendService {
 
     Result getMyFriendNotice();
 
+    Result getMyInvalidFriendNotice();
+
+    Result answer(Integer id,Boolean res);
 
 }
