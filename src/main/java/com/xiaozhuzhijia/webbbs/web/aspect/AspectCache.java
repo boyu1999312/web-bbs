@@ -83,7 +83,7 @@ public class AspectCache {
 
         String value = getAnnoValue(joinPoint);
         UserVo userVo = LocalUser.get();
-        String key = userVo.getUserName() + "," +value;
+        String key = userVo.getId() + value;
 
         try {
             String json = (String) redis.opsForHash().get(key, value);
@@ -116,7 +116,7 @@ public class AspectCache {
     private Object update(ProceedingJoinPoint joinPoint){
         String value = getAnnoValue(joinPoint);
         UserVo userVo = LocalUser.get();
-        String key = userVo.getUserName() + "," +value;
+        String key = userVo.getId() + value;
 
         try {
             String json = (String) redis.opsForHash().get(key, value);

@@ -8,10 +8,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.Objects;
+
 
 @Data
 @TableName("xzzj_friend")
@@ -27,8 +26,10 @@ public class FriendBean implements Serializable {
     private Integer userId;
     /** 好友用户名 */
     private Integer otherId;
-    /** 备注 */
-    private String remarks;
+    /** 对本用户备注 */
+    private String userRemarks;
+    /** 对好友用户备注 */
+    private String otherRemarks;
     /** 成为好友时间 */
     private Date createdTime;
     /** 修改时间 */
@@ -49,6 +50,7 @@ public class FriendBean implements Serializable {
      * @return
      */
     public boolean isFriend(){
-        return this.state;
+
+        return this.state == null ? false : this.state;
     }
 }

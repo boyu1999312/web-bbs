@@ -77,7 +77,7 @@ function getCardToken(){
 /** 添加一个任务卡片 */
 $(".card-plus").click(function (e) {
     if (!cardMask) {
-        var $mask = $(".card-mask");
+        var $mask = $(".add-card");
         var top = ($(window).height() - $mask.height()) / 2;
         var left = ($(window).width() - $mask.width()) / 2;
         var scrollTop = $(document).scrollTop();
@@ -296,28 +296,46 @@ $("body").on("click", ".click-cuser", function () {
     $(".checkUser-div").removeClass("high-height");
 });
 /** 添加好友按钮 按下 */
+var addfId;
 $("body").on("click", ".add-user", function () {
-    let id = $(this).parent().find(".checkUser-name").attr("i");
-    let name = $(this).parent().find(".checkUser-name").text();
+
+    addfId = $(this).parent().find(".checkUser-name").attr("i");
+    // let name = $(this).parent().find(".checkUser-name").text();
+
+    let $mask = $(".add-friend");
+    $mask.removeClass("mask-hide");
+    let nick = $(this).prev().find(".checkUser-name").text();
+    $mask.find(".ct-a").text(nick);
+
+});
+
+/** 发送好友请求 */
+$(".addf-btn").click(function () {
+    addFAJAX();
+});
+function addFAJAX() {
 
     success_show("正在发送", 1500);
     $.ajax({
         url: "http://localhost:9400/xzzj/bbs/account/friend/addFriend",
         type: "POST",
-        data: {"id": id, "nickName": name},
+        data: {"id": addfId,
+            "otherRemarks": $("input[name='addfRemarks']").val(),
+            "message": $("textarea[name='addfMsg']").val()},
         datatype: "json",
         success: function (result) {
             if(result.code === 200){
+                closeAddFMask();
                 success_show(result.msg, 1500);
             }else {
                 errtip_show(result.msg);
             }
         }
     });
-});
+}
 /** 关闭任务卡片添加层 */
 function closeMask() {
-    var $mask = $(".card-mask");
+    var $mask = $(".add-card");
     if (cardMask) {
         $mask.addClass("mask-hide");
         cardMask = !cardMask;
@@ -334,10 +352,19 @@ function closeMask() {
     clearPic();
 }
 
-$(".close-mask").click(function () {
+$(".close-addCard").click(function () {
     closeMask();
 });
-
+/** 关闭添加好友层 */
+$(".close-addFriend").click(function () {
+    closeAddFMask();
+});
+function closeAddFMask() {
+    let $mask = $(".add-friend");
+    $mask.addClass("mask-hide");
+    $("input[name='addfRemarks']").val('');
+    $("textarea[name='addfMsg']").val('');
+}
 /** 切换卡片页 */
 var $cardPage = $(".on");
 $(".card-tip-it").click(function () {

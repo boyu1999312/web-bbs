@@ -35,7 +35,7 @@ public class FriendNoticeVo {
     private String message;
     /** 结果 */
     private Integer result;
-
+    
     /**
      * 将结果添加到Vo中
      * @param req

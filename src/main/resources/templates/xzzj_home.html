@@ -1006,20 +1006,19 @@
             height: 24px;
             width: 24px;
             cursor: pointer;
-            background: url("http://119.3.170.239/icon/card-del.png") 50% 50% no-repeat;
+            background: url("http://119.3.170.239/icon/card-del-hover.png") 50% 50% no-repeat;
             background-size: 20px;
             color: #dfdfdf;
             border-radius: 20px;
-            border: #e6e6e6 solid 1px;
+            border: white solid 1px;
             font-size: 0.8em;
+            opacity: .5;
 
-            transition: all .3s ease;
+            transition: all .2s ease;
         }
 
         .btm-icon:hover {
-            border: white solid 1px;
-            background: url("http://119.3.170.239/icon/card-del-hover.png") 50% 50% no-repeat;
-            background-size: 20px;
+            opacity: 1;
         }
 
         .card-del {
@@ -1110,7 +1109,7 @@
             right: 0;
             bottom: 0;
             background: hsla(0, 0%, 0%, 0.4);
-            overflow-y: scroll;
+            overflow-y: auto;
             transition: all 0.3s ease;
         }
 
@@ -1132,8 +1131,17 @@
             line-height: 30px;
             font-size: 1.2em;
             margin: 5px auto;
-
         }
+        .card-mask-textarea {
+            display: block;
+            outline: none;
+            height: 60px;
+            width: 300px;
+            line-height: 30px;
+            font-size: 1.2em;
+            margin: 5px auto;
+        }
+
 
         .card-mask .up-pic {
             display: none;
@@ -1310,6 +1318,27 @@
             color: white;
         }
 
+        /** 添加好友 */
+        .addf-div {
+            margin: 10% 25px auto;
+            height: 300px;
+        }
+        .addf-title {
+            margin: 5px auto;
+            font-size: 1.2em;
+            color: white;
+            text-shadow: 0 0 15px black;
+            text-align: center;
+            font-weight: bolder;
+        }
+        .addf-title .ct-a {
+            color: white;
+        }
+        .addf-title .ct-a:hover {
+            color: #ffae00;
+        }
+
+        /** 添加好友结束 */
         /** main 数据卡片 结束 */
 
         @keyframes switch {
@@ -1594,7 +1623,7 @@
     <div class="footer"></div>
 </div>
 <!--遮罩层-->
-<div class="card-mask mask-hide">
+<div class="card-mask add-card mask-hide">
     <div>
         <form id="cardForm" method="post" enctype="multipart/form-data">
             <input class="card-mask-input" name="title" placeholder="输入标题...">
@@ -1614,17 +1643,27 @@
                 <!--<div class="checkUser"></div>-->
                 <!--<div class="checkUser"></div>-->
             </div>
-            <textarea class="card-mask-input" name="msg" placeholder="输入简介..."></textarea>
+            <textarea class="card-mask-textarea" name="msg" placeholder="输入简介..."></textarea>
             <div class="mask-pic-div">
                 <input class="card-mask-input up-pic" name="pic" id="cardPic" type="file">
                 <label for="cardPic" class="label-up-pic">上传图片</label>
                 <div class="close-pic hide">撤销</div>
             </div>
             <input class="card-mask-input" type="submit" value="提交">
-            <div class="close-mask">关闭</div>
+            <div class="close-mask close-addCard">关闭</div>
             <input type="hidden" name="token"/>
             <input type="hidden" name="checkUserId"/>
         </form>
+    </div>
+</div>
+
+<div class="card-mask add-friend mask-hide">
+    <div class="addf-div">
+        <div class="addf-title">您将添加&nbsp;<a class="ct-a" href="#"></a>&nbsp;为好友</div>
+        <input class="card-mask-input" name="addfRemarks" placeholder="备注..">
+        <textarea class="card-mask-textarea" name="addfMsg" placeholder="附加消息"></textarea>
+        <input class="card-mask-input addf-btn" type="button" value="提交">
+        <div class="close-mask close-addFriend">关闭</div>
     </div>
 </div>
 

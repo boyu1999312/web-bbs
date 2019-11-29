@@ -6,6 +6,7 @@ import com.xiaozhuzhijia.webbbs.common.entity.BlackListBean;
 import com.xiaozhuzhijia.webbbs.common.entity.FriendBean;
 import com.xiaozhuzhijia.webbbs.common.entity.FriendRequestBean;
 import com.xiaozhuzhijia.webbbs.common.enu.CachePre;
+import com.xiaozhuzhijia.webbbs.common.enu.CacheType;
 import com.xiaozhuzhijia.webbbs.common.util.DateUtils;
 import com.xiaozhuzhijia.webbbs.common.util.IntegerUtils;
 import com.xiaozhuzhijia.webbbs.common.util.Result;
@@ -42,7 +43,7 @@ public class FriendServiceImpl implements FriendService {
      * @return
      */
     @Override
-    public Result addFriend(Integer id, String nickName) {
+    public Result addFriend(Integer id, String otherRemarks, String message) {
 
         if(IntegerUtils.isEmpty(id)){
             return Result.error("添加失败，请重试");
@@ -90,6 +91,8 @@ public class FriendServiceImpl implements FriendService {
         // 准备好友记录
         FriendRequestBean request = new FriendRequestBean().setUserId(userVo.getId())
                 .setOtherId(id).setState(FriendRequestBean.EFFECT)
+                .setOtherRemarks(otherRemarks)
+                .setMessage(message)
                 .setCreatedTime(new Date())
                 .setOverduedTime(DateUtils.getDate(7));
         request.setUpdatedTime(request.getCreatedTime());
@@ -156,7 +159,7 @@ public class FriendServiceImpl implements FriendService {
                         .orderByDesc("created_time"));
         List<FriendNoticeVo> friendNoticeVos = new ArrayList<>();
         if(requestBeans.size() == 0){
-            return Result.okMsg("没有通知");
+            return Result.error("没有通知");
         }
         for (FriendRequestBean requestBean : requestBeans) {
             // 判断这条好友申请是否过期
@@ -179,8 +182,8 @@ public class FriendServiceImpl implements FriendService {
      * 查询失效的好友申请
      * @return
      */
-    @RedisCache(value = CachePre.FRIEND_NOTICE,
-            cla = FriendRequestBean.class)
+    // @RedisCache(value = CachePre.FRIEND_NOTICE,
+    //         cla = FriendRequestBean.class)
     @Override
     public Result getMyInvalidFriendNotice() {
 
@@ -202,6 +205,9 @@ public class FriendServiceImpl implements FriendService {
      * 同意或拒绝
      * @return
      */
+    // @RedisCache(value = CachePre.FRIEND_NOTICE,
+    //         type = CacheType.UPDATE,
+    //         cla = FriendRequestBean.class)
     @Override
     public Result answer(Integer id,Boolean res) {
         if(IntegerUtils.isEmpty(id) || null == res){
@@ -222,11 +228,12 @@ public class FriendServiceImpl implements FriendService {
         if(index == 0){
             return Result.error("操作无效，请重试");
         }
-
+        //写入好友
         if(res){
             new FriendBean()
                     .setUserId(friendRequestBean.getUserId())
                     .setOtherId(friendRequestBean.getOtherId())
+                    .setState(true)
                     .setCreatedTime(new Date());
         }
         return Result.ok();

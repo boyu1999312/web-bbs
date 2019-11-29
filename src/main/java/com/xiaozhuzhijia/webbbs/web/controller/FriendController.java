@@ -16,9 +16,9 @@ public class FriendController {
     private FriendService friendService;
 
     @PostMapping("/addFriend")
-    public Result addFriend(Integer id, String nickName){
+    public Result addFriend(Integer id, String otherRemarks, String message){
 
-        return friendService.addFriend(id, nickName);
+        return friendService.addFriend(id, otherRemarks, message);
     }
     @GetMapping("/getMyFriendNotice")
     public Result getMyFriendNotice(){
