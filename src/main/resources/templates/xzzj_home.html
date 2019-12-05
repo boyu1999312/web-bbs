@@ -1028,14 +1028,20 @@
 <script src="http://119.3.170.239/js/jquery-3.4.1.min.js"></script>
 <script src="http://119.3.170.239/js/jquery.countdown.min.js"></script>
 <script type="text/javascript" src="/static/editor/js/module.js"></script>
-<script type="text/javascript" src="/static/editor/js/myuploader.js"></script>
-<script type="text/javascript" src="/static/editor/js/mysimditor.js"></script>
-<script type="text/javascript" src="/static/editor/js/myhotkeys.js"></script>
+<script type="text/javascript" src="/static/editor/js/hotkeys.js"></script>
+<script type="text/javascript" src="/static/editor/js/uploader.js"></script>
+<script type="text/javascript" src="/static/editor/js/simditor.js"></script>
 <script src="/static/js/home.js"></script>
 <script src="/static/js/header.js"></script>
 <script>
     var myInfo;     //自己的信息
-    var editor = new Simditor({   textarea: $('#editor')});
+    var editor = new Simditor({
+        toolbar: ['title', 'bold', 'italic', 'underline', 'strikethrough', 'fontScale',
+            'color', '|', 'ol', 'ul', 'blockquote', 'code', 'table', '|', 'link',
+            'image', 'hr', '|', 'alignment'],
+        textarea: $('#editor')
+        //optional options
+    });
 </script>
 
 
