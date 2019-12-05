@@ -1,12 +1,9 @@
 package com.xiaozhuzhijia.webbbs.web.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.xiaozhuzhijia.webbbs.common.anno.RedisCache;
 import com.xiaozhuzhijia.webbbs.common.entity.BlackListBean;
 import com.xiaozhuzhijia.webbbs.common.entity.FriendBean;
 import com.xiaozhuzhijia.webbbs.common.entity.FriendRequestBean;
-import com.xiaozhuzhijia.webbbs.common.enu.CachePre;
-import com.xiaozhuzhijia.webbbs.common.enu.CacheType;
 import com.xiaozhuzhijia.webbbs.common.util.DateUtils;
 import com.xiaozhuzhijia.webbbs.common.util.IntegerUtils;
 import com.xiaozhuzhijia.webbbs.common.util.Result;
@@ -141,7 +138,7 @@ public class FriendServiceImpl implements FriendService {
 
     }
 
-    /***
+    /**
      * 获取自己的好友通知
      * @return
      */
@@ -178,12 +175,10 @@ public class FriendServiceImpl implements FriendService {
         return Result.ok(friendNoticeVos);
     }
 
-    /***
+    /**
      * 查询失效的好友申请
      * @return
      */
-    // @RedisCache(value = CachePre.FRIEND_NOTICE,
-    //         cla = FriendRequestBean.class)
     @Override
     public Result getMyInvalidFriendNotice() {
 
@@ -194,20 +189,18 @@ public class FriendServiceImpl implements FriendService {
                         .ne("state", FriendRequestBean.EFFECT)
                         .or()
                         .eq("other_id", userVo.getId())
-                        .ne("state", FriendRequestBean.EFFECT));
+                        .ne("state", FriendRequestBean.EFFECT)
+                        .orderByDesc("created_time"));
         if(requestBeans.size() == 0){
             return Result.error();
         }
         return Result.ok(FriendNoticeVo.toVos(requestBeans, userVo));
     }
 
-    /***
+    /**
      * 同意或拒绝
      * @return
      */
-    // @RedisCache(value = CachePre.FRIEND_NOTICE,
-    //         type = CacheType.UPDATE,
-    //         cla = FriendRequestBean.class)
     @Override
     public Result answer(Integer id,Boolean res) {
         if(IntegerUtils.isEmpty(id) || null == res){
@@ -230,11 +223,20 @@ public class FriendServiceImpl implements FriendService {
         }
         //写入好友
         if(res){
-            new FriendBean()
+            Date date = new Date();
+            FriendBean friendBean = new FriendBean()
                     .setUserId(friendRequestBean.getUserId())
                     .setOtherId(friendRequestBean.getOtherId())
                     .setState(true)
-                    .setCreatedTime(new Date());
+                    .setCreatedTime(date)
+                    .setUpdatedTime(date)
+                    .setUserRemarks(friendRequestBean.getOtherRemarks())
+                    .setOtherRemarks(userVo.getNickName());
+
+            int idx = friendMapper.insert(friendBean);
+            if(idx == 0){
+                return Result.error("操作失败，请重试");
+            }
         }
         return Result.ok();
     }

@@ -5,6 +5,9 @@
     <title>小猪之家</title>
     <!--<link rel="stylesheet" type="text/css" href="http://119.3.170.239/css/home.css">-->
     <!--<link rel="icon" href="/favicon.ico">-->
+    <link rel="stylesheet" type="text/css" href="/static/css/header.css">
+    <link media="all" rel="stylesheet" type="text/css" href="/static/editor/css/simditor.css" />
+
     <style>
 
         body {
@@ -28,676 +31,6 @@
         }
 
 
-        /** 导航栏开始 */
-        .nav {
-            position: relative;
-            background: url("http://119.3.170.239/images/top_a.png") repeat 0 -400px;
-            /*background-size: 1920px 1260px;*/
-
-            -webkit-background-size: cover;
-            -moz-background-size: cover;
-            -o-background-size: cover;
-            background-size: cover;
-            width: 100%;
-            min-width: 1366px;
-            grid-area: h;
-        }
-
-        .nav-ul {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-        }
-
-        .nav-ul li {
-            float: left;
-            display: inline-block;
-        }
-
-        /** Home导航栏下拉菜单开始 */
-        .sub-nav {
-            position: absolute;
-            top: 55px;
-            z-index: -1;
-            background: white;
-            opacity: 0;
-            color: #273638;
-            font-size: 14px;
-            /*box-shadow: 1px 1px 10px #353535;*/
-            box-shadow: #818181 0 0 10px;
-            transition: all 0.15s ease-out;
-            transition-delay: .2s;
-            padding: 7px 0;
-            border-radius: 3px 3px 6px 6px;
-
-            user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            -webkit-user-select: none;
-        }
-
-        .sub-nav a {
-            display: block;
-            text-align: center;
-            line-height: 30px;
-            font-size: 14px;
-            color: #273638;
-            text-decoration: none;
-            padding: 0 20px;
-            transition: all 0.3s ease;
-        }
-
-        .sub-nav-split {
-            margin: 5px 0 5px 0;
-            height: 1px;
-            background: #b9bcbc;
-        }
-
-        .sub-nav span {
-
-            display: block;
-            transition: all 0.3s ease-out;
-        }
-
-        /*.sub-nav a:hover span {*/
-
-        /*transform: translateX(3px);*/
-        /*}*/
-
-        .sub-nav a:hover {
-
-            background: hsla(0, 0%, 77%, 0.7);
-        }
-
-        .sub-nav a:active {
-            background: hsla(0, 0%, 20%, 0.4);
-        }
-
-        .nav-ul li:hover .sub-nav {
-
-            transform: translateY(-5px);
-            z-index: 9999;
-            opacity: 1;
-        }
-
-        /** Home导航栏下拉菜单结束 */
-
-        .space {
-            margin: 0 auto;
-            width: 1142px;
-        }
-
-        .inner {
-            background: inherit;
-            height: 50px;
-            filter: blur(3px);
-            box-shadow: #505050 1px 0 2px;
-        }
-
-        .out {
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 50px;
-            width: 100%;
-            min-width: 1142px;
-            background: hsla(0, 0%, 100%, .4);
-        }
-
-        .nav-ul li > a:hover {
-            color: black;
-            text-shadow: #c0c0c0 0 1px 5px;
-            background: hsla(0, 0%, 100%, .5);
-        }
-
-        .nav-ul li > a {
-            display: block;
-            width: 70px;
-
-            font-size: 1em;
-            font-weight: bolder;
-            color: #3d3e3e;
-            text-align: center;
-            line-height: 50px;
-
-            transition: all 0.5s ease;
-            text-decoration: none;
-        }
-
-        .search-right {
-            margin-right: 1%;
-        }
-
-        .search {
-            display: block;
-            float: right;
-            font-weight: bolder;
-            font-size: 0.9em;
-            text-align: center;
-            height: 27px;
-            margin-top: 0.65em;
-            border: 3px solid rgba(0, 0, 0, .12);
-            border-radius: 9px;
-            padding: 0;
-        }
-
-        .search input {
-
-            float: left;
-            outline-style: none;
-            padding: 5px 10px;
-            border-radius: 7px 0 0 7px;
-            color: #4b4b4b;
-            background: hsla(0, 0%, 100%, .4);
-            border: 0;
-            overflow: hidden;
-            transition: all 0.5s ease;
-            height: 17px;
-
-        }
-
-        .search-btn {
-            float: left;
-            cursor: pointer;
-            position: relative;
-            right: 0;
-            height: 27px;
-            width: 32px;
-            background: url("http://119.3.170.239/icon/search_icon_a.png") no-repeat 5px 3px;
-            background-size: 70%;
-            border: 0;
-            transition: all 0.3s ease;
-            border-top-right-radius: 9px;
-            border-bottom-right-radius: 9px;
-            outline: none;
-        }
-
-        .search:hover input {
-            color: #1c1c1c;
-            background: white;
-        }
-
-        .search:hover button {
-            background: url("http://119.3.170.239/icon/search_icon_b.png") no-repeat 5px 3px;
-            background-size: 70%;
-        }
-
-        .user-group {
-            position: relative;
-            float: right;
-            line-height: 50px;
-
-            user-select: none;
-            -webkit-user-select: none;
-            -ms-user-select: none;
-            -moz-user-select: none;
-        }
-
-        .user-group img {
-            width: 37px;
-            height: 37px;
-            border-radius: 50%;
-            margin-top: 6px;
-            /*transform: rotate(-45deg);*/
-            cursor: pointer;
-            /*box-shadow: hsla(0, 0%, 34%, 0.95) 0 0 2px;*/
-            border: hsla(0, 0%, 100%, .4) solid 1px;
-        }
-
-        .user-group .user-des {
-            position: absolute;
-            top: 66px;
-            left: -41px;
-            width: 120px;
-            border: 1px solid #ebebeb;
-            border-radius: 3px 3px 6px 6px;
-            background: white;
-            opacity: 0;
-            z-index: -1;
-            transition: all 0.2s ease;
-
-            box-shadow: #818181 0 0 10px;
-        }
-
-        .user-des div:first-child {
-            margin: 5px 0;
-        }
-
-        .user-des:before {
-            content: "";
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            top: -6px;
-            left: 50%;
-            margin-left: -5px;
-            transform: rotate(45deg);
-            background: white;
-
-            border-bottom-right-radius: 100%;
-            border-top: 1px solid #ebebeb;
-            border-left: 1px solid #ebebeb;
-        }
-
-        .user-des span {
-            position: relative;
-            display: inline-block;
-            width: 18px;
-            height: 18px;
-            background-size: 18px;
-            text-align: center;
-            line-height: 18px;
-            top: 3px;
-            padding: 0 0 0 3px;
-        }
-
-        .user-space {
-            background: url("http://119.3.170.239/icon/user-space.png") no-repeat;
-        }
-
-        .user-msg {
-            background: url("http://119.3.170.239/icon/user-msg.png") no-repeat;
-        }
-
-        .user-des .ab {
-            position: absolute;
-            height: 18px;
-            width: 18px;
-            left: 50%;
-            bottom: 50%;
-            line-height: 18px;
-            border-radius: 20px;
-            color: white;
-            background: red;
-            text-align: center;
-            padding: 0 4px;
-            font-size: 11px;
-            top: 9px;
-            margin-left: 8px;
-        }
-
-        .msg-box-out {
-            margin: 0 auto;
-            width: 1142px;
-            height: 0;
-        }
-
-        .msg-box-out .msg-box-hide {
-            z-index: -1;
-            opacity: 0;
-            top: -5px;
-        }
-        .msg-box {
-            position: relative;
-            top: 0;
-            left: 740px;
-            width: 400px;
-            height: 450px;
-            background: #e5e5e5;
-            border-radius: 4px 4px 6px 6px;
-            overflow: hidden;
-            z-index: 3;
-            box-shadow: 0 0 10px #8f8f8f;
-
-            transition: all 0.3s ease;
-        }
-
-        .msg-header {
-            position: relative;
-            width: 100%;
-            height: 60px;
-            background: white;
-            color: #84bde6;
-            border-bottom: #e5e5e5 solid 1px;
-        }
-
-        .msg-main {
-            position: relative;
-            width: 100%;
-            height: 350px;
-            background: white;
-        }
-
-        .msg-bottom {
-            overflow: hidden;
-
-        }
-
-        .msg-content {
-            width: 1500px;
-            height: 0;
-            transition: all .2s ease;
-        }
-
-        .c-div {
-            position: relative;
-            float: left;
-            width: 400px;
-            height: 350px;
-            overflow-x: hidden;
-            overflow-y: auto;
-            background: white;
-        }
-        .div-split {
-            width: 380px;
-            height: 1px;
-            background: #a8a8a8;
-            margin: 5px auto;
-        }
-
-        .ch-text {
-            padding: 5px;
-            text-align: center;
-            font-size: 1.1em;
-            height: 15px;
-            width: 383px;
-            line-height: 15px;
-            /*background: #d7d7d7;*/
-            cursor: pointer;
-            color: #2f4455;
-            /*background: rgba(0, 0, 0, 0.28);*/
-
-            transition: all .2s ease;
-        }
-        .ch-text:hover {
-            opacity: .7;
-        }
-
-        .ch-content {
-            /*max-height: 1000px;*/
-            overflow: hidden;
-            transition: all .2s ease;
-        }
-
-        .c-ct {
-            position: relative;
-            width: 400px;
-            height: 80px;
-            color: #292a2a;
-            cursor: pointer;
-            background: #f5f5f5;
-            margin-bottom: 3px;
-
-        }
-        .c-ct:last-child {
-            margin: 0;
-        }
-        .c-ct-open {
-            height: auto;
-        }
-
-        .c-ct:hover {
-            background: #ebebeb;
-        }
-        .ct-a {
-            color: rgb(92, 127, 56);
-            text-decoration: none;
-            outline: none;
-        }
-        .ct-a:hover {
-            color: rgb(67, 91, 40);
-            text-decoration: rgb(67, 91, 40) underline;
-        }
-        .ct-title {
-            display: block;
-            padding-top: 7px;
-            margin-left: 10px;
-            overflow: hidden;
-            max-width: 380px;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            font-size: 1em;
-        }
-        .ct-result-msg {
-            position: absolute;
-            right: 25px;
-            bottom: 7px;
-            width: 100px;
-            height: 26px;
-            border-radius: 3px;
-            background: hsla(0, 0%, 0%, 0.05);
-
-        }
-        .ct-rm {
-            display: inline-block;
-            margin-top: 2px;
-            margin-left: 10px;
-            margin-right: 5px;
-            width: 22px;
-            height: 22px;
-        }
-        .ct-rm-ero {
-            background: url("http://119.3.170.239/icon/sad-red.png") no-repeat;
-            background-size: cover;
-        }
-        .ct-rm-ok {
-            background: url("http://119.3.170.239/icon/smile-blue.png") no-repeat;
-            background-size: cover;
-        }
-        .ct-rm-load {
-            background: url("http://119.3.170.239/icon/loading-green.png") no-repeat;
-            background-size: cover;
-        }
-        .ct-rm-invalid {
-            background: url("http://119.3.170.239/icon/invalid-lightgrey.png") no-repeat;
-            background-size: cover;
-        }
-        .ct-rs {
-            position: absolute;
-            line-height: 26px;
-            color: #000000;
-        }
-        .ct-rs-invalid {
-            color: #a8a8a8;
-        }
-        .ct-btn-div {
-            position: absolute;
-            right: 20px;
-            bottom: 7px;
-            width: auto;
-            height: auto;
-        }
-        .c-ct .ct-time {
-            display: block;
-            margin-top: 0;
-            margin-left: 10px;
-            font-size: .7em;
-            padding-top: 0;
-        }
-        .ct-msg {
-            display: inline-block;
-            margin-left: 10px;
-            margin-top: 2px;
-            margin-bottom: 7px;
-            width: 230px;
-            white-space: normal;
-            word-break: break-all;
-            z-index: 4;
-            background: initial;
-            font-size: 0.95em;
-        }
-        .ct-msg-lang {
-            width: 380px;
-        }
-        .ct-msg:hover {
-            /*background: #ebebeb;*/
-            color: #73a3c7;
-        }
-        .text-hide {
-            height: 35px;
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-        }
-        .ct-btn-ok, .ct-btn-ero {
-            cursor: pointer;
-            border: 0;
-            outline: none;
-            transition: all 0.1s ease;
-            width: 52px;
-            height: 24px;
-            border-radius: 5px;
-            margin-right: 5px;
-        }
-        .ct-btn-ok:active, .ct-btn-ero:active {
-            opacity: .5;
-        }
-
-        .ct-btn-ok:hover {
-            color: whitesmoke;
-            background: rgb(0, 199, 0);
-        }
-        .ct-btn-ero:hover {
-            color: whitesmoke;
-            background: rgb(204, 0, 0);
-        }
-        .ct-ok, .ct-ero, .ct-info {
-            transition: all 0.2s ease;
-        }
-        .ct-ok:hover {
-            background: rgba(0, 255, 0, 0.18);
-        }
-        .ct-ero:hover {
-            background: rgba(255, 0, 0, 0.16);
-        }
-        .ct-info:hover {
-            background: rgba(255, 255, 0, 0.16);
-        }
-
-
-        .c-div-tip {
-            margin-top: 40%;
-            text-align: center;
-            color: #292a2a;
-            font-size: 1.1em;
-            padding: 0;
-        }
-
-        .msg-footer {
-            position: relative;
-            width: 100%;
-            height: 40px;
-            text-align: center;
-            line-height: 40px;
-            border-top: #e5e5e5 solid 1px;
-            background: white;
-
-        }
-
-        .h-bottom {
-            margin: 0 auto;
-            width: 300px;
-        }
-
-        .h-div {
-            position: relative;
-            display: inline-block;
-            width: 32%;
-            height: 60px;
-            line-height: 60px;
-            text-align: center;
-            cursor: pointer;
-            font-size: 0.9em;
-            color: #52758f;
-
-            transition: background 0.2s ease;
-        }
-
-        .h-div-active {
-            color: #47aec6;
-        }
-
-        .h-div:hover {
-            color: #6e9dbf;
-            /*background: #6e9dbf;*/
-            /*box-shadow: 0 0 10px #6e9dbf;*/
-        }
-
-        .h-div-tip {
-            position: absolute;
-            top: 15px;
-            right: 17px;
-            width: 13px;
-            height: 13px;
-            line-height: 13px;
-            font-size: 0.8em;
-            border-radius: 20px;
-            padding: 2px;
-            color: red;
-
-            transition: all .3s ease;
-        }
-
-        .user-exit {
-            background: url("http://119.3.170.239/icon/user-exit.png") no-repeat;
-        }
-
-        .user-des a {
-            position: relative;
-            display: block;
-            padding: 0 15px;
-            color: #273638;
-            font-size: 14px;
-            height: 35px;
-            line-height: 35px;
-            cursor: pointer;
-
-        }
-
-        .user-des a:hover {
-            background: hsla(0, 0%, 55%, 0.34);
-        }
-        .user-des a:last-child:hover {
-            background: rgba(225, 0, 0, 0.9);
-            color: white;
-        }
-        .user-des a:last-child:hover span {
-            background: url("http://119.3.170.239/icon/user-exit-hover.png") no-repeat;
-            background-size: 18px;
-        }
-
-        .user-group:hover .user-des {
-            opacity: 1;
-            transform: translate3d(0, -9px, 0);
-            z-index: 999;
-        }
-
-        .user-des-split {
-            height: 1px;
-            background: #e5e5e5;
-            margin: 5px auto;
-            padding: 0 5px;
-        }
-
-        .icon {
-            float: left;
-            line-height: 50px;
-            width: 200px;
-            height: 50px;
-            background: url("http://119.3.170.239/icon/xiaozhu_icon.png");
-            background-size: cover;
-
-            cursor: pointer;
-        }
-
-        .icon:before {
-            content: "";
-            position: absolute;
-            z-index: 999;
-            width: 200px;
-            height: 50px;
-            background: hsla(0, 0%, 100%, .1);
-            filter: blur(4px);
-            opacity: 0;
-            transition: all 0.3s ease;
-        }
-
-        .icon:hover:before {
-            opacity: 1;
-        }
-
-
-        /** 导航栏结束 */
         /** top 结束 */
 
 
@@ -740,7 +73,12 @@
             -ms-user-select: none;
             -moz-user-select: none;
         }
-
+        .noselect {
+            user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            -moz-user-select: none;
+        }
         .container-left input {
             display: none;
         }
@@ -817,6 +155,8 @@
             width: 450px;
             height: 300px;
             color: white;
+
+            animation: picBlur .4s ease;
         }
 
         /*.sub-more:hover {*/
@@ -1109,7 +449,7 @@
             right: 0;
             bottom: 0;
             background: hsla(0, 0%, 0%, 0.4);
-            overflow-y: auto;
+            overflow-y: scroll;
             transition: all 0.3s ease;
         }
 
@@ -1341,6 +681,11 @@
         /** 添加好友结束 */
         /** main 数据卡片 结束 */
 
+        @keyframes picBlur {
+            0% {filter: blur(10px);}
+            100% {filter: none;}
+        }
+
         @keyframes switch {
             0%, 20% {
                 transform: translateX(0px);
@@ -1433,11 +778,11 @@
         @keyframes load {
             0% {
                 transform: translate3d(0, 60px, 0);
-                opacity: 0
+                opacity: 0;
             }
             100% {
                 transform: translate3d(0, 0, 0);
-                opacity: 1
+                opacity: 1;
             }
         }
 
@@ -1529,7 +874,10 @@
                                     <div class="ch-div">
                                         <div class="ch-text ch-desc">最近联系</div>
                                         <div class="ch-content ch-ctt-des">
-                                            <div class="c-ct"><span>admin 向你发起了好友请求</span></div>
+                                            <div class="c-ct">
+                                                <span>admin 向你发起了好友请求</span>
+                                                <div class="ct-del">删除</div>
+                                            </div>
                                             <div class="c-ct"><span>admin 向你发起了好友请求</span></div>
                                             <div class="c-ct">
                                                 <span class="ct-title">admin 向你发起了好友请求</span>
@@ -1618,11 +966,20 @@
             <div class="container-data"></div>
 
         </div>
+        <div>
+            <div>
+                <h2>测试md</h2>
+                <div id="editormd">
+                    <textarea id="editor" placeholder="这里输入内容" autofocus></textarea>
+                </div>
+
+            </div>
+        </div>
     </div>
 
     <div class="footer"></div>
 </div>
-<!--遮罩层-->
+<!--添加卡片层-->
 <div class="card-mask add-card mask-hide">
     <div>
         <form id="cardForm" method="post" enctype="multipart/form-data">
@@ -1656,7 +1013,7 @@
         </form>
     </div>
 </div>
-
+<!--添加好友层-->
 <div class="card-mask add-friend mask-hide">
     <div class="addf-div">
         <div class="addf-title">您将添加&nbsp;<a class="ct-a" href="#"></a>&nbsp;为好友</div>
@@ -1670,6 +1027,16 @@
 </body>
 <script src="http://119.3.170.239/js/jquery-3.4.1.min.js"></script>
 <script src="http://119.3.170.239/js/jquery.countdown.min.js"></script>
+<script type="text/javascript" src="/static/editor/js/module.js"></script>
+<script type="text/javascript" src="/static/editor/js/myuploader.js"></script>
+<script type="text/javascript" src="/static/editor/js/mysimditor.js"></script>
+<script type="text/javascript" src="/static/editor/js/myhotkeys.js"></script>
 <script src="/static/js/home.js"></script>
 <script src="/static/js/header.js"></script>
+<script>
+    var myInfo;     //自己的信息
+    var editor = new Simditor({   textarea: $('#editor')});
+</script>
+
+
 </html>

@@ -98,13 +98,13 @@ public class MailUtil {
             message.setRecipient(RecipientType.TO, new InternetAddress(toEmail));
             ((MimeMessage) message).addRecipients(RecipientType.CC,InternetAddress.parse("boyu155115@163.com"));
             // 2.3 主题（标题）
-            message.setSubject("小猪之家的登门信息,欢迎您！"+name);
+            message.setSubject("小猪之家的登门信息,欢迎您！");
             // 2.4 正文
             if(StringUtils.isEmpty(str)) {
-                str = "可爱的用户["+name+"]： <br/>" +
+                str = "可爱的用户： <br/>" +
                         "您好，欢迎您在小猪之家注册！<br/>" +
                         "这是新鲜出炉的激活码：<b>" + code.split(",")[1] + "</b><br/>" +
-                        "如果两分钟内没有使用，会失效的哦！<br/>" +
+                        "如果五分钟内没有使用，会失效的哦！<br/>" +
                         "如果没有找到的话！请在垃圾邮件中找找看！麻烦了内！！<br/>" +
                         "如果不是本人，请删除邮件哦！";
             }

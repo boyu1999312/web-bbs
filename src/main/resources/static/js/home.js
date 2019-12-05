@@ -1,11 +1,10 @@
 var cardMask = false; //false为弹出层消失
 var imgfile = null; //存储图片数据
-var myInfo;     //自己的信息
+
 /** 执行函数 */
 lunbo();
 getMyCard();
 getCardToken();
-getMyInfo();
 
 /** 轮播图 */
 function lunbo() {
@@ -34,19 +33,7 @@ function lunbo() {
         $(".subscript span:eq(" + index + ")").css("background", "red")
     })
 }
-/** 获取自己的信息 */
-function getMyInfo() {
-    $.ajax({
-        url: "http://localhost:9400/xzzj/bbs/account/getMyInfo",
-        type: "GET",
-        datatype: "json",
-        success: function (result) {
-            if(result.code === 200){
-                myInfo = result.data;
-            }
-        }
-    });
-}
+
 /** 任务卡片倒计时 */
 function cardCountdown() {
     $('.time').each(function () {
@@ -78,14 +65,14 @@ function getCardToken(){
 $(".card-plus").click(function (e) {
     if (!cardMask) {
         var $mask = $(".add-card");
-        var top = ($(window).height() - $mask.height()) / 2;
-        var left = ($(window).width() - $mask.width()) / 2;
-        var scrollTop = $(document).scrollTop();
-        var scrollLeft = $(document).scrollLeft();
+        // var top = ($(window).height() - $mask.height()) / 2;
+        // var left = ($(window).width() - $mask.width()) / 2;
+        // var scrollTop = $(document).scrollTop();
+        // var scrollLeft = $(document).scrollLeft();
         $mask.removeClass("mask-hide");
 
         cardMask = !cardMask;
-        $("body").addClass("overflow-hide");
+        // $("body").addClass("overflow-hide");
         timeInit();
         getCardToken();
     }
@@ -340,9 +327,9 @@ function closeMask() {
         $mask.addClass("mask-hide");
         cardMask = !cardMask;
 
-        setTimeout(function () {
-            $("body").removeClass("overflow-hide");
-        }, 310);
+        // setTimeout(function () {
+        //     $("body").removeClass("overflow-hide");
+        // }, 310);
     }
     $("#cardForm input").each(function () {
         $(this).not(":submit").val("");

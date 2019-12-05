@@ -27,10 +27,7 @@ public class InterceptorConfig implements WebMvcConfigurer {
                 .addPathPatterns("/**")
                 //添加排除项
                 .excludePathPatterns(
-                        "/favicon.ico",
-                        "/images/**",
-                        "/js/**",
-                        "/css/**");
+                        "/favicon.ico");
         ;
     }
 

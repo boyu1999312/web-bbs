@@ -374,7 +374,7 @@ public class UserServiceImpl implements UserService {
 
         UserVo userVo = LocalUser.get();
         if(Objects.isNull(userVo)){
-            return Result.error("无法找到用户");
+            return Result.error("获取信息失败，请刷新重试");
         }
         userVo.setToken(null).setId(null);
         return Result.ok(userVo);
@@ -452,7 +452,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public Result getMyInfo() {
 
-        return Result.ok(LocalUser.get());
+        UserVo userVo = LocalUser.get();
+        if(Objects.isNull(userVo)){
+            return Result.error("无法找到用户");
+        }
+        return Result.ok(userVo);
     }
 
 

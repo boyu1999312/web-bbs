@@ -1,23 +1,25 @@
 var friendNotice = []; //好友通知
 var invalidFN = [];     //失效的好友通知
-getUserInfo();
+getMyInfo();
 
-/** 获取自己的用户信息 */
-function getUserInfo() {
+/** 获取自己的信息 */
+function getMyInfo() {
     $.ajax({
-        url: "http://localhost:9400/xzzj/bbs/account/getUserInfo",
+        url: "http://localhost:9400/xzzj/bbs/account/getMyInfo",
         type: "GET",
         datatype: "json",
         success: function (result) {
-            if (result.code === 200) {
-                var userInfo = result.data;
-                $(".user-group").find("img").attr("src", userInfo.portrait);
-            } else {
-                console.log(result.msg)
+            if(result.code === 200){
+                myInfo = result.data;
+                $(".user-group").find("img").attr("src", myInfo.portrait);
+                document.title = document.title + " - " + myInfo.nickName;
+            }else {
+                console.log(result.msg);
             }
         }
-    })
+    });
 }
+
 /** 点击用户组下退出链接 */
 $(".user-exit").parent("a").click(function () {
     $.ajax({
@@ -54,7 +56,7 @@ $(".user-msg").parent("a").click(function () {
                         $ct.append($div);
                     }
                 }else {
-                    $ct.append("<div class='c-div-tip'>空空如也</div>");
+                    // $ct.append("<div class='c-div-tip'>空空如也</div>");
                 }
             }
         });
@@ -74,7 +76,7 @@ $(".user-msg").parent("a").click(function () {
                         $ct.append($div);
                     }
                 }else {
-                    $ct.append("<div class='c-div-tip'>空空如也</div>");
+                    // $ct.append("<div class='c-div-tip'>空空如也</div>");
                 }
             }
         })
@@ -192,7 +194,7 @@ function getdefaultNotice(vo) {
     vo.msg = vo.msg === '' || vo.msg === undefined ? '' : "<span class='ct-msg text-hide ct-msg-lang'>附加消息："+vo.msg+"</span>";
     let rmHtml = getResultBox(vo.result, vo.isOriginator);
     if(vo.isOriginator){
-        $div = $("<div class='c-ct' i='"+vo.id+"'>" +
+        $div = $("<div class='c-ct' i='"+vo.id+"'>" + "<div class='ct-del noselect'>删除</div>" +
             "<span class='ct-title'>您对&nbsp;<a class='ct-a' href='#'>"+vo.otherNickname+"</a>"+
             "&nbsp;发送了好友请求</span>" +
             "<span class='ct-time' title='发送于："+vo.time+"'>发送于："+vo.time+"</span>" +
@@ -201,7 +203,7 @@ function getdefaultNotice(vo) {
         $title.attr("title", $title.text());
     }else {
         if(vo.result)
-            $div = $("<div class='c-ct' i='"+vo.id+"'>" +
+            $div = $("<div class='c-ct' i='"+vo.id+"'>" + "<div class='ct-del noselect'>删除</div>" +
                 "<span class='ct-title'><a class='ct-a' href='#'>"+vo.otherNickname+"</a>"+
                 "&nbsp;对您发出好友申请</span>" +
                 "<span class='ct-time' title='发送于："+vo.time+"'>发送于："+vo.time+"</span>" +
@@ -227,18 +229,16 @@ function getResultBox(result, isOriginator){
         }
         rm = rms[3];rs = rss[5];
     }else if(result === 2){
-        if(isOriginator){
-            rm = rms[0];rs = rss[0];
-        }
-        rm = rms[0];rs = rss[1];
+        rm = rms[0];
+        rs = isOriginator ? rss[1] : rss[0];
     }else if(result === 3){
-        if(isOriginator){
-            rm = rms[1];rs = rss[2];
-        }
-        rm = rms[1];rs = rss[3];
+        rm = rms[1];
+        rs = isOriginator ? rss[2] :rss[3];
     }else {
         rm = rms[2];rs = rss[4];
     }
+
+
     return "<div class='ct-result-msg'><div class='ct-rm "+rm+"'></div><span class='ct-rs'>"+rs+"</span></div>";
 }
 /** 绑定消息展开与关闭 */
