@@ -16,7 +16,9 @@
             scroll-behavior: smooth;
 
         }
-
+        button {
+            outline: none;
+        }
         /** grid父级容器 */
         .content {
             display: grid;
@@ -224,7 +226,8 @@
 
 
         .card-tip {
-            padding: 0 15px;
+            width: 790px;
+            padding-left: 15px;
             margin-top: 10px;
         }
 
@@ -383,7 +386,16 @@
             width: 320px;
             background: #e5e5e5;
             border-radius: 3px;
+
         }
+        .data-fix {
+            position: fixed;
+            top: 70px;
+            /*right: 112px;*/
+            /*margin-right: 380px;*/
+            z-index: 99;
+        }
+
 
         /** card添加 */
         .container-card .card-plus {
@@ -681,6 +693,143 @@
         /** 添加好友结束 */
         /** main 数据卡片 结束 */
 
+
+        /** main 帖子开始 */
+        .wb-title-out {
+            height: 66px;
+        }
+        .wb-title {
+            border-bottom: #e6e6e6 solid 1px;
+            width: 810px;
+            background: white;
+        }
+        .wb-title-fix {
+            position: fixed;
+            top: 0;
+            width: 1142px;
+            z-index: 99;
+        }
+        .wb-title a {
+            display: inline-block;
+            outline: none;
+            margin: 0 25px;
+            text-decoration: none;
+            font-size: 17px;
+            line-height: 65px;
+            cursor: pointer;
+            color: #232323;
+        }
+        .wb-title a:hover {
+            color: #326cbe;
+        }
+
+        .wb-space {
+
+        }
+
+        .wb-it {
+            padding: 20px;
+            width: 770px;
+            position: relative;
+            border-bottom: #e5e5e5 solid 1px;
+        }
+        .wb-content {
+            position: relative;
+            width: 760px;
+        }
+        .wb-content h3 {
+            margin: 0;
+        }
+        .wb-h2 {
+            text-decoration: none;
+            color: #191919;
+        }
+        .wb-h2:hover {
+            color: #427091;
+        }
+        /*.wb-a {*/
+            /*display: inline-block;*/
+        /*}*/
+        .wb-out {
+            display: inline-block;
+            width: 200px;
+            height: 120px;
+            margin: 10px 20px 10px 0;
+            cursor: pointer;
+        }
+        .wb-out:hover {
+            opacity: .9;
+        }
+        .wb-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+        .wb-in {
+            position: relative;
+            top: -10px;
+            width: 500px;
+            height: 105px;
+            display: inline-block;
+        }
+        .wb-span {
+            display: inline-block;
+            line-height: 25px;
+            /*height: 105px;*/
+            width: 500px;
+            color: #0f0f0f;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        .wb-span:hover {
+            opacity: .7;
+        }
+        .wb-btn {
+            position: absolute;
+            top: 77px;
+            left: 108px;
+            color: #423b78;
+            font-size: 15px;
+            display: inline-block;
+            border: none;
+            text-decoration: none;
+            background: inherit;
+            cursor: pointer;
+            z-index: 5;
+        }
+        .wb-btn:hover {
+            opacity: .7;
+        }
+        .wb-btn:hover + .wb-span {
+            opacity: .7;
+        }
+
+        .wb-like {
+            display: inline-block;
+        }
+        .wb-like button {
+            width: 55px;
+            height: 30px;
+            padding: 0;
+            margin: 0 7px;
+            border: none;
+            text-decoration: none;
+            background: #6a77be;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+        }
+        .wb-like button:first-child {
+            margin-left: 0;
+        }
+        .wb-like button:hover {
+            opacity: .8;
+        }
+        /** main 帖子结束 */
+
         @keyframes picBlur {
             0% {filter: blur(10px);}
             100% {filter: none;}
@@ -717,9 +866,10 @@
         }
 
         .footer {
-            border: 1px solid black;
-            background: lightgrey;
+            /*border: 1px solid black;*/
+            background: #e6e6e6;
             grid-area: f;
+            color: #a8a8a8;
         }
 
 
@@ -784,6 +934,21 @@
                 transform: translate3d(0, 0, 0);
                 opacity: 1;
             }
+        }
+        /** 备案提示 */
+        .div-icp {
+            display: inline-block;
+            margin: 5px 0;
+        }
+        .icp-a {
+            margin: 0 auto;
+            color: #a8a8a8;
+            text-decoration: none;
+            transition: all .2s ease;
+        }
+        .icp-a:hover {
+            /*color: #A874FF;*/
+            color: #6753a5;
         }
 
     </style>
@@ -968,16 +1133,172 @@
         </div>
         <div>
             <div>
+                <div class="wb-title-out">
+                    <div class="wb-title">
+                        <a>推荐</a>
+                        <a>热门</a>
+                        <a>最新</a>
+                    </div>
+                </div>
+                <div class="wb-space">
+                    <div class="wb-it">
+                        <div class="wb-content">
+                            <h3><a class="wb-h2" href="#">起一个标题</a></h3>
+                            <div class="wb-a">
+                                <div class="wb-out">
+                                    <img class="wb-img" src="http://119.3.170.239/images/rockimg/dongman_3.jpeg">
+                                </div>
+                                <div class="wb-in">
+                                    <button class="wb-btn">点击查看</button>
+                                    <span class="wb-span">
+                                        white-space -- 通过HTML文档的源代码的排版方式控制页面显示文本的排版方式
+取值: normal | pre | nowrap | pre-wrap | pre-line | inherit
+normal: 正常无变化(默认处理方式.文本自动处理换行.假如抵达容器边界内容...
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="wb-b">
+                                <div class="wb-like">
+                                    <button>点赞</button>
+                                </div>
+                                <div class="wb-like">
+                                    <button>分享</button>
+                                </div>
+                                <div class="wb-like">
+                                    <button>评论</button>
+                                </div>
+                                <div class="wb-like">
+                                    <button>收藏</button>
+                                </div>
+                                <div class="wb-like">
+                                    <button>其他</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="wb-it">
+                        <div class="wb-content">
+                            <h3><a class="wb-h2" href="#">起一个标题</a></h3>
+                            <div class="wb-a">
+                                <div class="wb-out">
+                                    <img class="wb-img" src="http://119.3.170.239/images/rockimg/dongman_3.jpeg">
+                                </div>
+                                <div class="wb-in">
+                                    <button class="wb-btn">点击查看</button>
+                                    <span class="wb-span">
+                                        white-space -- 通过HTML文档的源代码的排版方式控制页面显示文本的排版方式
+取值: normal | pre | nowrap | pre-wrap | pre-line | inherit
+normal: 正常无变化(默认处理方式.文本自动处理换行.假如抵达容器边界内容会
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="wb-b">
+                                <div class="wb-like">
+                                    <button>点赞</button>
+                                </div>
+                                <div class="wb-like">
+                                    <button>分享</button>
+                                </div>
+                                <div class="wb-like">
+                                    <button>评论</button>
+                                </div>
+                                <div class="wb-like">
+                                    <button>收藏</button>
+                                </div>
+                                <div class="wb-like">
+                                    <button>其他</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="wb-it">
+                        <div class="wb-content">
+                            <h3><a class="wb-h2" href="#">起一个标题</a></h3>
+                            <div class="wb-a">
+                                <div class="wb-out">
+                                    <img class="wb-img" src="http://119.3.170.239/images/rockimg/dongman_3.jpeg">
+                                </div>
+                                <div class="wb-in">
+                                    <button class="wb-btn">点击查看</button>
+                                    <span class="wb-span">
+                                        white-space -- 通过HTML文档的源代码的排版方式控制页面显示文本的排版方式
+取值: normal | pre | nowrap | pre-wrap | pre-line | inherit
+normal: 正常无变化(默认处理方式.文本自动处理换行.假如抵达容器边界内容会
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="wb-b">
+                                <div class="wb-like">
+                                    <button>点赞</button>
+                                </div>
+                                <div class="wb-like">
+                                    <button>分享</button>
+                                </div>
+                                <div class="wb-like">
+                                    <button>评论</button>
+                                </div>
+                                <div class="wb-like">
+                                    <button>收藏</button>
+                                </div>
+                                <div class="wb-like">
+                                    <button>其他</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="wb-it">
+                        <div class="wb-content">
+                            <h3><a class="wb-h2" href="#">起一个标题</a></h3>
+                            <div class="wb-a">
+                                <div class="wb-out">
+                                    <img class="wb-img" src="http://119.3.170.239/images/rockimg/dongman_3.jpeg">
+                                </div>
+                                <div class="wb-in">
+                                    <button class="wb-btn">点击查看</button>
+                                    <span class="wb-span">
+                                        white-space -- 通过HTML文档的源代码的排版方式控制页面显示文本的排版方式
+取值: normal | pre | nowrap | pre-wrap | pre-line | inherit
+normal: 正常无变化(默认处理方式.文本自动处理换行.假如抵达容器边界内容会
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="wb-b">
+                                <div class="wb-like">
+                                    <button>点赞</button>
+                                </div>
+                                <div class="wb-like">
+                                    <button>分享</button>
+                                </div>
+                                <div class="wb-like">
+                                    <button>评论</button>
+                                </div>
+                                <div class="wb-like">
+                                    <button>收藏</button>
+                                </div>
+                                <div class="wb-like">
+                                    <button>其他</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
                 <h2>测试md</h2>
                 <div id="editormd">
                     <textarea id="editor" placeholder="这里输入内容" autofocus></textarea>
                 </div>
-
             </div>
         </div>
     </div>
 
-    <div class="footer"></div>
+    <div class="footer">
+        <div class="space" style="text-align: center;">
+            <div class="div-icp">互联网ICP备案：
+                <a class="icp-a" target="view_window" href="http://www.beian.miit.gov.cn/">京ICP备19055525号</a>
+            </div>
+        </div>
+    </div>
 </div>
 <!--添加卡片层-->
 <div class="card-mask add-card mask-hide">
@@ -1023,7 +1344,6 @@
         <div class="close-mask close-addFriend">关闭</div>
     </div>
 </div>
-
 </body>
 <script src="http://119.3.170.239/js/jquery-3.4.1.min.js"></script>
 <script src="http://119.3.170.239/js/jquery.countdown.min.js"></script>
@@ -1043,6 +1363,4 @@
         //optional options
     });
 </script>
-
-
 </html>

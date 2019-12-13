@@ -439,7 +439,7 @@ $('#login-form input[type="submit"]').click(function (e) {
                 $(".t-box").remove();
                 success_show("注册成功，一秒后跳转",1500);
                 setTimeout(function () {
-                    window.location.replace("http://localhost:9400/");
+                    window.location.replace("");
                 }, 1500)
             }
         }

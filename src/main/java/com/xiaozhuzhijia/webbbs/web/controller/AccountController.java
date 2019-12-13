@@ -32,7 +32,7 @@ public class AccountController {
 
         Result result = userService.login(authDto);
 
-        setLoginCookie(result, resp);
+        result = setLoginCookie(result, resp);
 
         return result;
     }
@@ -42,12 +42,13 @@ public class AccountController {
      * @param result
      * @param resp
      */
-    private void setLoginCookie(Result result, HttpServletResponse resp){
+    private Result setLoginCookie(Result result, HttpServletResponse resp){
         if (result.getCode() == 200) {
             Cookie cookie = (Cookie) result.getData();
             resp.addCookie(cookie);
             result.setData(null);
         }
+        return result;
     }
 
     @PostMapping("/register")
@@ -58,7 +59,7 @@ public class AccountController {
         log.info("得到的表单信息：" + authDto);
         Result result = userService.register(authDto, request);
 
-        setLoginCookie(result, resp);
+        result = setLoginCookie(result, resp);
 
         return result;
     }
@@ -78,7 +79,7 @@ public class AccountController {
     }
 
     @PostMapping("/checkCode")
-    public Result checkCode(AuthDto authDto) {
+    public Result    checkCode(AuthDto authDto) {
 
         log.info("检查验证码：" + authDto);
         return userService.checkCode(authDto);

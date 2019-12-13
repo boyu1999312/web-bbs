@@ -463,6 +463,19 @@ function getMyCard() {
     })
 }
 
+/** 滚动到指定位置侧边框浮动 */
+$(window).scroll(function () {
+   let vh = $(document).scrollTop();
+   console.log(vh);
+   if(vh > 930){
+       $(".wb-title").addClass("wb-title-fix");
+       $(".container-data").addClass("data-fix");
+   }else {
+       $(".wb-title").removeClass("wb-title-fix");
+       $(".container-data").removeClass("data-fix");
+
+   }
+});
 /** 引用login.js 的方法 */
 /** 提示框 */
 function errtip_show(text) {

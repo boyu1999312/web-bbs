@@ -190,15 +190,14 @@ jQuery.fn.isChildAndSelfOf = function(b){
 /** 获取默认通知 */
 function getdefaultNotice(vo) {
     let $div;
-
-    vo.msg = vo.msg === '' || vo.msg === undefined ? '' : "<span class='ct-msg text-hide ct-msg-lang'>附加消息："+vo.msg+"</span>";
+    let msg = vo.message === '' || vo.message === undefined ? '' : "<span class='ct-msg text-hide'>附加消息："+vo.message+"</span>";
     let rmHtml = getResultBox(vo.result, vo.isOriginator);
     if(vo.isOriginator){
         $div = $("<div class='c-ct' i='"+vo.id+"'>" + "<div class='ct-del noselect'>删除</div>" +
             "<span class='ct-title'>您对&nbsp;<a class='ct-a' href='#'>"+vo.otherNickname+"</a>"+
             "&nbsp;发送了好友请求</span>" +
             "<span class='ct-time' title='发送于："+vo.time+"'>发送于："+vo.time+"</span>" +
-            vo.msg + rmHtml +"</div>");
+            msg + rmHtml +"</div>");
         let $title = $div.find(".ct-title");
         $title.attr("title", $title.text());
     }else {
@@ -207,7 +206,7 @@ function getdefaultNotice(vo) {
                 "<span class='ct-title'><a class='ct-a' href='#'>"+vo.otherNickname+"</a>"+
                 "&nbsp;对您发出好友申请</span>" +
                 "<span class='ct-time' title='发送于："+vo.time+"'>发送于："+vo.time+"</span>" +
-                vo.msg + "</span>" + rmHtml + "</div>");
+                msg + "</span>" + rmHtml + "</div>");
 
         let $title = $div.find(".ct-title");
         $title.attr("title", $title.text());
@@ -245,9 +244,11 @@ function getResultBox(result, isOriginator){
 $("body").on("click", ".ct-msg", function () {
     if($(this).hasClass("text-hide")) {
         $(this).removeClass("text-hide");
+        $(this).addClass("ct-msg-lang");
         $(this).parents(".c-ct").addClass("c-ct-open");
     }else {
         $(this).addClass("text-hide");
+        $(this).removeClass("ct-msg-lang");
         $(this).parents(".c-ct").removeClass("c-ct-open");
     }
 });
