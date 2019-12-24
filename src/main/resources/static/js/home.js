@@ -46,18 +46,18 @@ function cardCountdown() {
 };
 
 /** 获取添加卡片的Token */
-function getCardToken(){
+function getCardToken() {
     $.ajax({
-       url: "http://localhost:9400/xzzj/bbs/card/getAddCardToken",
-       type: "GET",
-       datatype: "json",
-       success: function (result) {
-           if(result.code === 200){
-               $("input[name='token']").val(result.data);
-           }else {
-               errtip_show(result.msg);
-           }
-       }
+        url: "http://localhost:9400/xzzj/bbs/card/getAddCardToken",
+        type: "GET",
+        datatype: "json",
+        success: function (result) {
+            if (result.code === 200) {
+                $("input[name='token']").val(result.data);
+            } else {
+                errtip_show(result.msg);
+            }
+        }
     });
 }
 
@@ -84,17 +84,17 @@ $("body").on("click", ".card-del", function () {
     let $el = $(this).parents(".card");
     let id = $el.attr("id");
     console.log(id);
-    if(id !== ''){
+    if (id !== '') {
         $.ajax({
             url: "http://localhost:9400/xzzj/bbs/card/delCard",
             type: "POST",
             data: {"id": id},
             datatype: "json",
             success: function (result) {
-                if(result.code === 200){
+                if (result.code === 200) {
                     success_show(result.msg, 1500);
                     $el.remove();
-                }else {
+                } else {
                     errtip_show(result.msg);
                 }
             }
@@ -106,7 +106,7 @@ $("body").on("click", ".card-del", function () {
 /** 将卡片信息装填到页面 */
 function cardInit(id, time, title, msg, pic) {
     msg = msg === "" ? "这个人很懒，没有简介了..." : msg;
-    var $card = $("<div class='card card-move' id='"+id+"'>" +
+    var $card = $("<div class='card card-move' id='" + id + "'>" +
         "<div class='des'>" +
         "<h2 class='time' time='" + time + "'></h2>" +
         "<span class='time-des'>完成 [" + title + "] 的时间还有...</span>" +
@@ -117,7 +117,6 @@ function cardInit(id, time, title, msg, pic) {
     // $(".card-content").append($card);
     cardCountdown();
 }
-
 
 
 /** 检查表单项是否为空 */
@@ -238,7 +237,7 @@ $(".checkUser-input").bind("input propertychange", function () {
                         var name = vo.nickName == null || vo.nickName === "" ? vo.userName : vo.nickName;
                         var $user = $("<div class='checkUser'><div class='click-cuser'>" +
                             "<img class='checkUser-p' src='" + vo.portrait + "'>" +
-                            "<span class='checkUser-name' i='"+vo.id+"'>" + name + "</span></div>" +
+                            "<span class='checkUser-name' i='" + vo.id + "'>" + name + "</span></div>" +
                             "<span class='add-user'>+</span>" +
                             "</div>");
                         $(".checkUser-content").append($user);
@@ -300,26 +299,30 @@ $("body").on("click", ".add-user", function () {
 $(".addf-btn").click(function () {
     addFAJAX();
 });
+
 function addFAJAX() {
 
     success_show("正在发送", 1500);
     $.ajax({
         url: "http://localhost:9400/xzzj/bbs/account/friend/addFriend",
         type: "POST",
-        data: {"id": addfId,
+        data: {
+            "id": addfId,
             "otherRemarks": $("input[name='addfRemarks']").val(),
-            "message": $("textarea[name='addfMsg']").val()},
+            "message": $("textarea[name='addfMsg']").val()
+        },
         datatype: "json",
         success: function (result) {
-            if(result.code === 200){
+            if (result.code === 200) {
                 closeAddFMask();
                 success_show(result.msg, 1500);
-            }else {
+            } else {
                 errtip_show(result.msg);
             }
         }
     });
 }
+
 /** 关闭任务卡片添加层 */
 function closeMask() {
     var $mask = $(".add-card");
@@ -346,18 +349,20 @@ $(".close-addCard").click(function () {
 $(".close-addFriend").click(function () {
     closeAddFMask();
 });
+
 function closeAddFMask() {
     let $mask = $(".add-friend");
     $mask.addClass("mask-hide");
     $("input[name='addfRemarks']").val('');
     $("textarea[name='addfMsg']").val('');
 }
+
 /** 切换卡片页 */
 var $cardPage = $(".on");
 $(".card-tip-it").click(function () {
     $cardPage.removeClass("on");
     $cardPage = $(this);
-   $(this).addClass("on");
+    $(this).addClass("on");
 });
 /** 拦截添加任务层提交 */
 $("#cardForm input[type='submit']").click(function (e) {
@@ -406,13 +411,15 @@ $("#cardForm input[type='submit']").click(function (e) {
 
     console.log("拦截成功");
 });
+
 /** 重新加载卡片，除新增卡片 */
 function loadCardNotPlus() {
     $(".card-move").each(function () {
-       $(this).remove();
+        $(this).remove();
     });
     getMyCard();
 }
+
 function reTime(obj) {
 
     return obj.replace(/T/g, " ");
@@ -464,18 +471,29 @@ function getMyCard() {
 }
 
 /** 滚动到指定位置侧边框浮动 */
+var titleY = 0;
 $(window).scroll(function () {
-   let vh = $(document).scrollTop();
-   console.log(vh);
-   if(vh > 930){
-       $(".wb-title").addClass("wb-title-fix");
-       $(".container-data").addClass("data-fix");
-   }else {
-       $(".wb-title").removeClass("wb-title-fix");
-       $(".container-data").removeClass("data-fix");
+    let y = $('.wb-title').offset().top;
+    if(!$(".wb-title").hasClass("wbt-on") && titleY !== y) {
+        titleY = y;
+    }
 
-   }
+    let vh = $(document).scrollTop();
+    // console.log(vh);
+    // if(vh > 505){
+    //     $(".container-data").addClass("data-fix");
+    // }else {
+    //     $(".container-data").removeClass("data-fix");
+    // }
+
+    if (vh > titleY) {
+        $(".wb-title").addClass("wbt-on");
+    } else {
+        $(".wb-title").removeClass("wbt-on");
+
+    }
 });
+
 /** 引用login.js 的方法 */
 /** 提示框 */
 function errtip_show(text) {
